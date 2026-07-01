@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EGP Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-white m-0 p-0 overflow-x-hidden">
+
+ <!-- Header -->
+<div class="w-full
+     px-5
+     sm:px-6
+     md:px-8
+     lg:px-24
+     xl:px-32
+     py-10
+     md:py-12
+     lg:py-8
+     flex flex-col 
+     lg:flex-row items-center justify-center lg:justify-start gap-6 relative
+     bg-[#007DB5]">
+
+     <div class="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full gap-4">
+
+                <!-- LEFT -->
+                <div class="flex justify-start">
+    <a href="https://eventgarageparking.net/"
+       class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">
+        EGP
+    </a>
+</div>
+
+                <!-- CENTER -->
+                <div class="flex justify-center">
+                    <div
+                        class="text-white font-bold tracking-[1px] text-[18px] md:text-[20px] lg:text-[28px] leading-tight text-center whitespace-nowrap">
+                        Event Garage Parking
+                    </div>
+                </div>
+
+                <!-- RIGHT -->
+                <div
+                      class="flex justify-end items-center gap-1 text-[9px] lg:text-[11px] text-white/75 whitespace-nowrap md:ml-3">
+                    
+                     <a href="https://eventgarageparking.com/homeowner-faq/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="cursor-pointer hover:text-white transition">
+                         Help
+                     </a>
+
+                      
+
+                      <span class="opacity-40">|</span>
+                    
+                      <a href="https://eventgarageparking.net/"
+                        class="cursor-pointer hover:text-white transition">
+                        Homeowner Portal
+                      </a>
+        
+             </div>
+
+            </div>
+
+            <!-- MOBILE -->
+            <div class="flex md:hidden flex-col items-center justify-center gap-4 text-center">
+
+                <div class="flex justify-start">
+    <a href="https://eventgarageparking.net/"
+       class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">
+        EGP
+    </a>
+</div>
+
+                <div class="text-white font-bold tracking-[1px] text-[22px] leading-tight">
+                    Event Garage Parking
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-1 text-[10px] text-white/75">
+
+                    <a href="/help">Help</a>
+                    <span>|</span>
+
+                    <a href="https://eventgarageparking.net/register/">Sign In / Register</a>
+                    <span>|</span>
+
+                    <a href="/homeowner-portal">Homeowner Portal</a>
+
+                </div>
+
+            </div>
+
+</div>
+<!-- END HEADER -->
+
+<!-- BODY -->
+<div class="flex min-h-screen font-[Arial,sans-serif] relative">
+
+  <!-- OVERLAY -->
+   <div id="sidebarOverlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
+
+
+  <!-- SIDEBAR -->
+        <aside id="sidebar"
+            class="fixed md:static top-0 left-0 w-[260px] sm:w-[280px] md:w-[240px] min-h-screen md:min-h-full bg-[#f8f9ff] border-r border-[#e6e6e6] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 p-5 md:p-[20px_12px] overflow-y-auto">
+
+            <!-- MOBILE CLOSE -->
+            <div class="flex items-center justify-end mb-8 md:hidden">
+                <button id="closeSidebar" class="text-[34px] leading-none text-[#333]">
+                    ×
+                </button>
+            </div>
+
+            <!-- MENU -->
+             <div class="flex flex-col gap-2">
+
+                <a href="https://eventgarageparking.net/home-owner-listing-page/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-house"></i> Listing
+                </a>
+
+                <a href="https://eventgarageparking.net/home-owner-availability-page/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-calendar"></i>Availability
+                </a>
+
+                <a href="https://eventgarageparking.net/home-owner-booking-page/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-car"></i> Booking
+                </a>
+
+                <a href="https://eventgarageparking.net/home-owner-earning-page/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-piggy-bank"></i>Earnings
+                </a>
+
+                <a href="https://eventgarageparking.net/home-owner-profile-page/"
+                     class="flex items-center gap-2 p-[10px] text-[#007DB5] font-bold text-[13px] bg-[rgba(0,125,181,0.08)] rounded-[6px]">
+                    <i class="fa-solid fa-user"></i> Profile
+                </a>
+
+                <a href="https://eventgarageparking.net/home-owner-payment-page/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    $ Payment
+                </a>
+
+                <a href="http://127.0.0.1:5500/home-page/setting.html"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    ⚙️ Settings
+                </a>
+                  <a href="http://127.0.0.1:5500/home-page/loginPage.html"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Logout
+                    </a>
+
+            </div>
+
+        </aside>
+
+  <!-- MAIN CONTENT -->
+ <main class="flex-1 p-3 sm:p-4 md:p-6 lg:p-7 min-w-0">
+
+  <!-- TITLE + MOBILE TOGGLE -->
+  <div class="flex items-center justify-between mb-6">
+
+    <div class="text-[20px] sm:text-[22px] font-bold text-[#007DB5]">
+      Profile
+    </div>
+
+    <button id="openSidebar"
+      class="flex md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] items-center justify-center shadow-md">
+      ☰
+    </button>
+
+  </div>
+
+  <div class="flex flex-col gap-4">
+
+    <div class="rounded-[12px] border border-black/10 bg-white p-5">
+
+      <div class="text-[18px] font-semibold">Profile</div>
+      <div class="text-[13px] text-black/40 mt-1">
+        Manage your hosting details
+      </div>
+
+      <!-- PROFILE IMAGE -->
+      <div class="flex items-center gap-4 mt-6">
+
+        <div id="profileImage"
+          class="w-[60px] h-[60px] rounded-full bg-[#e9eef2] flex items-center justify-center text-[22px]">
+          👤
+        </div>
+
+        <div>
+          <div id="displayNameText" class="text-[16px] font-semibold">
+            Loading...
+          </div>
+
+          <!-- CLICK → upload profile image -->
+          <div id="changeProfilePhotoBtn"
+            class="text-[#007DB5] text-[12px] mt-1 cursor-pointer">
+            Change profile photo
+          </div>
+
+          <!-- hidden file input -->
+          <input type="file" id="profileImageUpload" hidden />
+        </div>
+
+      </div>
+
+      <!-- DISPLAY NAME -->
+      <div class="mt-6">
+        <div class="text-[13px] text-black/50 mb-2">Display Name</div>
+
+        <input
+          id="displayNameInput"
+          type="text"
+          class="w-full h-[46px] border border-black/10 rounded-[10px] px-4 text-[13px]"
+        />
+      </div>
+
+      <!-- ABOUT -->
+      <div class="mt-5">
+        <div class="text-[13px] text-black/50 mb-2">About</div>
+
+        <textarea
+          id="aboutInput"
+          class="w-full min-h-[110px] border border-black/10 rounded-[10px] px-4 py-4 text-[12px] text-black/50 leading-[1.6]"
+        ></textarea>
+      </div>
+
+    </div>
+
+    <!-- ===========================
+    SAFETY (READY FOR LATER API)
+    =========================== -->
+    <div class="rounded-[12px] border border-black/10 bg-white p-5">
+
+      <div class="text-[18px] font-semibold">Safety & Access</div>
+
+      <div class="mt-5">
+        <div class="text-[13px] text-black/50 mb-2">Gate Code</div>
+        <div id="gateCodeDisplay"
+          class="w-full h-[46px] border border-black/10 rounded-[10px] px-4 py-3 text-left text-[13px]">
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <div class="text-[13px] text-black/50 mb-2">Pets</div>
+        <div id="petsDisplay"
+          class="w-full h-[46px] border border-black/10 rounded-[10px] px-4 py-3 text-left text-[13px]">
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <div class="text-[13px] text-black/50 mb-2">
+          Anything to beware of?
+        </div>
+
+        <div id="notesDisplay"
+          class="w-full min-h-[110px] border border-black/10 rounded-[10px] px-4 py-4 text-left text-[12px] text-black/50 leading-[1.6]">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===========================
+    GARAGE (API READY)
+    =========================== -->
+    <div class="rounded-[12px] border border-black/10 bg-white p-5">
+
+      <div class="text-[18px] font-semibold">Garage Spots</div>
+
+      <div class="mt-5">
+        <div class="text-[13px] text-black/50">Number of Spots Available</div>
+
+        <div id="garageSpotCount"
+          class="mt-2 w-[60px] h-[38px] border border-black/10 rounded-[8px] text-[13px] px-6 py-3"> 3
+        </div>
+      </div>
+
+      <div class="mt-5 text-[13px] text-black/50">Garage Images</div>
+
+      <!-- DYNAMIC GARAGE IMAGES -->
+      <div id="garageImagesContainer"
+        class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+      </div>
+
+    </div>
+
+    <!-- FRONT OF HOUSE -->
+    <div class="rounded-[12px] border border-black/10 bg-white p-5">
+
+      <div class="text-[18px] font-semibold">Front of House</div>
+
+      <div class="mt-5 w-full h-[170px] border border-dashed border-black/20 rounded-[12px] flex flex-col items-center justify-center cursor-pointer"
+        id="frontHouseUpload">
+        <div class="text-[16px] opacity-50">⬆️</div>
+        <div class="text-[12px] text-black/40 mt-2">Upload Image</div>
+        <input type="file" id="frontHouseInput" hidden />
+      </div>
+
+    </div>
+
+    <!-- VERIFICATION -->
+    <div class="rounded-[12px] border border-black/10 bg-white p-5">
+
+      <div class="text-[18px] font-semibold">Verification</div>
+
+      <div class="mt-5 w-full h-[170px] border border-dashed border-black/20 rounded-[12px] flex flex-col items-center justify-center cursor-pointer"
+        id="verificationUpload">
+        <div class="text-[16px] opacity-50">⬆️</div>
+        <div class="text-[12px] text-black/40 mt-2">Upload document</div>
+        <input type="file" id="verificationInput" hidden />
+      </div>
+
+    </div>
+
+    <!-- SAVE -->
+    <div class="flex justify-center sm:justify-start">
+      <button id="saveProfileBtn"
+        class="bg-[#007DB5] text-white px-6 py-3 rounded-[10px] text-[13px] font-semibold">
+        Save all changes
+      </button>
+    </div>
+
+  </div>
+
+</main>
+
+</div>
+
+
+<!--</section>-->
+<footer class="w-full bg-[#007DB5] text-white text-sm">
+
+  <!-- MAIN -->
+  <div class="w-full px-10 py-10">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center lg:text-left">
+
+      <!-- BRAND -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Event Garage Parking</h2>
+        <p class="text-xs text-gray-100 max-w-xs leading-5">
+          Find and book parking spots at residential homes safe, convenient, and secure.
+        </p>
+      </div>
+
+      <!-- LINKS -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Get to Know Us</h2>
+        <ul class="space-y-2 text-xs">
+          <li><a href="https://eventgarageparking.com/about-us" class="hover:text-gray-200">About Us</a></li>
+          <li><a href="https://eventgarageparking.com/how-it-works/" class="hover:text-gray-200">How It Works</a></li>
+          <li><a href="https://eventgarageparking.net/contact-us/" class="hover:text-gray-200">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Quick Links</h2>
+        <ul class="space-y-2 text-xs">
+          <li><a href="https://eventgarageparking.com/homeowner-faq/" class="hover:text-white">Help</a></li>
+          <li><a href="https://42bs8c.share-na2.hsforms.com/2h9ic7f91RPiKzrbRzkwrmg" class="hover:text-gray-200">Become A Host</a></li>
+          <li><a href="https://eventgarageparking.net/homeowner-agreement/" class="hover:text-gray-200">Host Agreement</a></li>
+          <li><a href="https://eventgarageparking.com/privacy-policy/" class="hover:text-gray-200">Privacy Policy</a></li>
+          <li><a href="https://eventgarageparking.com/terms-of-service/" class="hover:text-gray-200">Tern of Service</a></li>
+        </ul>
+      </div>
+
+      <!-- STAY UPDATED (FIXED LAYOUT) -->
+      <div class="flex flex-col items-center lg:items-start">
+
+        <h2 class="text-xl font-semibold mb-1">
+          Stay Updated
+        </h2>
+
+       <p class="text-xs text-gray-100 mb-3 max-w-xs">
+          Get latest parking updates and offers.
+        </p>
+
+        <!-- EMAIL -->
+        <form class="flex w-full max-w-[220px] overflow-hidden rounded-md mb-4">
+
+          <div class="flex items-center bg-white w-full px-2">
+
+            <i class="fa-solid fa-envelope text-gray-500 text-xs mr-2"></i>
+
+            <input
+              type="email"
+              placeholder="Your Email"
+              class="w-full py-1.5 text-xs text-black outline-none"
+            />
+
+          </div>
+
+          <a
+            href="mailto:eventgarageparking@gmail.com?subject=Subscribe"
+            class="inline-block bg-blue-700 hover:bg-blue-800 px-3 py-2 text-xs text-white rounded"
+          >
+            Subscribe
+          </a>
+
+        </form>
+        
+
+        <!-- SOCIAL -->
+       <div class="flex gap-4 text-base justify-center lg:justify-start mt-3">
+            <a href="https://x.com/ParkMyRide_" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+            <a href="https://www.facebook.com/EventGarageParking" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+
+            <a href="https://www.instagram.com/park_my_ride/" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="mailto:eventgarageparkiing@gmail.com">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="border-t border-white/20 px-5 py-6">
+
+    <div class="flex justify-center mb-4">
+
+      <div class="flex items-center bg-white rounded-sm overflow-hidden scale-90 origin-center">
+
+        <a href="https://www.paypal.com" class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="max-h-5" alt="PayPal">
+        </a>
+
+        <a href="https://www.visa.com" class="w-12 h-8 flex items-center justify-center border-r border-gray-200">
+          <svg viewBox="0 0 780 250" class="h-5 w-auto">
+            <path fill="#1A1F71" d="M293.7 25.4L221.5 224.6H175L139.5 87.2c-2.1-8.5-3.9-11.6-10.5-15.2-10.7-5.8-28.4-11.2-44-14l1-4.6h74.8c9.5 0 18.1 6.3 20.3 17.2l18.7 99.4 46.2-116.6h47.7zm184.5 134.2c.2-52.6-72.8-55.5-72.3-79 0-7.2 7-14.8 22-16.7 7.4-.9 27.9-1.7 51.1 9l9.1-42.4c-12.5-4.5-28.5-8.9-48.4-8.9-51.2 0-87.2 27.2-87.5 66.2-.3 28.8 25.7 44.8 45.3 54.4 20.2 9.8 27 16.1 26.9 24.9-.1 13.5-16.2 19.5-31.2 19.7-26.2.4-41.4-7.1-53.5-12.8l-9.4 43.8c12.2 5.6 34.7 10.5 58.1 10.7 54.4 0 89.9-26.9 90-68.9z"/>
+          </svg>
+        </a>
+
+        <a href="https://www.mastercard.com" class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="max-h-5">
+        </a>
+
+        <a href="https://www.americanexpress.com" class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" class="max-h-5">
+        </a>
+
+        <a href="https://www.discover.com" class="w-10 h-8 flex items-center justify-center">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Discover_Card_logo.svg" class="max-h-5">
+        </a>
+
+      </div>
+
+    </div>
+
+    <p class="text-center text-xs text-gray-200">
+      Powered by Park My Ride LLC
+    </p>
+
+  </div>
+
+</footer>
+
+<!-- SIDEBAR SCRIPT -->
+<script>
+  // ===============================
+  // SIDEBAR (UNCHANGED)
+  // ===============================
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+  const openBtn = document.getElementById("openSidebar");
+  const closeBtn = document.getElementById("closeSidebar");
+
+  if (openBtn) {
+    openBtn.addEventListener("click", () => {
+      sidebar.classList.remove("-translate-x-full");
+      overlay.classList.remove("hidden");
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      sidebar.classList.add("-translate-x-full");
+      overlay.classList.add("hidden");
+    });
+  }
+
+  overlay.addEventListener("click", () => {
+    sidebar.classList.add("-translate-x-full");
+    overlay.classList.add("hidden");
+  });
+
+  // ===============================
+  // API CONFIG
+  // ===============================
+  const API_CUSTOMERS = "https://eventgarageparking.online/api/customers/";
+  const API_GARAGES = "https://eventgarageparking.online/api/home-garages/";
+
+  const CUSTOMER_ID = 1; // TODO: replace with real logged-in user later
+
+  const AUTH_HEADERS = {
+    "Content-Type": "application/json",
+    // "Authorization": "Bearer TOKEN"
+  };
+
+  // ===============================
+  // LOAD PROFILE
+  // ===============================
+  async function loadHomeownerProfile() {
+    try {
+      const res = await fetch(`${API_CUSTOMERS}${CUSTOMER_ID}/`, {
+  method: "PUT",
+  headers: AUTH_HEADERS,
+  body: JSON.stringify(payload),
+  credentials: "include" // 🔥 ADD THIS
+});
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText);
+      }
+
+      const c = await res.json();
+      console.log("CUSTOMER DATA:", c);
+
+      // PROFILE IMAGE
+      const profileImg = document.getElementById("profileImage");
+
+      if (c.profile_image) {
+        profileImg.innerHTML = `
+          <img src="${c.profile_image}" class="w-full h-full object-cover rounded-full"/>
+        `;
+      }
+
+      // NAME
+      const fullName = `${c.first_name || ""} ${c.last_name || ""}`.trim();
+
+      document.getElementById("displayNameText").innerText =
+        fullName || "No Name";
+
+      document.getElementById("displayNameInput").value =
+        fullName || "";
+
+      // ABOUT
+      document.getElementById("aboutInput").value =
+        c.about_me || "";
+
+      // SAFETY / NOTES
+      document.getElementById("notesDisplay").innerText =
+        c.address || "No address info";
+
+    } catch (err) {
+      console.error("PROFILE LOAD ERROR:", err);
+    }
+  }
+
+  // ===============================
+  // LOAD GARAGE
+  // ===============================
+  async function loadGarage() {
+    try {
+      const res = await fetch(API_GARAGES, {
+        method: "GET",
+        headers: AUTH_HEADERS
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText);
+      }
+
+      const g = await res.json();
+      console.log("GARAGE DATA:", g);
+
+      document.getElementById("garageSpotCount").innerText =
+        g.spots_available ?? g.total_parking_spots ?? 0;
+
+      document.getElementById("gateCodeDisplay").innerText =
+        g.home_gate_code || "N/A";
+
+      document.getElementById("petsDisplay").innerText =
+        g.any_pets ? "Yes" : "No";
+
+      document.getElementById("notesDisplay").innerText =
+        g.beware_of || "None";
+
+      // IMAGES
+      const container = document.getElementById("garageImagesContainer");
+      container.innerHTML = "";
+
+      const images = [
+        g.interior_garage_spot_image_1,
+        g.interior_garage_spot_image_2,
+        g.outside_garage_spot_image_1,
+        g.outside_garage_spot_image_2
+      ];
+
+      const labels = [
+        "Interior Spot 1",
+        "Interior Spot 2",
+        "Outside Spot 1",
+        "Outside Spot 2"
+      ];
+
+      images.forEach((url, i) => {
+        container.innerHTML += `
+          <div class="flex flex-col items-center">
+            <div class="w-full h-[110px] border border-dashed border-black/20 rounded-[10px] overflow-hidden flex items-center justify-center">
+              ${
+                url
+                  ? `<img src="${url}" class="w-full h-full object-cover"/>`
+                  : `<div class="text-[11px] text-black/40">No Image</div>`
+              }
+            </div>
+            <div class="mt-2 text-[11px] text-black/50">${labels[i]}</div>
+          </div>
+        `;
+      });
+
+    } catch (err) {
+      console.error("GARAGE LOAD ERROR:", err);
+    }
+  }
+
+  // ===============================
+  // SAVE PROFILE (FIXED PUT + DEBUG)
+  // ===============================
+  async function saveProfile() {
+    try {
+      const fullName = document.getElementById("displayNameInput").value;
+      const about = document.getElementById("aboutInput").value;
+
+      const nameParts = fullName.split(" ");
+
+      const payload = {
+        first_name: nameParts[0] || "",
+        last_name: nameParts.slice(1).join(" ") || "",
+        about_me: about
+      };
+
+      console.log("SENDING PAYLOAD:", payload);
+
+      const res = await fetch(`${API_CUSTOMERS}${CUSTOMER_ID}/`, {
+        method: "PUT", // FIXED HERE
+        headers: AUTH_HEADERS,
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText);
+      }
+
+      const data = await res.json();
+      console.log("PROFILE UPDATED:", data);
+
+      alert("Profile saved successfully!");
+
+      loadHomeownerProfile();
+
+    } catch (err) {
+      console.error("SAVE PROFILE ERROR:", err);
+      alert("Failed to save profile (check console)");
+    }
+  }
+
+  // ===============================
+  // INIT
+  // ===============================
+  document.addEventListener("DOMContentLoaded", () => {
+    loadHomeownerProfile();
+    loadGarage();
+
+    const saveBtn = document.getElementById("saveProfileBtn");
+    if (saveBtn) {
+      saveBtn.addEventListener("click", saveProfile);
+    }
+  });
+
+</script>
+  <script src="https://js-na2.hsforms.net/forms/embed/245773740.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Garage Parking - Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-white m-0 p-0 overflow-x-hidden">
+
+ <!-- Header -->
+<div class="w-full
+     px-5
+     sm:px-6
+     md:px-8
+     lg:px-24
+     xl:px-32
+     py-10
+     md:py-12
+     lg:py-8
+     flex flex-col 
+     lg:flex-row items-center justify-center lg:justify-start gap-6 relative
+     bg-[#007DB5]">
+
+     <div class="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full gap-4">
+
+                <!-- LEFT -->
+                <div class="flex justify-start">
+    <a href="https://eventgarageparking.net/"
+       class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">
+        EGP
+    </a>
+</div>
+
+                <!-- CENTER -->
+                <div class="flex justify-center">
+                    <div
+                        class="text-white font-bold tracking-[1px] text-[18px] md:text-[20px] lg:text-[28px] leading-tight text-center whitespace-nowrap">
+                        Event Garage Parking
+                    </div>
+                </div>
+
+                <!-- RIGHT -->
+                <div
+                      class="flex justify-end items-center gap-1 text-[9px] lg:text-[11px] text-white/75 whitespace-nowrap md:ml-3">
+                    
+                     <a href="https://eventgarageparking.com/homeowner-faq/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="cursor-pointer hover:text-white transition">
+                         Help
+                     </a>
+
+                  
+
+                      <span class="opacity-40">|</span>
+                    
+                      <a href="https://eventgarageparking.net/"
+                        class="cursor-pointer hover:text-white transition">
+                        Homeowner Portal
+                      </a>
+        
+             </div>
+
+            </div>
+
+            <!-- MOBILE -->
+            <div class="flex md:hidden flex-col items-center justify-center gap-4 text-center">
+
+                <div class="flex justify-start">
+    <a href="https://eventgarageparking.net/"
+       class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">
+        EGP
+    </a>
+</div>
+
+                <div class="text-white font-bold tracking-[1px] text-[22px] leading-tight">
+                    Event Garage Parking
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-1 text-[10px] text-white/75">
+
+                    <a href="/help">Help</a>
+                    <span>|</span>
+
+                    <a href="https://eventgarageparking.net/register/">Sign In / Register</a>
+                    <span>|</span>
+
+                    <a href="/homeowner-portal">Homeowner Portal</a>
+
+                </div>
+
+            </div>
+
+</div>
+<!-- END HEADER -->
+
+
+<div class="flex min-h-screen font-[Arial,sans-serif] relative">
+
+        <!-- OVERLAY -->
+       <div id="sidebarOverlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
+
+        <!-- SIDEBAR -->
+        <aside id="sidebar"
+            class="fixed md:static top-0 left-0 w-[260px] sm:w-[280px] md:w-[240px] min-h-screen md:min-h-full bg-[#f8f9ff] border-r border-[#e6e6e6] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 p-5 md:p-[20px_12px] overflow-y-auto">
+
+            <!-- MOBILE CLOSE -->
+            <div class="flex items-center justify-end mb-8 md:hidden">
+                <button id="closeSidebar" class="text-[34px] leading-none text-[#333]">
+                    ×
+                </button>
+            </div>
+
+            <!-- MENU -->
+             <div class="flex flex-col gap-2">
+
+                <a href="https://eventgarageparking.net/home-owner-listing-page/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-house"></i> Listing
+                </a>
+
+                <a href="https://eventgarageparking.net/home-owner-availability-page/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-calendar"></i>Availability
+                </a>
+
+                <a href="https://eventgarageparking.net/home-owner-booking-page/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-car"></i> Booking
+                </a>
+
+                <a href="https://eventgarageparking.net/home-owner-earning-page/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-piggy-bank"></i>Earnings
+                </a>
+
+                <a href="https://eventgarageparking.net/home-owner-profile-page/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-user"></i> Profile
+                </a>
+
+                <a href="https://eventgarageparking.net/home-owner-payment-page/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    $ Payment
+                </a>
+
+                <a href="https://eventgarageparking.net/egp-setting/"
+                    class="flex items-center gap-2 p-[10px] text-[#007DB5] font-bold text-[13px] bg-[rgba(0,125,181,0.08)] rounded-[6px]">
+                    ⚙️ Settings
+                </a>
+                <a href="http://127.0.0.1:5500/home-page/loginPage.html"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Logout
+                    </a>
+
+            </div>
+
+        </aside>
+
+       <!-- MAIN CONTENT -->
+<!-- MAIN CONTENT -->
+<main class="flex-1 bg-[#f5f7fb] p-6 md:p-10">
+
+    <!-- TITLE -->
+<!-- TITLE -->
+<div class="mb-8 flex items-center justify-between">
+
+    <h1 class="text-[26px] md:text-[30px] font-bold text-[#007DB5]">
+        Settings
+    </h1>
+
+    <!-- MOBILE TOGGLE -->
+    <button id="openSidebar"
+        class="flex md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] items-center justify-center shadow-md">
+        ☰
+    </button>
+
+</div>
+
+    <!-- CONTAINERS -->
+    <div class="flex flex-col gap-6">
+
+        <!-- 1. REPORT BUG -->
+        <div class="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] p-6 min-h-[260px]">
+
+            <h2 class="text-black font-bold text-[22px] mb-2">
+                Report a Bug
+            </h2>
+
+            <p class="text-black/50 text-[13px] mb-6">
+                Notice any problems? Feel free to report it.
+            </p>
+
+            <h3 class="text-black font-semibold text-[15px] mb-5">
+                Click on the button below to report the bug
+            </h3>
+
+    <a href="https://eventgarageparking.net/report-a-bug/">
+        <button class="bg-[#007DB5] hover:bg-[#00689a]     transition text-white text-[14px] font-medium     px-5 py-3 rounded-lg">
+            Report Bug
+         </button>
+    </a>
+
+        </div>
+
+        <!-- 2. CONTACT US -->
+        <div class="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] p-6 min-h-[260px]">
+
+    <h2 class="text-black font-bold text-[22px] mb-2">
+        Contact Us
+    </h2>
+
+    <p class="text-black/50 text-[13px] mb-6">
+        We're here to help. Reach out to us anytime.
+    </p>
+
+    <!-- EMAIL -->
+    <button 
+        class="w-full border border-[#e5e5e5] rounded-xl p-4 flex items-center gap-4 hover:bg-[#f9f9f9] transition mb-4">
+
+        <div class="w-12 h-12 rounded-full bg-[#f1f1f1] flex items-center justify-center">
+            <i class="fa-regular fa-envelope text-gray-500"></i>
+        </div>
+
+        <div class="text-left">
+            <div class="text-black font-semibold text-[15px]">
+                Email Us
+            </div>
+            <div class="text-[#007DB5] text-[13px]">
+                eventgarageparing@gmail.com
+            </div>
+        </div>
+
+    </button>
+
+    <!-- MESSENGER -->
+    <button 
+        class="w-full border border-[#e5e5e5] rounded-xl py-3 px-4 flex items-center justify-center gap-3 hover:bg-[#f9f9f9] transition">
+
+        <div class="w-10 h-10 rounded-full bg-[#f1f1f1] flex items-center justify-center">
+            <i class="fa-regular fa-message text-gray-500"></i>
+        </div>
+
+        <span class="text-black font-medium text-[14px]">
+            Message us on Messenger
+        </span>
+
+    </button>
+
+</div>
+
+        <!-- 3. NOTIFICATIONS -->
+       <div class="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] p-6">
+
+    <h2 class="text-black font-bold text-[22px] mb-2">
+        Notifications
+    </h2>
+
+    <p class="text-black/50 text-[13px] mb-6">
+        Manage how you receive notifications.
+    </p>
+
+    <!-- ITEM 1 -->
+    <div class="border rounded-xl p-4 flex justify-between items-center mb-4">
+        <div class="flex gap-4 items-center">
+            <div class="w-12 h-12 bg-[#f1f1f1] rounded-full flex items-center justify-center">
+                <i class="fa-regular fa-bell text-gray-500"></i>
+            </div>
+            <div>
+                <div class="font-semibold text-[15px] text-black/80">New Message</div>
+                <div class="text-[12px] text-black/50">Get notified when you receive a new message</div>
+            </div>
+        </div>
+        <div class="w-12 h-7 bg-[#007DB5] rounded-full flex justify-end px-1 items-center cursor-pointer"
+            >
+            <div class="w-5 h-5 bg-white rounded-full"></div>
+        </div>
+    </div>
+
+    <!-- ITEM 2 -->
+    <div class="border rounded-xl p-4 flex justify-between items-center mb-4">
+        <div class="flex gap-4 items-center">
+            <div class="w-12 h-12 bg-[#f1f1f1] rounded-full flex items-center justify-center">
+                <i class="fa-regular fa-envelope text-gray-500"></i>
+            </div>
+            <div>
+                <div class="font-semibold text-[15px] text-black/80">New Mail</div>
+                <div class="text-[12px] text-black/50">Receive notifications via email</div>
+            </div>
+        </div>
+        <div class="w-12 h-7 bg-[#007DB5] rounded-full flex justify-end px-1 items-center">
+            <div class="w-5 h-5 bg-white rounded-full"></div>
+        </div>
+    </div>
+
+    <!-- ITEM 3 -->
+    <div class="border rounded-xl p-4 flex justify-between items-center mb-4">
+        <div class="flex gap-4 items-center">
+            <div class="w-12 h-12 bg-[#f1f1f1] rounded-full flex items-center justify-center">
+                <i class="fa-regular fa-message text-gray-500"></i>
+            </div>
+            <div>
+                <div class="font-semibold text-[15px] text-black/80">Text Message</div>
+                <div class="text-[12px] text-black/50">Receive notifications via SMS</div>
+            </div>
+        </div>
+        <div class="w-12 h-7 bg-[#d9d9d9] rounded-full flex justify-start px-1 items-center">
+            <div class="w-5 h-5 bg-white rounded-full"></div>
+        </div>
+    </div>
+
+    <!-- ITEM 4 -->
+    <div class="border rounded-xl p-4 flex justify-between items-center">
+        <div class="flex gap-4 items-center">
+            <div class="w-12 h-12 bg-[#f1f1f1] rounded-full flex items-center justify-center">
+                <i class="fa-solid fa-bullhorn text-gray-500"></i>
+            </div>
+            <div>
+                <div class="font-semibold text-[15px] text-black/80">Marketing & Advertisement</div>
+                <div class="text-[12px] text-black/50">Receive promoted offers and updates</div>
+            </div>
+        </div>
+        <div class="w-12 h-7 bg-[#d9d9d9] rounded-full flex justify-start px-1 items-center">
+            <div class="w-5 h-5 bg-white rounded-full"></div>
+        </div>
+    </div>
+
+</div>
+
+        <!-- 4. APPEARANCE -->
+        <div class="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] p-6">
+
+            <h2 class="text-black font-bold text-[22px] mb-2">
+                Appearance
+            </h2>
+
+            <p class="text-black/50 text-[13px] mb-6">
+                Customize how the app looks.
+            </p>
+
+            <div class="border rounded-xl p-4 flex justify-between items-center">
+
+                <div class="flex gap-4 items-center">
+                    <div class="w-12 h-12 bg-[#f1f1f1] rounded-full flex items-center justify-center">
+                        💡
+                    </div>
+                    <div class="font-semibold text-[15px]">Dark Mode</div>
+                </div>
+
+                <div class="w-12 h-7 bg-[#d9d9d9] rounded-full flex justify-start px-1 items-center">
+                    <div class="w-5 h-5 bg-white rounded-full"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 5. TERMS -->
+        <div class="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] p-6">
+
+    <h2 class="text-black font-bold text-[22px] mb-2">
+        Terms & Agreements
+    </h2>
+
+    <p class="text-black/50 text-[13px] mb-6">
+        Review our legal documents.
+    </p>
+
+    <!-- 1 -->
+    <div
+        class="border rounded-xl p-4 flex justify-between items-center mb-4 cursor-pointer hover:bg-gray-50">
+
+        <div class="flex gap-4 items-center">
+            <div class="w-12 h-12 bg-[#f1f1f1] rounded-full flex items-center justify-center">
+                <i class="fa-regular fa-file text-gray-500"></i>
+            </div>
+            <div class="font-semibold text-[15px]">Terms of Service</div>
+        </div>
+
+        <div><i class="fa-solid fa-share text-gray-500"></i></div>
+
+    </div>
+
+    <!-- 2 -->
+    <div 
+        class="border rounded-xl p-4 flex justify-between items-center mb-4 cursor-pointer hover:bg-gray-50">
+
+        <div class="flex gap-4 items-center">
+            <div class="w-12 h-12 bg-[#f1f1f1] rounded-full flex items-center justify-center">
+                <i class="fa-regular fa-house text-gray-500"></i>
+            </div>
+            <div class="font-semibold text-[15px]">Homeowner Agreement</div>
+        </div>
+
+        <div><i class="fa-solid fa-share text-gray-500"></i></div>
+
+    </div>
+
+    <!-- 3 -->
+    <div
+        class="border rounded-xl p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50">
+
+        <div class="flex gap-4 items-center">
+            <div class="w-12 h-12 bg-[#f1f1f1] rounded-full flex items-center justify-center">
+                <i class="fa-solid fa-shield text-gray-500"></i>
+            </div>
+            <div class="font-semibold text-[15px]">Privacy</div>
+        </div>
+
+        <div><i class="fa-solid fa-share text-gray-500"></i></div>
+
+    </div>
+
+</div>
+
+        <!-- 6. DELETE ACCOUNT -->
+        <div class="bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] p-6">
+
+            <h2 class="text-black font-bold text-[22px] mb-2">
+                Delete Account
+            </h2>
+
+            <p class="text-black/50 text-[13px] mb-6">
+                Permanently delete your account and all associated data.
+            </p>
+
+            <div class="bg-red-50 border border-red-200 rounded-xl p-5 mb-5 flex gap-4">
+
+                  <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600">
+                      <i class="fa-solid fa-triangle-exclamation text-[18px]"></i>
+                  </div>
+
+                <div>
+                        <div class="font-semibold text-red-700 mb-1">
+                            This action is irreversible
+                        </div>
+                        <div class="text-red-600/80 text-[12px] leading-5">
+                            Once your account is deleted, all your data, properties, and settings will be permanently removed.
+                        </div>
+                </div>
+
+           </div>
+           <button
+    class="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl py-3 flex items-center justify-center gap-2 font-semibold">
+
+    <i class="fa-regular fa-trash-can"></i>
+    <span>Delete My Account</span>
+
+</button>
+
+        </div>
+
+    </div>
+
+    <!-- FOOTER TEXT -->
+    <div class="text-center text-xs text-gray-400 mt-6">
+        Dashboard v1.0.0
+    </div>
+
+</main>
+</div>
+
+
+<footer class="w-full bg-[#007DB5] text-white text-sm">
+
+  <!-- MAIN -->
+  <div class="w-full px-10 py-10">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center lg:text-left">
+
+      <!-- BRAND -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Event Garage Parking</h2>
+        <p class="text-xs text-gray-100 max-w-xs leading-5">
+          Find and book parking spots at residential homes safe, convenient, and secure.
+        </p>
+      </div>
+
+      <!-- LINKS -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Get to Know Us</h2>
+        <ul class="space-y-2 text-xs">
+          <li><a  href="https://eventgarageparking.com/about-us"
+             target="_blank"
+             rel="noopener noreferrer" class="hover:text-gray-200">About Us</a></li>
+          <li>
+             <a href="https://eventgarageparking.com/how-it-works/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="hover:text-gray-200">
+                How It Works
+               </a>
+         </li>
+          <li>
+             <a href="https://eventgarageparking.net/contact-us/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="hover:text-gray-200">
+                Contact Us
+            </a>
+         </li>
+        </ul>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Quick Links</h2>
+        <ul class="space-y-2 text-xs">
+          <li>
+             <a href="https://eventgarageparking.com/homeowner-faq/"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 class="cursor-pointer hover:text-white transition">
+                  Help
+             </a>
+          </li>
+          <li>
+            <a
+              href="https://42bs8c.share-na2.hsforms.com/2h9ic7f91RPiKzrbRzkwrmg"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-gray-200"
+            >
+              Become A Host
+            </a>
+             <li>
+
+            <a
+
+              href="https://eventgarageparking.net/homeowner-agreement/"
+
+              target="_blank"
+
+              rel="noopener noreferrer"
+
+              class="hover:text-gray-200"
+
+            >
+
+              Host Agreement
+
+            </a></li>
+            <li>
+            <a
+              href="https://eventgarageparking.com/privacy-policy/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-gray-200"
+            >
+              Privacy Policy
+            </a></li>
+             <li>
+            <a
+              href="https://eventgarageparking.com/terms-of-service/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-gray-200"
+            >
+              Tern of Service
+            </a></li>
+          </li>
+        </ul>
+      </div>
+
+      <!-- STAY UPDATED -->
+      <div class="flex flex-col items-center lg:items-start">
+
+        <h2 class="text-xl font-semibold mb-3">Stay Updated</h2>
+
+        <p class="text-xs text-gray-100 mb-3 max-w-xs">
+          Get latest parking updates and offers.
+        </p>
+
+        <!-- EMAIL -->
+        <form class="flex w-full max-w-[220px] overflow-hidden rounded-md mb-4">
+
+          <div class="flex items-center bg-white w-full px-2">
+
+            <i class="fa-solid fa-envelope text-gray-500 text-xs mr-2"></i>
+
+            <input
+              type="email"
+              placeholder="Your Email"
+              class="w-full py-1.5 text-xs text-black outline-none"
+            />
+
+          </div>
+
+          <a
+            href="mailto:eventgarageparking@gmail.com?subject=Subscribe"
+            class="inline-block bg-blue-700 hover:bg-blue-800 px-3 py-2 text-xs text-white rounded"
+          >
+            Subscribe
+          </a>
+
+        </form>
+        
+
+        <!-- SOCIAL -->
+       <div class="flex gap-4 text-base justify-center lg:justify-start mt-3">
+            <a href="https://x.com/ParkMyRide_" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+            <a href="https://www.facebook.com/EventGarageParking" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+
+            <a href="https://www.instagram.com/park_my_ride/" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="mailto:eventgarageparkiing@gmail.com">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="border-t border-white/20 px-5 py-6">
+
+    <!-- PAYMENT BOX (FIXED EQUAL SIZE) -->
+    <div class="flex justify-center mb-4">
+
+      <div class="flex items-center bg-white rounded-sm overflow-hidden scale-90 origin-center">
+
+        <!-- PayPal -->
+        <a href="https://www.paypal.com" target="_blank" rel="noopener noreferrer"
+           class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"
+               class="max-h-5 max-w-full object-contain" alt="PayPal">
+        </a>
+
+        <!-- Visa -->
+        <a href="https://www.visa.com"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="w-12 h-8 flex items-center justify-center border-r border-gray-200">
+          <svg viewBox="0 0 780 250" class="h-5 w-auto" aria-label="Visa">
+            <path fill="#1A1F71" d="M293.7 25.4L221.5 224.6H175L139.5 87.2c-2.1-8.5-3.9-11.6-10.5-15.2-10.7-5.8-28.4-11.2-44-14l1-4.6h74.8c9.5 0 18.1 6.3 20.3 17.2l18.7 99.4 46.2-116.6h47.7zm184.5 134.2c.2-52.6-72.8-55.5-72.3-79 0-7.2 7-14.8 22-16.7 7.4-.9 27.9-1.7 51.1 9l9.1-42.4c-12.5-4.5-28.5-8.9-48.4-8.9-51.2 0-87.2 27.2-87.5 66.2-.3 28.8 25.7 44.8 45.3 54.4 20.2 9.8 27 16.1 26.9 24.9-.1 13.5-16.2 19.5-31.2 19.7-26.2.4-41.4-7.1-53.5-12.8l-9.4 43.8c12.2 5.6 34.7 10.5 58.1 10.7 54.4 0 89.9-26.9 90-68.9zM613.4 224.6h41.8L618.7 25.4h-38.6c-8.7 0-16 5.1-19.2 12.9l-77.3 186.3h54.3l10.7-29.6h66.4l6.4 29.6zm-50-70.5l27.2-75 15.6 75h-42.8zM367.5 25.4L324.8 224.6h-51.7l42.7-199.2h51.7z"/>
+  </svg>
+</a>
+
+        <!-- Mastercard -->
+        <a href="https://www.mastercard.com" target="_blank" rel="noopener noreferrer"
+           class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"
+               class="max-h-5 max-w-full object-contain" alt="Mastercard">
+        </a>
+
+        <!-- Amex -->
+        <a href="https://www.americanexpress.com" target="_blank" rel="noopener noreferrer"
+           class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg"
+               class="max-h-5 max-w-full object-contain" alt="Amex">
+        </a>
+
+        <!-- Discover -->
+        <a href="https://www.discover.com" target="_blank" rel="noopener noreferrer"
+           class="w-10 h-8 flex items-center justify-center">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Discover_Card_logo.svg"
+               class="max-h-5 max-w-full object-contain" alt="Discover">
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- TEXT -->
+    <p class="text-center text-xs text-gray-200">
+      Powered by Park My Ride LLC
+    </p>
+
+  </div>
+
+</footer>
+
+<!-- SIDEBAR SCRIPT -->
+<script>
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+  const openBtn = document.getElementById("openSidebar");
+  const closeBtn = document.getElementById("closeSidebar");
+
+  openBtn?.addEventListener("click", () => {
+    sidebar.classList.remove("-translate-x-full");
+    overlay.classList.remove("hidden");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    sidebar.classList.add("-translate-x-full");
+    overlay.classList.add("hidden");
+  });
+
+  overlay.addEventListener("click", () => {
+    sidebar.classList.add("-translate-x-full");
+    overlay.classList.add("hidden");
+  });
+</script>
+
+</body>
+</html>

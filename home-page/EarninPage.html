@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EGP Earnings</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="overflow-x-hidden bg-white font-[Arial,sans-serif] flex flex-col min-h-screen">
+
+<!-- HEADER -->
+<div class="w-full
+     px-5
+     sm:px-6
+     md:px-8
+     lg:px-24
+     xl:px-32
+     py-10
+     md:py-12
+     lg:py-8
+     flex flex-col 
+     lg:flex-row items-center justify-center lg:justify-start gap-6 relative
+     bg-[#007DB5]">
+
+     <div class="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full gap-4">
+
+                <!-- LEFT -->
+                <div class="flex justify-start">
+    <a href="https://eventgarageparking.net/"
+       class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">
+        EGP
+    </a>
+</div>
+
+                <!-- CENTER -->
+                <div class="flex justify-center">
+                    <div
+                        class="text-white font-bold tracking-[1px] text-[18px] md:text-[20px] lg:text-[28px] leading-tight text-center whitespace-nowrap">
+                        Event Garage Parking
+                    </div>
+                </div>
+
+                <!-- RIGHT -->
+                <div
+                      class="flex justify-end items-center gap-1 text-[9px] lg:text-[11px] text-white/75 whitespace-nowrap md:ml-3">
+                    
+                      <a href="https://eventgarageparking.com/homeowner-faq/"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="cursor-pointer hover:text-white transition">
+                            Help
+                        </a>
+
+
+
+                      <span class="opacity-40">|</span>
+                    
+                      <a href="https://eventgarageparking.net/"
+                        class="cursor-pointer hover:text-white transition">
+                        Homeowner Portal
+                      </a>
+        
+             </div>
+
+            </div>
+
+            <!-- MOBILE -->
+            <div class="flex md:hidden flex-col items-center justify-center gap-4 text-center">
+
+                <div class="flex justify-start">
+    <a href="https://eventgarageparking.net/"
+       class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">
+        EGP
+    </a>
+</div>
+
+                <div class="text-white font-bold tracking-[1px] text-[22px] leading-tight">
+                    Event Garage Parking
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-1 text-[10px] text-white/75">
+
+                    <a href="/help">Help</a>
+                    <span>|</span>
+
+                    <a href="https://eventgarageparking.net/register/">Sign In / Register</a>
+                    <span>|</span>
+
+                    <a href="/homeowner-portal">Homeowner Portal</a>
+
+                </div>
+
+            </div>
+
+</div>
+<!-- END HEADER -->
+
+<!-- MAIN WRAPPER -->
+<div class="flex flex-1 relative">
+
+  <!-- OVERLAY -->
+  <div id="overlay" class="fixed inset-0 bg-black/40 hidden md:hidden z-40"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar"
+    class="fixed md:static top-0 left-0 w-[260px] sm:w-[280px] md:w-[240px] h-screen md:h-auto bg-[#f8f9ff] border-r border-[#e6e6e6] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 p-5 md:p-[20px_12px] overflow-y-auto">
+
+    <!-- CLOSE BUTTON (MOBILE ONLY) -->
+    <div class="flex items-center justify-end mb-8 md:hidden">
+      <button id="closeSidebar" class="text-[34px] leading-none text-[#333]">×</button>
+    </div>
+
+    <div class="flex flex-col gap-2">
+
+      <a href="https://eventgarageparking.net/home-owner-listing-page/"
+        class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+        <i class="fa-solid fa-house"></i> Listing
+      </a>
+
+      <a href="https://eventgarageparking.net/home-owner-availability-page/"
+        class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+        <i class="fa-solid fa-calendar"></i> Availability
+      </a>
+
+      <a href="https://eventgarageparking.net/home-owner-booking-page/"
+        class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+        <i class="fa-solid fa-car"></i> Booking
+      </a>
+
+      <a href="https://eventgarageparking.net/home-owner-earning-page/"
+        class="flex items-center gap-2 p-[10px] text-[#007DB5] font-bold text-[13px] bg-[rgba(0,125,181,0.08)] rounded-[6px]">
+        <i class="fa-solid fa-piggy-bank"></i>Earnings
+      </a>
+
+      <a href="https://eventgarageparking.net/home-owner-profile-page/"
+        class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+        <i class="fa-solid fa-user"></i> Profile
+      </a>
+
+      <a href="https://eventgarageparking.net/home-owner-payment-page/"
+        class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+        $ Payment
+      </a>
+
+      <a href="https://eventgarageparking.net/egp-setting/"
+        class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+        ⚙️ Settings
+      </a>
+        <a href="http://127.0.0.1:5500/home-page/loginPage.html"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Logout
+                    </a>
+
+    </div>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+ <main class="flex-1 min-h-screen min-w-0 overflow-x-hidden p-4 sm:p-5 md:p-6 lg:p-8">
+
+    <!-- TITLE -->
+    <div class="flex items-center justify-between mb-3 sm:mb-4 lg:mb-5">
+
+      <div class="text-[20px] sm:text-[22px] font-bold text-[#007DB5]">
+        Earnings
+      </div>
+
+      <!-- MOBILE TOGGLE -->
+      <button id="openSidebar"
+        class="flex md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] items-center justify-center shadow-md">
+        ☰
+      </button>
+
+    </div>
+
+    <!-- CARDS -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <div class="border rounded-xl p-5 shadow-sm bg-white">
+        <p class="text-gray-500 text-sm">This Month</p>
+        <div class="text-2xl md:text-3xl font-bold">$430.00</div>
+      </div>
+
+      <div class="border rounded-xl p-5 shadow-sm bg-white">
+        <p class="text-gray-500 text-sm">Last Month</p>
+        <div class="text-2xl md:text-3xl font-bold">$810.00</div>
+      </div>
+
+      <div class="border rounded-xl p-5 shadow-sm bg-white">
+        <p class="text-gray-500 text-sm">Total Earnings</p>
+        <div class="text-2xl md:text-3xl font-bold">$1,240.00</div>
+      </div>
+
+    </section>
+
+    <!-- PAYOUTS -->
+    <section
+      class="mt-5 border border-[#e6e6e6] rounded-[12px] p-4 sm:p-5 shadow-[0_2px_6px_rgba(0,0,0,0.05)] bg-white">
+
+      <h2 class="text-lg font-bold mb-4">Recent Payouts</h2>
+
+      <div class="space-y-2">
+
+        <div class="w-full grid grid-cols-3 md:px-2 py-3 border-b">
+          <div class="flex items-center justify-center md:justify-start text-gray-500 text-sm">
+            March 14, 2026
+          </div>
+          <div class="flex items-center justify-center font-bold">
+            $120.00
+          </div>
+          <div class="flex items-center justify-center md:justify-end text-gray-500 text-sm">
+            pending...
+          </div>
+        </div>
+
+        <div class="w-full grid grid-cols-3 md:px-2 py-3 border-b">
+          <div class="flex items-center justify-center md:justify-start text-gray-500 text-sm">
+            March 02, 2026
+          </div>
+          <div class="flex items-center justify-center font-bold">
+            $140.00
+          </div>
+          <div class="flex items-center justify-center md:justify-end text-green-600 text-sm">
+            Paid
+          </div>
+        </div>
+
+        <div class="w-full grid grid-cols-3 md:px-2 py-3">
+          <div class="flex items-center justify-center md:justify-start text-gray-500 text-sm">
+            Feb 18, 2026
+          </div>
+          <div class="flex items-center justify-center font-bold">
+            $239.00
+          </div>
+          <div class="flex items-center justify-center md:justify-end text-green-600 text-sm">
+            Paid
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!--</footer>-->
+<footer class="w-full bg-[#007DB5] text-white text-sm mt-8">
+
+  <!-- MAIN -->
+  <div class="w-full px-10 py-10">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center lg:text-left">
+
+      <!-- BRAND -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Event Garage Parking</h2>
+        <p class="text-xs text-gray-100 max-w-xs leading-5">
+          Find and book parking spots at residential homes safe, convenient, and secure.
+        </p>
+      </div>
+
+      <!-- LINKS -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Get to Know Us</h2>
+        <ul class="space-y-2 text-xs">
+          <li><a href="https://eventgarageparking.com/about-us"
+               target="_blank"
+               rel="noopener noreferrer" class="hover:text-gray-200">About Us</a></li>
+          <li>
+              
+              <a href="https://eventgarageparking.com/how-it-works/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-gray-200">
+               How It Works
+           </a>
+          </li>
+          <li>
+              <a href="https://eventgarageparking.net/contact-us/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-gray-200">
+                 Contact Us
+             </a>
+         </li>
+        </ul>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Quick Links</h2>
+        <ul class="space-y-2 text-xs">
+              <li><a href="https://eventgarageparking.com/homeowner-faq/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="cursor-pointer hover:text-white transition">
+                Help
+              </a></li>
+          <li>
+            <a
+              href="https://42bs8c.share-na2.hsforms.com/2h9ic7f91RPiKzrbRzkwrmg"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-gray-200"
+            >
+              Become A Host
+            </a>
+             <li>
+
+            <a
+
+              href="https://eventgarageparking.net/homeowner-agreement/"
+
+              target="_blank"
+
+              rel="noopener noreferrer"
+
+              class="hover:text-gray-200"
+
+            >
+
+              Host Agreement
+
+            </a></li>
+            <li>
+            <a
+              href="https://eventgarageparking.com/privacy-policy/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-gray-200"
+            >
+              privacy policy
+            </a></li>
+             <li>
+            <a
+              href="https://eventgarageparking.com/terms-of-service/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-gray-200"
+            >
+              Tern of Service
+            </a></li>
+          </li>
+        </ul>
+      </div>
+
+      <!-- STAY UPDATED -->
+      <div class="flex flex-col items-center lg:items-start">
+
+        <h2 class="text-xl font-semibold mb-3">Stay Updated</h2>
+
+    <p class="text-xs text-gray-100 mb-3 max-w-xs">
+          Get latest parking updates and offers.
+        </p>
+
+        <!-- EMAIL -->
+        <form class="flex w-full max-w-[220px] overflow-hidden rounded-md mb-4">
+
+          <div class="flex items-center bg-white w-full px-2">
+
+            <i class="fa-solid fa-envelope text-gray-500 text-xs mr-2"></i>
+
+            <input
+              type="email"
+              placeholder="Your Email"
+              class="w-full py-1.5 text-xs text-black outline-none"
+            />
+
+          </div>
+
+          <a
+            href="mailto:eventgarageparking@gmail.com?subject=Subscribe"
+            class="inline-block bg-blue-700 hover:bg-blue-800 px-3 py-2 text-xs text-white rounded"
+          >
+            Subscribe
+          </a>
+
+        </form>
+        
+
+            <!-- SOCIAL -->
+       <div class="flex gap-4 text-base justify-center lg:justify-start mt-3">
+            <a href="https://x.com/ParkMyRide_" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+            <a href="https://www.facebook.com/EventGarageParking" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+
+            <a href="https://www.instagram.com/park_my_ride/" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="mailto:eventgarageparkiing@gmail.com">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="border-t border-white/20 px-5 py-6">
+
+    <div class="flex justify-center mb-4">
+
+      <div class="flex items-center bg-white rounded-sm overflow-hidden scale-90 origin-center">
+
+        <a href="https://www.paypal.com" target="_blank" rel="noopener noreferrer"
+           class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"
+               class="max-h-5 max-w-full object-contain" alt="PayPal">
+        </a>
+
+        <a href="https://www.visa.com" target="_blank" rel="noopener noreferrer"
+           class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
+               class="max-h-5 max-w-full object-contain" alt="Visa">
+        </a>
+
+        <a href="https://www.mastercard.com" target="_blank" rel="noopener noreferrer"
+           class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"
+               class="max-h-5 max-w-full object-contain" alt="Mastercard">
+        </a>
+
+        <a href="https://www.americanexpress.com" target="_blank" rel="noopener noreferrer"
+           class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg"
+               class="max-h-5 max-w-full object-contain" alt="Amex">
+        </a>
+
+        <a href="https://www.discover.com" target="_blank" rel="noopener noreferrer"
+           class="w-10 h-8 flex items-center justify-center">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Discover_Card_logo.svg"
+               class="max-h-5 max-w-full object-contain" alt="Discover">
+        </a>
+
+      </div>
+
+    </div>
+
+    <p class="text-center text-xs text-gray-200">
+      Powered by Park My Ride LLC
+    </p>
+
+  </div>
+
+</footer>
+
+<!-- SCRIPT -->
+<script>
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  const openBtn = document.getElementById("openSidebar");
+  const closeBtn = document.getElementById("closeSidebar");
+
+  function openSidebar() {
+    sidebar.classList.remove("-translate-x-full");
+    overlay.classList.remove("hidden");
+  }
+
+  function closeSidebar() {
+    sidebar.classList.add("-translate-x-full");
+    overlay.classList.add("hidden");
+  }
+
+  openBtn?.addEventListener("click", openSidebar);
+  closeBtn?.addEventListener("click", closeSidebar);
+  overlay?.addEventListener("click", closeSidebar);
+</script>
+
+</body>
+</html>

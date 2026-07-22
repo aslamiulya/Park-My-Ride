@@ -22,79 +22,95 @@
      py-10
      md:py-12
      lg:py-8
-     flex flex-col 
+     flex flex-col
      lg:flex-row items-center justify-center lg:justify-start gap-6 relative
      bg-[#007DB5]">
 
-     <div class="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full gap-4">
+    <!-- DESKTOP / TABLET -->
+    <div class="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full gap-4">
 
-                <!-- LEFT -->
-                <div class="flex justify-start">
-    <a href="https://eventgarageparking.net/"
-       class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">
-        EGP
-    </a>
-</div>
+        <!-- LEFT -->
+        <div class="flex justify-start">
+            <a href="https://eventgarageparking.net/"
+               class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">
+                EGP
+            </a>
+        </div>
 
-                <!-- CENTER -->
-                <div class="flex justify-center">
-                    <div
-                        class="text-white font-bold tracking-[1px] text-[18px] md:text-[20px] lg:text-[28px] leading-tight text-center whitespace-nowrap">
-                        Event Garage Parking
-                    </div>
-                </div>
-
-                <!-- RIGHT -->
-                <div
-                      class="flex justify-end items-center gap-1 text-[9px] lg:text-[11px] text-white/75 whitespace-nowrap md:ml-3">
-                    
-                     <a href="https://eventgarageparking.com/homeowner-faq/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="cursor-pointer hover:text-white transition">
-                         Help
-                     </a>
-
-                  
-
-                      <span class="opacity-40">|</span>
-                    
-                      <a href="https://eventgarageparking.net/"
-                        class="cursor-pointer hover:text-white transition">
-                        Homeowner Portal
-                      </a>
-        
-             </div>
-
+        <!-- CENTER -->
+        <div class="flex justify-center">
+            <div class="text-white font-bold tracking-[1px] text-[18px] md:text-[20px] lg:text-[28px] leading-tight text-center whitespace-nowrap">
+                Event Garage Parking
             </div>
+        </div>
 
-            <!-- MOBILE -->
-            <div class="flex md:hidden flex-col items-center justify-center gap-4 text-center">
+        <!-- RIGHT -->
+        <div class="flex justify-end items-center gap-1 text-[9px] lg:text-[11px] text-white/75 whitespace-nowrap md:ml-3">
 
-                <div class="flex justify-start">
-    <a href="https://eventgarageparking.net/"
-       class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">
-        EGP
-    </a>
-</div>
+            <a href="https://eventgarageparking.com/homeowner-faq/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="cursor-pointer hover:text-white transition">
+                Help
+            </a>
 
-                <div class="text-white font-bold tracking-[1px] text-[22px] leading-tight">
-                    Event Garage Parking
-                </div>
+            <span id="desktopUserDivider" class="opacity-40 hidden">|</span>
 
-                <div class="flex flex-wrap justify-center gap-1 text-[10px] text-white/75">
+            <span id="loggedInUserDesktop"
+                  class="text-white/75 hidden">
+            </span>
 
-                    <a href="/help">Help</a>
-                    <span>|</span>
+            <span class="opacity-40">|</span>
 
-                    <a href="https://eventgarageparking.net/register/">Sign In / Register</a>
-                    <span>|</span>
+            <a href="https://eventgarageparking.net/"
+               class="cursor-pointer hover:text-white transition">
+                Homeowner Portal
+            </a>
 
-                    <a href="/homeowner-portal">Homeowner Portal</a>
+        </div>
 
-                </div>
+    </div>
 
-            </div>
+
+    <!-- MOBILE -->
+    <div class="flex md:hidden flex-col items-center justify-center gap-4 text-center">
+
+        <div class="flex justify-start">
+            <a href="https://eventgarageparking.net/"
+               class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">
+                EGP
+            </a>
+        </div>
+
+        <div class="text-white font-bold tracking-[1px] text-[22px] leading-tight">
+            Event Garage Parking
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-1 text-[10px] text-white/75">
+
+            <a href="https://eventgarageparking.com/homeowner-faq/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="cursor-pointer hover:text-white transition">
+                Help
+            </a>
+
+            <span id="mobileUserDivider" class="opacity-40 hidden">|</span>
+
+            <span id="loggedInUserMobile"
+                  class="text-white/75 hidden">
+            </span>
+
+            <span class="opacity-40">|</span>
+
+            <a href="https://eventgarageparking.net/"
+               class="cursor-pointer hover:text-white transition">
+                Homeowner Portal
+            </a>
+
+        </div>
+
+    </div>
 
 </div>
 <!-- END HEADER -->
@@ -390,25 +406,135 @@
 
 </footer>
 <script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const token = localStorage.getItem("pmr_token");
+  console.log("TOKEN SENT:", token);
+
+  let username = localStorage.getItem("loggedInUser") || "Guest";
+
+  // Update username everywhere
+  function updateUserName(name) {
+    const desktopUser = document.getElementById("loggedInUserDesktop");
+    const mobileUser = document.getElementById("loggedInUserMobile");
+
+    if (desktopUser) {
+      desktopUser.textContent = name;
+      desktopUser.classList.remove("hidden");
+    }
+
+    if (mobileUser) {
+      mobileUser.textContent = name;
+      mobileUser.classList.remove("hidden");
+    }
+
+    const desktopDivider = document.getElementById("desktopUserDivider");
+    const mobileDivider = document.getElementById("mobileUserDivider");
+
+    if (desktopDivider) {
+      desktopDivider.classList.remove("hidden");
+    }
+
+    if (mobileDivider) {
+      mobileDivider.classList.remove("hidden");
+    }
+  }
+
+  if (token) {
+    try {
+      const response = await fetch(
+        "https://eventgarageparking.online/api/home-owners/login/",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json"
+          }
+        }
+      );
+
+      console.log("Profile Status:", response.status);
+
+      let data = null;
+
+      try {
+        data = await response.json();
+      } catch (err) {
+        console.warn("Profile response is not valid JSON.");
+      }
+
+      console.log("Home Owner Profile:", data);
+
+      if (response.ok && data) {
+        username =
+          data?.user?.username ||
+          data?.user?.name ||
+          data?.user?.full_name ||
+          data?.user?.first_name ||
+
+          data?.data?.user?.username ||
+          data?.data?.user?.name ||
+          data?.data?.user?.full_name ||
+          data?.data?.user?.first_name ||
+
+          data?.username ||
+          data?.name ||
+          data?.full_name ||
+          data?.first_name ||
+          data?.email ||
+
+          data?.data?.username ||
+          data?.data?.name ||
+          data?.data?.full_name ||
+          data?.data?.first_name ||
+
+          localStorage.getItem("loggedInUser") ||
+          "Guest";
+
+        localStorage.setItem("loggedInUser", username);
+      } else {
+        console.warn("Profile request failed.");
+        username = localStorage.getItem("loggedInUser") || "Guest";
+      }
+    } catch (error) {
+      console.error("User loading error:", error);
+      username = localStorage.getItem("loggedInUser") || "Guest";
+    }
+  }
+
+  console.log("FINAL USER NAME:", username);
+
+  updateUserName(username);
+
+  // =========================
+  // Sidebar
+  // =========================
+
   const sidebar = document.getElementById("sidebar");
   const overlay = document.getElementById("sidebarOverlay");
   const openBtn = document.getElementById("openSidebar");
   const closeBtn = document.getElementById("closeSidebar");
 
-  openBtn.addEventListener("click", () => {
-    sidebar.classList.remove("-translate-x-full");
-    overlay.classList.remove("hidden");
-  });
+  if (openBtn && sidebar && overlay) {
+    openBtn.addEventListener("click", () => {
+      sidebar.classList.remove("-translate-x-full");
+      overlay.classList.remove("hidden");
+    });
+  }
 
-  closeBtn.addEventListener("click", () => {
-    sidebar.classList.add("-translate-x-full");
-    overlay.classList.add("hidden");
-  });
+  if (closeBtn && sidebar && overlay) {
+    closeBtn.addEventListener("click", () => {
+      sidebar.classList.add("-translate-x-full");
+      overlay.classList.add("hidden");
+    });
+  }
 
-  overlay.addEventListener("click", () => {
-    sidebar.classList.add("-translate-x-full");
-    overlay.classList.add("hidden");
-  });
+  if (overlay && sidebar) {
+    overlay.addEventListener("click", () => {
+      sidebar.classList.add("-translate-x-full");
+      overlay.classList.add("hidden");
+    });
+  }
+});
 </script>
 <script src="https://js-na2.hsforms.net/forms/embed/245773740.js" defer></script>
 </body>

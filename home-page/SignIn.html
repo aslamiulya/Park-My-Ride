@@ -555,7 +555,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (response.ok) {
 
-          // Get token from possible locations
+          // Login API returns only { access, refresh } — no profile payload
           const token =
             data?.token ||
             data?.accessToken ||
@@ -568,33 +568,158 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("pmr_token", token);
           }
 
-          // Save only the user object if available
-          const user =
-            data?.user ||
-            data?.data?.user ||
-            data;
+          if (data?.refresh) {
+            localStorage.setItem("pmr_refresh", data.refresh);
+          }
 
-          localStorage.setItem("user", JSON.stringify(user));
+          function claimsFromJwt(jwt) {
+            try {
+              const part = String(jwt).split(".")[1];
+              if (!part) return null;
+              const json = atob(part.replace(/-/g, "+").replace(/_/g, "/"));
+              return JSON.parse(json);
+            } catch {
+              return null;
+            }
+          }
 
-          // Get username from many possible API structures
-          const username =
-            data?.user?.username ||
-            data?.user?.name ||
-            data?.user?.full_name ||
-            data?.user?.first_name ||
-            data?.data?.user?.username ||
-            data?.data?.user?.name ||
-            data?.data?.username ||
-            data?.username ||
-            data?.name ||
-            data?.full_name ||
-            data?.first_name ||
-            data?.email ||
-            "Guest";
+          function looksLikeEmail(value) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
+          }
 
-          localStorage.setItem("loggedInUser", username);
+          function displayNameFromOwner(owner) {
+            if (!owner || typeof owner !== "object") {
+              return null;
+            }
 
-          console.log("Saved User:", username);
+            const fullName = [owner.first_name, owner.last_name]
+              .filter(Boolean)
+              .join(" ")
+              .trim();
+            const userFullName = [owner.user?.first_name, owner.user?.last_name]
+              .filter(Boolean)
+              .join(" ")
+              .trim();
+            const candidates = [
+              owner.username,
+              owner.user?.username,
+              fullName,
+              userFullName,
+              owner.name,
+              owner.full_name,
+              owner.user?.name,
+              owner.user?.full_name
+            ].filter(Boolean);
+
+            return candidates.find((value) => !looksLikeEmail(value)) || null;
+          }
+
+          function hostIdFromOwner(owner) {
+            return (
+              owner?.host_id ||
+              owner?.home_owner_id ||
+              owner?.homeowner_id ||
+              owner?.id ||
+              null
+            );
+          }
+
+          async function fetchHomeOwnerProfile(accessToken, loginEmail) {
+            const claims = claimsFromJwt(accessToken) || {};
+            // Prefer host_id — user_id is often the Django auth user, not Host ID
+            let hostId =
+              claims.host_id ||
+              claims.home_owner_id ||
+              claims.homeowner_id ||
+              null;
+
+            const authHeaders = {
+              "X-Auth-Token": accessToken,
+              Accept: "application/json"
+            };
+
+            if (hostId != null) {
+              const byId = await fetch(
+                `https://eventgarageparking.online/api/home-owners/${hostId}/`,
+                { method: "GET", headers: authHeaders }
+              );
+              if (byId.ok) {
+                return await byId.json();
+              }
+            }
+
+            // Fallback: list homeowners and match login email
+            const listRes = await fetch(
+              "https://eventgarageparking.online/api/home-owners/",
+              { method: "GET", headers: authHeaders }
+            );
+            if (!listRes.ok) return null;
+
+            const listData = await listRes.json();
+            const owners = Array.isArray(listData)
+              ? listData
+              : listData?.results || listData?.data || [];
+
+            if (!owners.length) return null;
+
+            const emailLower = String(loginEmail || "").toLowerCase();
+            const matched =
+              owners.find(
+                (o) =>
+                  String(o?.email || "").toLowerCase() === emailLower ||
+                  String(o?.username || "").toLowerCase() === emailLower
+              ) || (owners.length === 1 ? owners[0] : null);
+
+            return matched || null;
+          }
+
+          let owner = null;
+          try {
+            owner = token
+              ? await fetchHomeOwnerProfile(token, email)
+              : null;
+          } catch (err) {
+            console.warn("Could not load homeowner profile after login:", err);
+          }
+
+          if (owner) {
+            localStorage.setItem("user", JSON.stringify(owner));
+            const homeOwnerId = hostIdFromOwner(owner);
+            if (homeOwnerId != null) {
+              localStorage.setItem("pmr_home_owner_id", String(homeOwnerId));
+            }
+            const username = displayNameFromOwner(owner);
+            if (username) {
+              localStorage.setItem("loggedInUser", username);
+            } else {
+              localStorage.removeItem("loggedInUser");
+            }
+            console.log("Saved User:", username);
+            console.log("Saved Home Owner ID:", homeOwnerId);
+          } else {
+            const claims = claimsFromJwt(token) || {};
+            const hostId =
+              claims.host_id ||
+              claims.home_owner_id ||
+              claims.homeowner_id ||
+              null;
+            if (hostId != null) {
+              localStorage.setItem("pmr_home_owner_id", String(hostId));
+            }
+            localStorage.setItem(
+              "user",
+              JSON.stringify({ email, host_id: hostId })
+            );
+
+            const claimName = displayNameFromOwner(claims);
+            if (claimName) {
+              localStorage.setItem("loggedInUser", claimName);
+            } else {
+              localStorage.removeItem("loggedInUser");
+            }
+            console.warn("Profile not loaded; name will load on listing page.");
+          }
+
           console.log("Saved Token:", token);
 
           showStatus("Login successful! Redirecting...", "success");

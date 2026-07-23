@@ -408,22 +408,63 @@
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
   const token = localStorage.getItem("pmr_token");
-  console.log("TOKEN SENT:", token);
+  const homeOwnerId = localStorage.getItem("pmr_home_owner_id");
 
-  let username = localStorage.getItem("loggedInUser") || "Guest";
+  function looksLikeEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
+  }
 
-  // Update username everywhere
+  function displayNameFromOwner(owner) {
+    if (!owner || typeof owner !== "object") {
+      return null;
+    }
+
+    const fullName = [owner.first_name, owner.last_name]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+    const userFullName = [owner.user?.first_name, owner.user?.last_name]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+    const candidates = [
+      owner.username,
+      owner.user?.username,
+      fullName,
+      userFullName,
+      owner.name,
+      owner.full_name,
+      owner.user?.name,
+      owner.user?.full_name
+    ].filter(Boolean);
+
+    return candidates.find((value) => !looksLikeEmail(value)) || null;
+  }
+
+  function nameFromStoredUser() {
+    try {
+      const raw = localStorage.getItem("user");
+      if (!raw) return null;
+      return displayNameFromOwner(JSON.parse(raw));
+    } catch {
+      return null;
+    }
+  }
+
   function updateUserName(name) {
+    const displayName =
+      name && !looksLikeEmail(name) ? name : "Guest";
+
     const desktopUser = document.getElementById("loggedInUserDesktop");
     const mobileUser = document.getElementById("loggedInUserMobile");
 
     if (desktopUser) {
-      desktopUser.textContent = name;
+      desktopUser.textContent = displayName;
       desktopUser.classList.remove("hidden");
     }
 
     if (mobileUser) {
-      mobileUser.textContent = name;
+      mobileUser.textContent = displayName;
       mobileUser.classList.remove("hidden");
     }
 
@@ -437,72 +478,86 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (mobileDivider) {
       mobileDivider.classList.remove("hidden");
     }
+
+    if (displayName !== "Guest") {
+      localStorage.setItem("loggedInUser", displayName);
+    }
+  }
+
+  let username = nameFromStoredUser();
+  const storedLoggedIn = localStorage.getItem("loggedInUser");
+  if (!username && storedLoggedIn && !looksLikeEmail(storedLoggedIn)) {
+    username = storedLoggedIn;
   }
 
   if (token) {
     try {
-      const response = await fetch(
-        "https://eventgarageparking.online/api/home-owners/login/",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json"
-          }
+      const authHeaders = {
+        "X-Auth-Token": token,
+        Accept: "application/json"
+      };
+
+      let owner = null;
+
+      if (homeOwnerId) {
+        const response = await fetch(
+          `https://eventgarageparking.online/api/home-owners/${homeOwnerId}/`,
+          { method: "GET", headers: authHeaders }
+        );
+
+        if (response.ok) {
+          owner = await response.json();
+        } else {
+          console.warn("Profile request failed:", response.status);
         }
-      );
-
-      console.log("Profile Status:", response.status);
-
-      let data = null;
-
-      try {
-        data = await response.json();
-      } catch (err) {
-        console.warn("Profile response is not valid JSON.");
       }
 
-      console.log("Home Owner Profile:", data);
+      if (!owner) {
+        const listRes = await fetch(
+          "https://eventgarageparking.online/api/home-owners/",
+          { method: "GET", headers: authHeaders }
+        );
 
-      if (response.ok && data) {
-        username =
-          data?.user?.username ||
-          data?.user?.name ||
-          data?.user?.full_name ||
-          data?.user?.first_name ||
+        if (listRes.ok) {
+          const listData = await listRes.json();
+          const owners = Array.isArray(listData)
+            ? listData
+            : listData?.results || listData?.data || [];
 
-          data?.data?.user?.username ||
-          data?.data?.user?.name ||
-          data?.data?.user?.full_name ||
-          data?.data?.user?.first_name ||
+          if (owners.length === 1) {
+            owner = owners[0];
+          } else if (homeOwnerId) {
+            owner = owners.find(
+              (item) =>
+                String(item?.id) === String(homeOwnerId) ||
+                String(item?.host_id) === String(homeOwnerId)
+            ) || null;
+          }
+        }
+      }
 
-          data?.username ||
-          data?.name ||
-          data?.full_name ||
-          data?.first_name ||
-          data?.email ||
+      if (owner) {
+        localStorage.setItem("user", JSON.stringify(owner));
 
-          data?.data?.username ||
-          data?.data?.name ||
-          data?.data?.full_name ||
-          data?.data?.first_name ||
+        const ownerId =
+          owner.host_id ||
+          owner.home_owner_id ||
+          owner.homeowner_id ||
+          owner.id ||
+          null;
 
-          localStorage.getItem("loggedInUser") ||
-          "Guest";
+        if (ownerId != null) {
+          localStorage.setItem("pmr_home_owner_id", String(ownerId));
+        }
 
-        localStorage.setItem("loggedInUser", username);
-      } else {
-        console.warn("Profile request failed.");
-        username = localStorage.getItem("loggedInUser") || "Guest";
+        username = displayNameFromOwner(owner) || username;
       }
     } catch (error) {
       console.error("User loading error:", error);
-      username = localStorage.getItem("loggedInUser") || "Guest";
     }
   }
 
-  console.log("FINAL USER NAME:", username);
-
+  console.log("FINAL USER NAME:", username || "Guest");
   updateUserName(username);
 
   // =========================

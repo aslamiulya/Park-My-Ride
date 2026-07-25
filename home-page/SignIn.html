@@ -291,11 +291,11 @@
 
               </label>
 
-              <button
-                type="button"
+              <a
+                href="passwordReset.html"
                 class="text-[15px] text-[#007db5] hover:underline">
                 Forgot password?
-              </button>
+              </a>
 
             </div>
 
@@ -583,35 +583,32 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           }
 
-          function looksLikeEmail(value) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
+          // Header: username only (never full email). Fallback = part before @
+          function toDisplayUsername(...candidates) {
+            for (const raw of candidates) {
+              if (raw == null) continue;
+              let name = String(raw).trim();
+              if (!name) continue;
+              if (name.includes("@")) {
+                name = name.split("@")[0].trim();
+              }
+              if (name) return name;
+            }
+            return "";
           }
 
-          function displayNameFromOwner(owner) {
+          function displayNameFromOwner(owner, loginEmail) {
             if (!owner || typeof owner !== "object") {
-              return null;
+              return toDisplayUsername(loginEmail);
             }
-
-            const fullName = [owner.first_name, owner.last_name]
-              .filter(Boolean)
-              .join(" ")
-              .trim();
-            const userFullName = [owner.user?.first_name, owner.user?.last_name]
-              .filter(Boolean)
-              .join(" ")
-              .trim();
-            const candidates = [
+            return toDisplayUsername(
               owner.username,
               owner.user?.username,
-              fullName,
-              userFullName,
-              owner.name,
-              owner.full_name,
-              owner.user?.name,
-              owner.user?.full_name
-            ].filter(Boolean);
-
-            return candidates.find((value) => !looksLikeEmail(value)) || null;
+              [owner.first_name, owner.last_name].filter(Boolean).join(" "),
+              owner.email,
+              owner.user?.email,
+              loginEmail
+            );
           }
 
           function hostIdFromOwner(owner) {
@@ -688,14 +685,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (homeOwnerId != null) {
               localStorage.setItem("pmr_home_owner_id", String(homeOwnerId));
             }
-            const username = displayNameFromOwner(owner);
-            if (username) {
-              localStorage.setItem("loggedInUser", username);
-            } else {
-              localStorage.removeItem("loggedInUser");
-            }
-            console.log("Saved User:", username);
+            const username = displayNameFromOwner(owner, email);
+            localStorage.setItem("loggedInUser", username || toDisplayUsername(email));
+            console.log("Saved User:", localStorage.getItem("loggedInUser"));
             console.log("Saved Home Owner ID:", homeOwnerId);
+            console.log("Home Owner Profile:", owner);
           } else {
             const claims = claimsFromJwt(token) || {};
             const hostId =
@@ -710,14 +704,9 @@ document.addEventListener("DOMContentLoaded", () => {
               "user",
               JSON.stringify({ email, host_id: hostId })
             );
-
-            const claimName = displayNameFromOwner(claims);
-            if (claimName) {
-              localStorage.setItem("loggedInUser", claimName);
-            } else {
-              localStorage.removeItem("loggedInUser");
-            }
-            console.warn("Profile not loaded; name will load on listing page.");
+            // Still show a short name from the login email (e.g. Robb)
+            localStorage.setItem("loggedInUser", toDisplayUsername(email));
+            console.warn("Profile not loaded; using email local-part as username.");
           }
 
           console.log("Saved Token:", token);

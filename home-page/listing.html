@@ -192,77 +192,80 @@
 
     </div>
 
-    <!-- LISTING CARD -->
-    <div class="border border-[#e6e6e6] rounded-[12px] p-4 bg-white shadow-sm">
+    <!-- LISTING CARDS — static preview until logged in, then API fills real data -->
+    <div id="listingsList" class="space-y-4">
+        <div class="border border-[#e6e6e6] rounded-[12px] p-4 bg-white shadow-sm">
 
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
 
-            <div class="flex items-center gap-2 text-[13px] min-w-0">
-                📍
-                <span class="truncate">845 J St, Apt 3B, Sacramento, CA 95814</span>
+                <div class="flex items-center gap-2 text-[13px] min-w-0">
+                    📍
+                    <span class="truncate">845 J St, Apt 3B, Sacramento, CA 95814</span>
+                </div>
+
+                <div class="flex justify-end items-center gap-2">
+                    <span class="text-[12px] text-gray-500">Active</span>
+
+                    <div class="w-[36px] h-[18px] bg-[#28a745] rounded-full relative flex-shrink-0">
+                        <div class="w-[12px] h-[12px] bg-white rounded-full absolute right-[3px] top-[3px]"></div>
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="flex justify-end items-center gap-2">
-                <span class="text-[12px] text-gray-500">Active</span>
+            <div class="py-3 lg:py-4">
+                <hr class="border-black/10">
+            </div>
 
-                <div class="w-[36px] h-[18px] bg-[#28a745] rounded-full relative flex-shrink-0">
-                    <div class="w-[12px] h-[12px] bg-white rounded-full absolute right-[3px] top-[3px]"></div>
+            <div class="flex justify-between text-center w-full">
+
+                <div class="flex-1">
+                    <div class="text-[11px] text-gray-500">Driveway</div>
+                    <div class="text-[14px] font-medium">3</div>
+                </div>
+
+                <div class="flex-1">
+                    <div class="text-[11px] text-gray-500">Active</div>
+                    <div class="text-[14px] font-medium">2</div>
+                </div>
+
+                <div class="flex-1">
+                    <div class="text-[11px] text-gray-500">Earnings</div>
+                    <div class="text-[14px] font-bold text-[#28a745]">$1,200</div>
                 </div>
 
             </div>
 
         </div>
-
-        <!-- FIXED HR -->
-        <div class="py-3 lg:py-4">
-            <hr class="border-black/10">
-        </div>
-
-        <div class="flex justify-between text-center w-full">
-
-            <div class="flex-1">
-                <div class="text-[11px] text-gray-500">Driveway</div>
-                <div class="text-[14px] font-medium">3</div>
-            </div>
-
-            <div class="flex-1">
-                <div class="text-[11px] text-gray-500">Active</div>
-                <div class="text-[14px] font-medium">2</div>
-            </div>
-
-            <div class="flex-1">
-                <div class="text-[11px] text-gray-500">Earnings</div>
-                <div class="text-[14px] font-bold text-[#28a745]">$1,200</div>
-            </div>
-
-        </div>
-
     </div>
 
-    <!-- UPCOMING -->
+    <!-- UPCOMING — static preview until logged in -->
     <div class="mt-8 text-[18px] font-bold text-[#007DB5] mb-3">
         Upcoming Events
     </div>
 
-    <div class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white">
+    <div id="upcomingEventsList" class="space-y-4">
+        <div class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white">
 
-        <div class="font-bold text-[16px]">
-            <i class="fa-solid fa-calendar"></i> Padres Vs Dodgers
+            <div class="font-bold text-[16px]">
+                <i class="fa-solid fa-calendar"></i> Padres Vs Dodgers
+            </div>
+
+            <div class="text-[12px] text-gray-500 mt-1">Saturday, Mar 21 • 6:40 PM</div>
+
+            <div class="mt-4 text-[13px]">Reserved: 2/3 spots</div>
+
+            <div class="w-full h-[6px] bg-gray-200 rounded-full overflow-hidden mt-3">
+                <div class="h-full w-[60%] bg-[#007DB5]"></div>
+            </div>
+
+            <div class="border-t border-black/10 mt-4 pt-4 flex justify-between text-[13px]">
+                <span class="text-gray-500">Estimated Earnings</span>
+                <span class="font-bold">$190.00</span>
+            </div>
+
         </div>
-
-        <div class="text-[12px] text-gray-500 mt-1">Saturday, Mar 21 • 6:40 PM</div>
-
-        <div class="mt-4 text-[13px]">Reserved: 2/3 spots</div>
-
-        <div class="w-full h-[6px] bg-gray-200 rounded-full overflow-hidden mt-3">
-            <div class="h-full w-[60%] bg-[#007DB5]"></div>
-        </div>
-
-        <div class="border-t border-black/10 mt-4 pt-4 flex justify-between text-[13px]">
-            <span class="text-gray-500">Estimated Earnings</span>
-            <span class="font-bold">$190.00</span>
-        </div>
-
     </div>
 
 </main>
@@ -405,193 +408,565 @@
   </div>
 
 </footer>
+<script src="js/common.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", async () => {
-  const token = localStorage.getItem("pmr_token");
-  const homeOwnerId = localStorage.getItem("pmr_home_owner_id");
+const EVENTS_API = "https://eventgarageparking.online/api/events/";
+const GARAGES_API = "https://eventgarageparking.online/api/home-garages/";
+const RESERVATIONS_API = "https://eventgarageparking.online/api/reservations/";
+const HOME_OWNERS_API = "https://eventgarageparking.online/api/home-owners/";
+const FETCH_TIMEOUT_MS = 8000;
 
-  function looksLikeEmail(value) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
+function getAuthHeaders() {
+  const token = localStorage.getItem("pmr_token") || "";
+  const headers = { Accept: "application/json" };
+  if (token) headers["X-Auth-Token"] = token;
+  return { token, headers };
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (window.EGP && typeof EGP.initPortalPage === "function") {
+    EGP.initPortalPage().catch((err) => console.error("Portal init error:", err));
   }
-
-  function displayNameFromOwner(owner) {
-    if (!owner || typeof owner !== "object") {
-      return null;
-    }
-
-    const fullName = [owner.first_name, owner.last_name]
-      .filter(Boolean)
-      .join(" ")
-      .trim();
-    const userFullName = [owner.user?.first_name, owner.user?.last_name]
-      .filter(Boolean)
-      .join(" ")
-      .trim();
-    const candidates = [
-      owner.username,
-      owner.user?.username,
-      fullName,
-      userFullName,
-      owner.name,
-      owner.full_name,
-      owner.user?.name,
-      owner.user?.full_name
-    ].filter(Boolean);
-
-    return candidates.find((value) => !looksLikeEmail(value)) || null;
-  }
-
-  function nameFromStoredUser() {
-    try {
-      const raw = localStorage.getItem("user");
-      if (!raw) return null;
-      return displayNameFromOwner(JSON.parse(raw));
-    } catch {
-      return null;
-    }
-  }
-
-  function updateUserName(name) {
-    const displayName =
-      name && !looksLikeEmail(name) ? name : "Guest";
-
-    const desktopUser = document.getElementById("loggedInUserDesktop");
-    const mobileUser = document.getElementById("loggedInUserMobile");
-
-    if (desktopUser) {
-      desktopUser.textContent = displayName;
-      desktopUser.classList.remove("hidden");
-    }
-
-    if (mobileUser) {
-      mobileUser.textContent = displayName;
-      mobileUser.classList.remove("hidden");
-    }
-
-    const desktopDivider = document.getElementById("desktopUserDivider");
-    const mobileDivider = document.getElementById("mobileUserDivider");
-
-    if (desktopDivider) {
-      desktopDivider.classList.remove("hidden");
-    }
-
-    if (mobileDivider) {
-      mobileDivider.classList.remove("hidden");
-    }
-
-    if (displayName !== "Guest") {
-      localStorage.setItem("loggedInUser", displayName);
-    }
-  }
-
-  let username = nameFromStoredUser();
-  const storedLoggedIn = localStorage.getItem("loggedInUser");
-  if (!username && storedLoggedIn && !looksLikeEmail(storedLoggedIn)) {
-    username = storedLoggedIn;
-  }
-
-  if (token) {
-    try {
-      const authHeaders = {
-        "X-Auth-Token": token,
-        Accept: "application/json"
-      };
-
-      let owner = null;
-
-      if (homeOwnerId) {
-        const response = await fetch(
-          `https://eventgarageparking.online/api/home-owners/${homeOwnerId}/`,
-          { method: "GET", headers: authHeaders }
-        );
-
-        if (response.ok) {
-          owner = await response.json();
-        } else {
-          console.warn("Profile request failed:", response.status);
-        }
-      }
-
-      if (!owner) {
-        const listRes = await fetch(
-          "https://eventgarageparking.online/api/home-owners/",
-          { method: "GET", headers: authHeaders }
-        );
-
-        if (listRes.ok) {
-          const listData = await listRes.json();
-          const owners = Array.isArray(listData)
-            ? listData
-            : listData?.results || listData?.data || [];
-
-          if (owners.length === 1) {
-            owner = owners[0];
-          } else if (homeOwnerId) {
-            owner = owners.find(
-              (item) =>
-                String(item?.id) === String(homeOwnerId) ||
-                String(item?.host_id) === String(homeOwnerId)
-            ) || null;
-          }
-        }
-      }
-
-      if (owner) {
-        localStorage.setItem("user", JSON.stringify(owner));
-
-        const ownerId =
-          owner.host_id ||
-          owner.home_owner_id ||
-          owner.homeowner_id ||
-          owner.id ||
-          null;
-
-        if (ownerId != null) {
-          localStorage.setItem("pmr_home_owner_id", String(ownerId));
-        }
-
-        username = displayNameFromOwner(owner) || username;
-      }
-    } catch (error) {
-      console.error("User loading error:", error);
-    }
-  }
-
-  console.log("FINAL USER NAME:", username || "Guest");
-  updateUserName(username);
-
-  // =========================
-  // Sidebar
-  // =========================
-
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("sidebarOverlay");
-  const openBtn = document.getElementById("openSidebar");
-  const closeBtn = document.getElementById("closeSidebar");
-
-  if (openBtn && sidebar && overlay) {
-    openBtn.addEventListener("click", () => {
-      sidebar.classList.remove("-translate-x-full");
-      overlay.classList.remove("hidden");
-    });
-  }
-
-  if (closeBtn && sidebar && overlay) {
-    closeBtn.addEventListener("click", () => {
-      sidebar.classList.add("-translate-x-full");
-      overlay.classList.add("hidden");
-    });
-  }
-
-  if (overlay && sidebar) {
-    overlay.addEventListener("click", () => {
-      sidebar.classList.add("-translate-x-full");
-      overlay.classList.add("hidden");
-    });
-  }
+  loadListingPage();
 });
+
+function getHomeOwnerId(token) {
+  const saved = localStorage.getItem("pmr_home_owner_id");
+  if (saved) return String(saved);
+  try {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const id =
+      user?.host_id ||
+      user?.home_owner_id ||
+      user?.homeowner_id ||
+      user?.id ||
+      null;
+    if (id != null) return String(id);
+  } catch {
+    /* ignore */
+  }
+  try {
+    const part = String(token || "").split(".")[1];
+    if (!part) return null;
+    const claims = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/")));
+    const id =
+      claims.host_id || claims.home_owner_id || claims.homeowner_id || null;
+    return id != null ? String(id) : null;
+  } catch {
+    return null;
+  }
+}
+
+function listFromResponse(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.results)) return data.results;
+  if (Array.isArray(data?.data)) return data.data;
+  return [];
+}
+
+async function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function formatMoney(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num)) return "$0.00";
+  return num.toLocaleString("en-US", { style: "currency", currency: "USD" });
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function eventStartDate(ev) {
+  const raw =
+    ev?.event_start_local_at ||
+    ev?.date ||
+    (ev?.event_start_local_date
+      ? `${ev.event_start_local_date}T${ev.event_start_local_time || "00:00:00"}`
+      : null);
+  if (!raw) return null;
+  const d = new Date(raw);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function formatEventWhen(ev) {
+  const d = eventStartDate(ev);
+  if (!d) {
+    if (ev?.event_start_local_date) {
+      return `${ev.event_start_local_date}${
+        ev.event_start_local_time ? ` • ${ev.event_start_local_time}` : ""
+      }`;
+    }
+    return "Date TBD";
+  }
+  const datePart = d.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  });
+  const timePart = d.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  return `${datePart} • ${timePart}`;
+}
+
+function garageListFromResponse(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.home_garages)) return data.home_garages;
+  if (Array.isArray(data?.garages)) return data.garages;
+  if (Array.isArray(data?.results)) return data.results;
+  return [];
+}
+
+async function fetchHostGarages(headers) {
+  const res = await fetchWithTimeout(GARAGES_API, {
+    method: "GET",
+    headers,
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(
+      `Garages failed (${res.status})${body ? ": " + body.slice(0, 120) : ""}`
+    );
+  }
+  return garageListFromResponse(await res.json());
+}
+
+async function pullEventPages(baseUrl, collected, seen) {
+  let page = 1;
+  let guard = 0;
+  while (guard < 5) {
+    guard += 1;
+    const url = `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}page=${page}&page_size=50`;
+    const res = await fetchWithTimeout(url, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) break;
+    const data = await res.json();
+    const batch = listFromResponse(data);
+    for (const ev of batch) {
+      const id = ev?.event_id;
+      if (id == null || seen.has(id)) continue;
+      seen.add(id);
+      collected.push(ev);
+    }
+    if (!data?.next || !batch.length) break;
+    page += 1;
+  }
+}
+
+async function fetchEventsForHost(garages, reservations) {
+  const stadiumIds = new Set(
+    garages.map((g) => g.stadium_id).filter((id) => id != null && id !== "")
+  );
+  const venueIds = new Set(
+    garages.map((g) => g.venue_id).filter((id) => id != null && id !== "")
+  );
+  const cities = [
+    ...new Set(
+      garages.map((g) => String(g.city || "").trim()).filter(Boolean)
+    ),
+  ];
+  const states = [
+    ...new Set(
+      garages
+        .map((g) => String(g.state || "").trim().toUpperCase())
+        .filter((s) => s.length >= 2)
+    ),
+  ];
+
+  const collected = [];
+  const seen = new Set();
+
+  if (states.length) {
+    for (const state of states) {
+      const code = state.length === 2 ? state : state.slice(0, 2);
+      await pullEventPages(
+        `${EVENTS_API}?stateCode=${encodeURIComponent(code)}`,
+        collected,
+        seen
+      );
+    }
+  }
+  if (cities.length) {
+    for (const city of cities) {
+      await pullEventPages(
+        `${EVENTS_API}?city=${encodeURIComponent(city)}`,
+        collected,
+        seen
+      );
+    }
+  }
+  if (!collected.length) {
+    await pullEventPages(EVENTS_API, collected, seen);
+  }
+
+  // Pull events already tied via this host's reservations
+  const reservedEventIds = [
+    ...new Set(
+      (reservations || [])
+        .map((r) => r?.event_id)
+        .filter((id) => id != null && id !== "")
+    ),
+  ];
+  for (const eid of reservedEventIds.slice(0, 20)) {
+    if (seen.has(eid)) continue;
+    try {
+      const res = await fetchWithTimeout(`${EVENTS_API}${eid}/`, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
+      if (!res.ok) continue;
+      const ev = await res.json();
+      if (ev?.event_id != null) {
+        seen.add(ev.event_id);
+        collected.push(ev);
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+
+  const hasStadiumOrVenue = stadiumIds.size > 0 || venueIds.size > 0;
+
+  return collected.filter((ev) => {
+    const sid = ev?.stadium_id;
+    const vid = ev?.venue_id;
+    if (sid != null && stadiumIds.has(sid)) return true;
+    if (vid != null && venueIds.has(vid)) return true;
+    if (reservedEventIds.some((id) => String(id) === String(ev?.event_id))) {
+      return true;
+    }
+    // If garage has no stadium/venue link, associate by city keyword in venue_name
+    if (!hasStadiumOrVenue && cities.length) {
+      const hay = `${ev?.venue_name || ""} ${ev?.name || ""}`.toLowerCase();
+      return cities.some((c) => hay.includes(String(c).toLowerCase()));
+    }
+    return false;
+  });
+}
+
+async function fetchOwnerName(headers, hostId) {
+  // local cache first
+  let name = getOwnerDisplayName();
+  if (name && name !== "Homeowner") {
+    // still refresh from API when possible
+  }
+
+  if (!hostId) return name || "";
+
+  try {
+    const res = await fetchWithTimeout(`${HOME_OWNERS_API}${hostId}/`, {
+      method: "GET",
+      headers,
+    });
+    if (!res.ok) return name || "";
+    const owner = await res.json();
+    const full = [owner.first_name, owner.last_name]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+    const resolved =
+      full ||
+      String(owner.username || "").trim() ||
+      String(owner.email || "").split("@")[0] ||
+      name ||
+      "";
+    if (resolved) {
+      let prev = {};
+      try {
+        prev = JSON.parse(localStorage.getItem("user") || "{}") || {};
+      } catch {
+        prev = {};
+      }
+      localStorage.setItem("user", JSON.stringify({ ...prev, ...owner }));
+      localStorage.setItem("loggedInUser", resolved);
+    }
+    return resolved;
+  } catch {
+    return name || "";
+  }
+}
+
+function setHeaderUserName(name) {
+  if (!name) return;
+  if (typeof EGP !== "undefined" && EGP.updateUserName) {
+    EGP.updateUserName(name);
+    return;
+  }
+  const desktop = document.getElementById("loggedInUserDesktop");
+  const mobile = document.getElementById("loggedInUserMobile");
+  const desktopDivider = document.getElementById("desktopUserDivider");
+  const mobileDivider = document.getElementById("mobileUserDivider");
+  if (desktop) {
+    desktop.textContent = name;
+    desktop.classList.remove("hidden");
+  }
+  if (mobile) {
+    mobile.textContent = name;
+    mobile.classList.remove("hidden");
+  }
+  if (desktopDivider) desktopDivider.classList.remove("hidden");
+  if (mobileDivider) mobileDivider.classList.remove("hidden");
+}
+
+async function fetchHostReservations(headers, hostId) {
+  try {
+    const res = await fetchWithTimeout(RESERVATIONS_API, {
+      method: "GET",
+      headers,
+    });
+    if (!res.ok) return [];
+    return listFromResponse(await res.json()).filter(
+      (r) => r && String(r.host_id) === String(hostId)
+    );
+  } catch {
+    return [];
+  }
+}
+
+function pickHostGarage(garages, ev) {
+  return (
+    garages.find((g) => g.stadium_id != null && g.stadium_id === ev.stadium_id) ||
+    garages.find((g) => g.venue_id != null && g.venue_id === ev.venue_id) ||
+    garages[0] ||
+    null
+  );
+}
+
+function formatGarageAddress(g) {
+  const parts = [g.address, g.city, g.state, g.zip_code]
+    .map((p) => String(p || "").trim())
+    .filter(Boolean);
+  return parts.length ? parts.join(", ") : "Address not set";
+}
+
+function isGarageActive(g) {
+  const avail = String(g?.general_availability || "").toLowerCase();
+  if (["inactive", "unavailable", "off", "false", "0"].includes(avail)) {
+    return false;
+  }
+  if (g?.is_active === false) return false;
+  return true;
+}
+
+function countsTowardEarnings(r) {
+  const status = String(r?.status || "").toLowerCase();
+  return !["cancelled", "canceled", "refunded", "failed"].includes(status);
+}
+
+function totalEarningsFromReservations(reservations) {
+  return reservations.reduce((sum, r) => {
+    if (!countsTowardEarnings(r)) return sum;
+    const amount = Number(r.base_price);
+    return sum + (Number.isFinite(amount) ? amount : 0);
+  }, 0);
+}
+
+function getOwnerDisplayName() {
+  try {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const full = [user.first_name, user.last_name].filter(Boolean).join(" ").trim();
+    if (full) return full;
+    if (user.username) return String(user.username).trim();
+    if (user.email) return String(user.email).split("@")[0];
+  } catch {
+    /* ignore */
+  }
+  const cached = localStorage.getItem("loggedInUser");
+  return cached ? String(cached).trim() : "";
+}
+
+function listingCardHtml(g, totalEarnings, ownerName) {
+  const active = isGarageActive(g);
+  const driveway = Number(g.total_parking_spots);
+  const activeSpots = Number(g.spots_available);
+  const toggleBg = active ? "#28a745" : "#9ca3af";
+  const knobSide = active ? "right-[3px]" : "left-[3px]";
+  const name = ownerName || "Homeowner";
+
+  return `
+    <div class="border border-[#e6e6e6] rounded-[12px] p-4 bg-white shadow-sm">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+        <div class="min-w-0">
+          <div class="text-[15px] font-bold text-[#222] truncate">${escapeHtml(name)}</div>
+          <div class="flex items-center gap-2 text-[13px] text-gray-600 mt-1 min-w-0">
+            📍
+            <span class="truncate">${escapeHtml(formatGarageAddress(g))}</span>
+          </div>
+        </div>
+        <div class="flex justify-end items-center gap-2">
+          <span class="text-[12px] text-gray-500">${active ? "Active" : "Inactive"}</span>
+          <div class="w-[36px] h-[18px] rounded-full relative flex-shrink-0" style="background:${toggleBg}">
+            <div class="w-[12px] h-[12px] bg-white rounded-full absolute ${knobSide} top-[3px]"></div>
+          </div>
+        </div>
+      </div>
+      <div class="py-3 lg:py-4">
+        <hr class="border-black/10">
+      </div>
+      <div class="flex justify-between text-center w-full">
+        <div class="flex-1">
+          <div class="text-[11px] text-gray-500">Driveway</div>
+          <div class="text-[14px] font-medium">${Number.isFinite(driveway) ? driveway : "—"}</div>
+        </div>
+        <div class="flex-1">
+          <div class="text-[11px] text-gray-500">Active</div>
+          <div class="text-[14px] font-medium">${Number.isFinite(activeSpots) ? activeSpots : "—"}</div>
+        </div>
+        <div class="flex-1">
+          <div class="text-[11px] text-gray-500">Total Earnings</div>
+          <div class="text-[14px] font-bold text-[#28a745]">${formatMoney(totalEarnings)}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function eventCardHtml(ev, garage, reservedCount) {
+  const totalSpots = Number(garage?.total_parking_spots) || 0;
+  const reserved = Math.max(0, Number(reservedCount) || 0);
+  const denom = totalSpots > 0 ? totalSpots : Math.max(reserved, 1);
+  const pct = Math.min(100, Math.round((reserved / denom) * 100));
+  const price = Number(garage?.base_price);
+  const estimated = Number.isFinite(price) ? price * reserved : 0;
+  const title = ev?.name || "Upcoming Event";
+
+  return `
+    <div class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white">
+      <div class="font-bold text-[16px]">
+        <i class="fa-solid fa-calendar"></i> ${escapeHtml(title)}
+      </div>
+      <div class="text-[12px] text-gray-500 mt-1">${escapeHtml(formatEventWhen(ev))}</div>
+      ${
+        ev?.venue_name
+          ? `<div class="text-[12px] text-gray-400 mt-1">${escapeHtml(ev.venue_name)}</div>`
+          : ""
+      }
+      <div class="mt-4 text-[13px]">Reserved: ${reserved}/${totalSpots || "—"} spots</div>
+      <div class="w-full h-[6px] bg-gray-200 rounded-full overflow-hidden mt-3">
+        <div class="h-full bg-[#007DB5]" style="width:${pct}%"></div>
+      </div>
+      <div class="border-t border-black/10 mt-4 pt-4 flex justify-between text-[13px]">
+        <span class="text-gray-500">Estimated Earnings</span>
+        <span class="font-bold">${formatMoney(estimated)}</span>
+      </div>
+    </div>`;
+}
+
+function showMsg(el, text, isError) {
+  const color = isError ? "text-red-600" : "text-gray-500";
+  el.innerHTML = `<div class="border border-[#e6e6e6] rounded-[12px] p-4 bg-white shadow-sm"><p class="text-[13px] ${color}">${escapeHtml(
+    text
+  )}</p></div>`;
+}
+
+async function loadListingPage() {
+  const listingsEl = document.getElementById("listingsList");
+  const eventsEl = document.getElementById("upcomingEventsList");
+  const { token, headers } = getAuthHeaders();
+
+  // Not logged in → keep the static HTML preview as-is
+  if (!token) return;
+
+  // hostId is optional for garages (API returns the logged-in owner's garages)
+  let hostId = getHomeOwnerId(token);
+
+  try {
+    // 1) Home Garage API — Your Listings (auth-scoped)
+    const garagesRaw = await fetchHostGarages(headers);
+
+    // Prefer host id from garage rows if localStorage/JWT didn't have it
+    if (!hostId && garagesRaw[0]?.host_id != null) {
+      hostId = String(garagesRaw[0].host_id);
+      localStorage.setItem("pmr_home_owner_id", hostId);
+    }
+
+    const hostGarages = hostId
+      ? garagesRaw.filter(
+          (g) => g.host_id == null || String(g.host_id) === String(hostId)
+        )
+      : garagesRaw;
+
+    // 2) Reservation API — Total Earnings to date
+    const reservations = hostId
+      ? await fetchHostReservations(headers, hostId)
+      : [];
+    const totalEarnings = totalEarningsFromReservations(reservations);
+
+    // Owner name from Home Owner API (+ header)
+    const ownerName = await fetchOwnerName(headers, hostId);
+    setHeaderUserName(ownerName);
+
+    if (!hostGarages.length) {
+      showMsg(
+        listingsEl,
+        "No garage listings found for this account yet."
+      );
+    } else {
+      listingsEl.innerHTML = hostGarages
+        .map((g) => listingCardHtml(g, totalEarnings, ownerName))
+        .join("");
+    }
+
+    // 3) Event API — Upcoming Events for this homeowner
+    if (!hostGarages.length) {
+      showMsg(eventsEl, "No upcoming events for your listing right now.");
+      return;
+    }
+
+    const matchedEvents = await fetchEventsForHost(hostGarages, reservations);
+    const now = Date.now();
+    const upcoming = matchedEvents
+      .filter((ev) => {
+        if (ev?.is_active === false) return false;
+        const d = eventStartDate(ev);
+        return !d || d.getTime() >= now - 6 * 60 * 60 * 1000;
+      })
+      .sort((a, b) => {
+        const da = eventStartDate(a)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const db = eventStartDate(b)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        return da - db;
+      });
+
+    if (!upcoming.length) {
+      showMsg(eventsEl, "No upcoming events for your listing right now.");
+      return;
+    }
+
+    const reservedByEvent = {};
+    for (const r of reservations) {
+      const eid = r?.event_id;
+      if (eid == null || !countsTowardEarnings(r)) continue;
+      reservedByEvent[eid] = (reservedByEvent[eid] || 0) + 1;
+    }
+
+    eventsEl.innerHTML = upcoming
+      .slice(0, 10)
+      .map((ev) => {
+        const garage = pickHostGarage(hostGarages, ev);
+        return eventCardHtml(ev, garage, reservedByEvent[ev.event_id] || 0);
+      })
+      .join("");
+  } catch (err) {
+    console.error("Listing page load error:", err);
+    showMsg(listingsEl, "Could not load listing data.", true);
+    showMsg(eventsEl, "Could not load upcoming events.", true);
+  }
+}
 </script>
 <script src="https://js-na2.hsforms.net/forms/embed/245773740.js" defer></script>
 </body>
 </html>
-

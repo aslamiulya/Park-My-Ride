@@ -53,7 +53,11 @@
                          Help
                      </a>
 
-                  
+                      <span id="desktopUserDivider" class="opacity-40 hidden">|</span>
+
+                      <span id="loggedInUserDesktop"
+                            class="text-white/75 hidden">
+                      </span>
 
                       <span class="opacity-40">|</span>
                     
@@ -82,13 +86,20 @@
 
                 <div class="flex flex-wrap justify-center gap-1 text-[10px] text-white/75">
 
-                    <a href="/help">Help</a>
+                    <a href="https://eventgarageparking.com/homeowner-faq/"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="cursor-pointer hover:text-white transition">Help</a>
+
+                    <span id="mobileUserDivider" class="opacity-40 hidden">|</span>
+
+                    <span id="loggedInUserMobile"
+                          class="text-white/75 hidden">
+                    </span>
+
                     <span>|</span>
 
-                    <a href="https://eventgarageparking.net/register/">Sign In / Register</a>
-                    <span>|</span>
-
-                    <a href="/homeowner-portal">Homeowner Portal</a>
+                    <a href="https://eventgarageparking.net/">Homeowner Portal</a>
 
                 </div>
 
@@ -682,27 +693,11 @@
 
 </footer>
 
-<!-- SIDEBAR SCRIPT -->
+<script src="js/common.js"></script>
 <script>
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("sidebarOverlay");
-  const openBtn = document.getElementById("openSidebar");
-  const closeBtn = document.getElementById("closeSidebar");
-
-  openBtn?.addEventListener("click", () => {
-    sidebar.classList.remove("-translate-x-full");
-    overlay.classList.remove("hidden");
-  });
-
-  closeBtn.addEventListener("click", () => {
-    sidebar.classList.add("-translate-x-full");
-    overlay.classList.add("hidden");
-  });
-
-  overlay.addEventListener("click", () => {
-    sidebar.classList.add("-translate-x-full");
-    overlay.classList.add("hidden");
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  EGP.initPortalPage();
+});
 </script>
 
 </body>

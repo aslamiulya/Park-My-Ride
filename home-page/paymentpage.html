@@ -55,7 +55,11 @@
                             Help
                         </a>
 
-                    
+                      <span id="desktopUserDivider" class="opacity-40 hidden">|</span>
+
+                      <span id="loggedInUserDesktop"
+                            class="text-white/75 hidden">
+                      </span>
 
                       <span class="opacity-40">|</span>
                     
@@ -84,13 +88,20 @@
 
                 <div class="flex flex-wrap justify-center gap-1 text-[10px] text-white/75">
 
-                    <a href="/help">Help</a>
+                    <a href="https://eventgarageparking.com/homeowner-faq/"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="cursor-pointer hover:text-white transition">Help</a>
+
+                    <span id="mobileUserDivider" class="opacity-40 hidden">|</span>
+
+                    <span id="loggedInUserMobile"
+                          class="text-white/75 hidden">
+                    </span>
+
                     <span>|</span>
 
-                    <a href="https://eventgarageparking.net/register/">Sign In / Register</a>
-                    <span>|</span>
-
-                    <a href="/homeowner-portal">Homeowner Portal</a>
+                    <a href="https://eventgarageparking.net/">Homeowner Portal</a>
 
                 </div>
 
@@ -179,51 +190,54 @@
 
         </div>
 
-        <!-- FIRST CONTAINER (MADE TALLER) -->
+        <!-- PAYMENT CARD -->
         <div class="border border-[#e6e6e6] rounded-[12px] p-6 bg-white shadow-sm min-h-[320px]">
 
             <div class="text-[16px] font-bold mb-4">
                 Select your payment method
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-3">
+            <div class="w-full mt-8 px-4 sm:px-6 mx-auto">
 
-                <button class="flex-1 bg-[#007DB5] text-white py-3 rounded-[10px] font-bold hover:bg-[#005f8a] transition">
-                    PayPal
-                </button>
+                <div class="flex flex-col sm:flex-row gap-2">
 
-                <button class="flex-1 bg-white border border-gray-300 text-gray-700 py-3 rounded-[10px] hover:bg-[#005f8a] hover:text-white transition">
-                    Zelle
-                </button>
+                    <button class="flex-1 bg-[#007DB5] text-white py-2.5 rounded-[10px] text-[14px] font-bold hover:bg-[#005f8a] transition">
+                        PayPal
+                    </button>
 
-                <button class="flex-1 bg-white border border-gray-300 text-gray-700 py-3 rounded-[10px] hover:bg-[#005f8a] hover:text-white transition">
-                    Check
-                </button>
+                    <button class="flex-1 bg-white border border-gray-300 text-gray-700 py-2.5 rounded-[10px] text-[14px] hover:bg-[#005f8a] hover:text-white transition">
+                        Zelle
+                    </button>
 
-            </div>
+                    <button class="flex-1 bg-white border border-gray-300 text-gray-700 py-2.5 rounded-[10px] text-[14px] hover:bg-[#005f8a] hover:text-white transition">
+                        Check
+                    </button>
 
-            <!-- SECOND CONTAINER (MADE BIGGER) -->
-            <div class="mt-6 border border-[#e6e6e6] rounded-[12px] p-4 bg-[#fafafa] min-h-[160px]">
-
-                <div class="text-[14px] font-bold">
-                    PayPal Email
                 </div>
 
-                <input
-                    type="email"
-                    placeholder="you@email.com"
-                    class="mt-3 w-full border border-gray-300 rounded-[10px] text-[12px] px-3 py-3 focus:outline-none focus:border-[#007DB5]"
-                />
+                <div class="mt-8 w-full border border-[#e6e6e6] rounded-[12px] p-4 bg-[#fafafa]">
+
+                    <div class="text-[14px] font-bold text-[#666]">
+                        PayPal Email
+                    </div>
+
+                    <input
+                        type="email"
+                        placeholder="you@email.com"
+                        class="mt-3 w-full border border-gray-300 rounded-[10px] text-[12px] px-3 py-2.5 focus:outline-none focus:border-[#007DB5]"
+                    />
+
+                </div>
 
             </div>
 
         </div>
 
-        <div class="mt-6 my-2 flex justify-center md:justify-start">
-    <button class="bg-[#007DB5] text-white px-6 py-3 rounded-[10px] font-bold hover:bg-[#005f8a] transition">
-        Save Changes
-    </button>
-</div>
+        <div class="mt-6 my-2 flex justify-start">
+            <button class="bg-[#007DB5] text-white px-5 py-2.5 rounded-[10px] text-[14px] font-bold hover:bg-[#005f8a] transition">
+                Save Changes
+            </button>
+        </div>
 
     </main>
 
@@ -442,26 +456,11 @@
   </div>
 
 </footer>
+<script src="js/common.js"></script>
 <script>
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("sidebarOverlay");
-  const openBtn = document.getElementById("openSidebar");
-  const closeBtn = document.getElementById("closeSidebar");
-
-  openBtn.addEventListener("click", () => {
-    sidebar.classList.remove("-translate-x-full");
-    overlay.classList.remove("hidden");
-  });
-
-  closeBtn.addEventListener("click", () => {
-    sidebar.classList.add("-translate-x-full");
-    overlay.classList.add("hidden");
-  });
-
-  overlay.addEventListener("click", () => {
-    sidebar.classList.add("-translate-x-full");
-    overlay.classList.add("hidden");
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  EGP.initPortalPage();
+});
 </script>
 <script src="https://js-na2.hsforms.net/forms/embed/245773740.js" defer></script>
 </body>

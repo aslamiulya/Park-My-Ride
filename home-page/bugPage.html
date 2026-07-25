@@ -53,6 +53,12 @@
                          Help
                      </a>
 
+                      <span id="desktopUserDivider" class="opacity-40 hidden">|</span>
+
+                      <span id="loggedInUserDesktop"
+                            class="text-white/75 hidden">
+                      </span>
+
                       <span class="opacity-40">|</span>
                     
                       <a href="https://eventgarageparking.net/"
@@ -80,13 +86,20 @@
 
                 <div class="flex flex-wrap justify-center gap-1 text-[10px] text-white/75">
 
-                    <a href="/help">Help</a>
+                    <a href="https://eventgarageparking.com/homeowner-faq/"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="cursor-pointer hover:text-white transition">Help</a>
+
+                    <span id="mobileUserDivider" class="opacity-40 hidden">|</span>
+
+                    <span id="loggedInUserMobile"
+                          class="text-white/75 hidden">
+                    </span>
+
                     <span>|</span>
 
-                    <a href="https://eventgarageparking.net/register/">Sign In / Register</a>
-                    <span>|</span>
-
-                    <a href="/homeowner-portal">Homeowner Portal</a>
+                    <a href="https://eventgarageparking.net/">Homeowner Portal</a>
 
                 </div>
 
@@ -121,7 +134,9 @@
     }
 </style>
 
-<div class="flex min-h-screen">
+<div class="flex min-h-screen relative">
+
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
 
     <!-- SIDEBAR -->
     <aside id="sidebar"
@@ -213,125 +228,462 @@
     </a>
 
     <!-- WHITE CARD -->
-    <div class="bg-white rounded-xl p-6 shadow-sm">
+    <form id="bugReportForm" class="bg-white rounded-xl p-6 shadow-sm" novalidate>
 
         <div class="mb-6">
             <h3 class="font-semibold mb-3">Bug Location*</h3>
-
-            <button data-field="location"
-                class="form-field w-full h-[52px] bg-[#f8f9ff] border border-[#e6e6e6] rounded-lg px-4 text-left text-[#6B97AB] text-sm">
-                Bug Location
-            </button>
+            <input
+                id="bugLocation"
+                name="bug_location"
+                type="text"
+                placeholder="e.g. Booking Page"
+                class="w-full h-[52px] bg-[#f8f9ff] border border-[#e6e6e6] rounded-lg px-4 text-[#222] text-sm outline-none focus:border-[#007DB5]"
+                required />
         </div>
 
         <div class="mb-6">
             <h3 class="font-semibold mb-3">Today's Date*</h3>
-
-            <button data-field="date"
-                class="form-field w-full h-[52px] bg-[#f8f9ff] border border-[#e6e6e6] rounded-lg px-4 text-left text-[#6B97AB] text-sm">
-                MM/DD/YEAR
-            </button>
+            <input
+                id="bugDate"
+                type="text"
+                readonly
+                class="w-full h-[52px] bg-[#f8f9ff] border border-[#e6e6e6] rounded-lg px-4 text-[#222] text-sm outline-none" />
         </div>
 
         <div class="mb-6">
             <h3 class="font-semibold mb-3">Subject*</h3>
-
-            <button data-field="subject"
-                class="form-field w-full h-[52px] bg-[#f8f9ff] border border-[#e6e6e6] rounded-lg px-4 text-left text-[#6B97AB] text-sm">
-                Subject
-            </button>
+            <input
+                id="bugSubject"
+                name="subject_line"
+                type="text"
+                placeholder="Subject"
+                class="w-full h-[52px] bg-[#f8f9ff] border border-[#e6e6e6] rounded-lg px-4 text-[#222] text-sm outline-none focus:border-[#007DB5]"
+                required />
         </div>
 
         <div class="mb-8">
             <h3 class="font-semibold mb-3">Description*</h3>
-
-            <button data-field="description"
-                class="form-field w-full h-[140px] bg-[#f8f9ff] border border-[#e6e6e6] rounded-lg p-4 flex items-start justify-start text-[#6B97AB] text-sm">
-                Describe the issue
-            </button>
+            <textarea
+                id="bugDescription"
+                name="describe_the_issue"
+                rows="5"
+                placeholder="Describe the issue"
+                class="w-full min-h-[140px] bg-[#f8f9ff] border border-[#e6e6e6] rounded-lg p-4 text-[#222] text-sm outline-none focus:border-[#007DB5] resize-y"
+                required></textarea>
         </div>
 
-        <div>
+        <div class="mb-6">
             <h3 class="font-semibold mb-3">
-                Upload Image*
+                Upload Image
             </h3>
 
-            <div class="bg-[#f8f9ff] border-2 border-dashed border-[#d7dbe8] rounded-xl min-h-[220px] flex flex-col items-center justify-center">
+            <div class="bg-[#f8f9ff] border-2 border-dashed border-[#d7dbe8] rounded-xl min-h-[220px] flex flex-col items-center justify-center px-4">
 
                 <i class="fa-solid fa-cloud-arrow-up text-5xl text-[#6B97AB] mb-4"></i>
 
-                <input id="fileInput" type="file" class="hidden" />
+                <!-- Gallery / files -->
+                <input id="fileInput" type="file" accept="image/*" class="hidden" />
+                <!-- Mobile native camera -->
+                <input id="cameraInput" type="file" accept="image/*" capture="environment" class="hidden" />
 
-                <button id="uploadBtn"
+                <button id="uploadBtn" type="button"
                     class="bg-[#007DB5] text-white text-xs px-4 py-1.5 rounded-md mb-3 hover:bg-[#00699a]">
                     Upload Photo
                 </button>
 
-                <a href="#" class="text-[#007DB5] text-sm underline hover:text-[#00699a]">
+                <button id="cameraBtn" type="button" class="text-[#007DB5] text-sm underline hover:text-[#00699a]">
                     or take a photo
-                </a>
+                </button>
 
+                <p id="fileName" class="text-xs text-gray-500 mt-3 text-center"></p>
+                <img id="imagePreview" alt="" class="hidden mt-3 max-h-40 rounded-lg object-contain" />
             </div>
         </div>
 
+        <!-- Desktop webcam modal -->
+        <div id="cameraModal" class="hidden fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl w-full max-w-md p-4 shadow-lg">
+                <h3 class="font-semibold text-base mb-3">Take a photo</h3>
+                <video id="cameraVideo" autoplay playsinline class="w-full rounded-lg bg-black max-h-[320px] object-cover"></video>
+                <canvas id="cameraCanvas" class="hidden"></canvas>
+                <p id="cameraError" class="hidden text-red-600 text-sm mt-2"></p>
+                <div class="flex gap-2 mt-4 justify-end">
+                    <button type="button" id="cameraCancelBtn" class="px-4 py-2 text-sm rounded-lg border border-gray-300">Cancel</button>
+                    <button type="button" id="cameraCaptureBtn" class="px-4 py-2 text-sm rounded-lg bg-[#007DB5] text-white hover:bg-[#00699a]">Capture</button>
+                </div>
+            </div>
+        </div>
+
+        <p id="bugStatus" class="hidden text-sm mb-4"></p>
+
+        <button
+            id="submitBugBtn"
+            type="submit"
+            class="bg-[#007DB5] hover:bg-[#00699a] text-white text-sm font-semibold px-5 py-3 rounded-lg transition disabled:opacity-60">
+            Submit Report
+        </button>
+
+    </form>
+
+    <div id="bugSuccess" class="hidden bg-white rounded-xl p-8 shadow-sm text-center mt-0">
+        <div class="mx-auto w-14 h-14 rounded-full bg-[#007DB5]/10 text-[#007DB5] flex items-center justify-center mb-4">
+            <i class="fa-solid fa-check text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Report submitted</h3>
+        <p class="text-gray-500 text-sm mb-6">Thanks — we received your bug report.</p>
+        <a href="https://eventgarageparking.net/egp-setting/"
+           class="inline-flex bg-[#007DB5] hover:bg-[#00699a] text-white text-sm font-semibold px-5 py-3 rounded-lg transition">
+            Back to Settings
+        </a>
     </div>
 
 </main>
 </div>
 
-<!-- JAVASCRIPT (NO INLINE JS) -->
+<script src="js/common.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+const SUPPORT_API = "https://eventgarageparking.online/api/support/";
+const HOME_OWNERS_API = "https://eventgarageparking.online/api/home-owners/";
 
-    // Sidebar close
-    const sidebar = document.getElementById("sidebar");
-    const closeSidebar = document.getElementById("closeSidebar");
+function getAuthHeaders() {
+  const token = localStorage.getItem("pmr_token") || "";
+  const headers = { Accept: "application/json" };
+  if (token) headers["X-Auth-Token"] = token;
+  return { token, headers };
+}
 
-    if (closeSidebar) {
-        closeSidebar.addEventListener("click", () => {
-            sidebar.classList.add("-translate-x-full");
-        });
-    }
+function getHomeOwnerId() {
+  const saved = localStorage.getItem("pmr_home_owner_id");
+  if (saved) return String(saved);
+  try {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const id =
+      user?.host_id ||
+      user?.home_owner_id ||
+      user?.homeowner_id ||
+      user?.id ||
+      null;
+    if (id != null) return String(id);
+  } catch {
+    /* ignore */
+  }
+  try {
+    const token = localStorage.getItem("pmr_token") || "";
+    const part = token.split(".")[1];
+    if (!part) return null;
+    const claims = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/")));
+    const id =
+      claims.host_id || claims.home_owner_id || claims.homeowner_id || null;
+    return id != null ? String(id) : null;
+  } catch {
+    return null;
+  }
+}
 
-    // Make fields interactive
-    document.querySelectorAll(".form-field").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const field = btn.dataset.field;
+function getCachedOwnerName() {
+  try {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const full = [user.first_name, user.last_name].filter(Boolean).join(" ").trim();
+    if (full) return full;
+    if (user.username) return String(user.username).trim();
+    if (user.email) return String(user.email).split("@")[0];
+  } catch {
+    /* ignore */
+  }
+  return (localStorage.getItem("loggedInUser") || "").trim();
+}
 
-            let input;
+function setHeaderUserName(name) {
+  if (!name) return;
+  if (typeof EGP !== "undefined" && EGP.updateUserName) {
+    EGP.updateUserName(name);
+    return;
+  }
+  const desktop = document.getElementById("loggedInUserDesktop");
+  const mobile = document.getElementById("loggedInUserMobile");
+  const desktopDivider = document.getElementById("desktopUserDivider");
+  const mobileDivider = document.getElementById("mobileUserDivider");
+  if (desktop) {
+    desktop.textContent = name;
+    desktop.classList.remove("hidden");
+  }
+  if (mobile) {
+    mobile.textContent = name;
+    mobile.classList.remove("hidden");
+  }
+  if (desktopDivider) desktopDivider.classList.remove("hidden");
+  if (mobileDivider) mobileDivider.classList.remove("hidden");
+}
 
-            if (field === "description") {
-                input = document.createElement("textarea");
-                input.className = btn.className;
-                input.style.height = "140px";
-            } 
-            else if (field === "date") {
-                input = document.createElement("input");
-                input.type = "date";
-                input.className = btn.className;
-            } 
-            else {
-                input = document.createElement("input");
-                input.type = "text";
-                input.className = btn.className;
-            }
+async function loadHeaderUserName() {
+  const cached = getCachedOwnerName();
+  if (cached) setHeaderUserName(cached);
 
-            input.value = "";
-            btn.replaceWith(input);
-            input.focus();
-        });
+  const { token, headers } = getAuthHeaders();
+  const hostId = getHomeOwnerId();
+  if (!token || !hostId) return;
+
+  try {
+    const res = await fetch(`${HOME_OWNERS_API}${hostId}/`, {
+      method: "GET",
+      headers,
     });
+    if (!res.ok) return;
+    const owner = await res.json();
+    const full = [owner.first_name, owner.last_name].filter(Boolean).join(" ").trim();
+    const name =
+      full ||
+      String(owner.username || "").trim() ||
+      String(owner.email || "").split("@")[0] ||
+      cached;
+    if (!name) return;
 
-    // File upload trigger
-    const uploadBtn = document.getElementById("uploadBtn");
-    const fileInput = document.getElementById("fileInput");
+    let prev = {};
+    try {
+      prev = JSON.parse(localStorage.getItem("user") || "{}") || {};
+    } catch {
+      prev = {};
+    }
+    localStorage.setItem("user", JSON.stringify({ ...prev, ...owner }));
+    localStorage.setItem("loggedInUser", name);
+    if (owner.host_id != null || owner.id != null) {
+      localStorage.setItem(
+        "pmr_home_owner_id",
+        String(owner.host_id || owner.id)
+      );
+    }
+    setHeaderUserName(name);
+  } catch (err) {
+    console.error("Header user load error:", err);
+  }
+}
 
-    if (uploadBtn && fileInput) {
-        uploadBtn.addEventListener("click", () => {
-            fileInput.click();
-        });
+function showStatus(message, ok) {
+  const el = document.getElementById("bugStatus");
+  el.textContent = message;
+  el.classList.remove("hidden", "text-red-600", "text-green-700");
+  el.classList.add(ok ? "text-green-700" : "text-red-600");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (window.EGP && typeof EGP.initPortalPage === "function") {
+    EGP.initPortalPage().catch((err) => console.error(err));
+  }
+  loadHeaderUserName();
+
+  // Today's date (display only — API sets date on create)
+  const today = new Date();
+  document.getElementById("bugDate").value = today.toLocaleDateString("en-US");
+
+  const uploadBtn = document.getElementById("uploadBtn");
+  const cameraBtn = document.getElementById("cameraBtn");
+  const fileInput = document.getElementById("fileInput");
+  const cameraInput = document.getElementById("cameraInput");
+  const fileName = document.getElementById("fileName");
+  const imagePreview = document.getElementById("imagePreview");
+  const cameraModal = document.getElementById("cameraModal");
+  const cameraVideo = document.getElementById("cameraVideo");
+  const cameraCanvas = document.getElementById("cameraCanvas");
+  const cameraError = document.getElementById("cameraError");
+  const cameraCancelBtn = document.getElementById("cameraCancelBtn");
+  const cameraCaptureBtn = document.getElementById("cameraCaptureBtn");
+
+  let cameraStream = null;
+  let selectedFile = null;
+
+  function isMobileDevice() {
+    return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  }
+
+  function setSelectedFile(file) {
+    selectedFile = file || null;
+    fileName.textContent = file ? file.name : "";
+    if (file) {
+      const url = URL.createObjectURL(file);
+      imagePreview.src = url;
+      imagePreview.classList.remove("hidden");
+    } else {
+      imagePreview.src = "";
+      imagePreview.classList.add("hidden");
     }
 
+    // Keep fileInput in sync for FormData submit
+    if (file) {
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      fileInput.files = dt.files;
+    }
+  }
+
+  function stopCamera() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach((t) => t.stop());
+      cameraStream = null;
+    }
+    cameraVideo.srcObject = null;
+    cameraModal.classList.add("hidden");
+    cameraError.classList.add("hidden");
+  }
+
+  async function openDesktopCamera() {
+    cameraError.classList.add("hidden");
+    cameraModal.classList.remove("hidden");
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error("Camera API not supported in this browser.");
+      }
+      cameraStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: "environment" } },
+        audio: false,
+      });
+      cameraVideo.srcObject = cameraStream;
+    } catch (err) {
+      console.error(err);
+      cameraError.textContent =
+        err?.message ||
+        "Could not open camera. Allow camera permission, or use Upload Photo.";
+      cameraError.classList.remove("hidden");
+    }
+  }
+
+  uploadBtn.addEventListener("click", () => {
+    fileInput.click();
+  });
+
+  cameraBtn.addEventListener("click", () => {
+    // Phones: native camera app via capture input
+    // Desktop: webcam modal (capture attribute is ignored on most desktops)
+    if (isMobileDevice()) {
+      cameraInput.click();
+    } else {
+      openDesktopCamera();
+    }
+  });
+
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files && fileInput.files[0];
+    setSelectedFile(file || null);
+  });
+
+  cameraInput.addEventListener("change", () => {
+    const file = cameraInput.files && cameraInput.files[0];
+    setSelectedFile(file || null);
+  });
+
+  cameraCancelBtn.addEventListener("click", stopCamera);
+
+  cameraCaptureBtn.addEventListener("click", () => {
+    if (!cameraStream) return;
+    const w = cameraVideo.videoWidth || 1280;
+    const h = cameraVideo.videoHeight || 720;
+    cameraCanvas.width = w;
+    cameraCanvas.height = h;
+    const ctx = cameraCanvas.getContext("2d");
+    ctx.drawImage(cameraVideo, 0, 0, w, h);
+    cameraCanvas.toBlob(
+      (blob) => {
+        if (!blob) return;
+        const file = new File([blob], `bug-photo-${Date.now()}.jpg`, {
+          type: "image/jpeg",
+        });
+        setSelectedFile(file);
+        stopCamera();
+      },
+      "image/jpeg",
+      0.92
+    );
+  });
+
+  document.getElementById("bugReportForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const { token, headers } = getAuthHeaders();
+    const hostId = getHomeOwnerId();
+    const btn = document.getElementById("submitBugBtn");
+
+    const bug_location = document.getElementById("bugLocation").value.trim();
+    const subject_line = document.getElementById("bugSubject").value.trim();
+    const describe_the_issue = document.getElementById("bugDescription").value.trim();
+    const file = selectedFile || (fileInput.files && fileInput.files[0]);
+
+    if (!token) {
+      showStatus("Please sign in to submit a bug report.", false);
+      return;
+    }
+    if (!hostId) {
+      showStatus("Host account not found. Please sign in again.", false);
+      return;
+    }
+    if (!bug_location || !subject_line || !describe_the_issue) {
+      showStatus("Please fill in Bug Location, Subject, and Description.", false);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Submitting…";
+
+    try {
+      let res;
+
+      if (file) {
+        // multipart (supports image upload)
+        const form = new FormData();
+        form.append("host_id", hostId);
+        form.append("bug_location", bug_location);
+        form.append("subject_line", subject_line);
+        form.append("describe_the_issue", describe_the_issue);
+        form.append("upload_image_of_the_issue", file);
+
+        res = await fetch(SUPPORT_API, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "X-Auth-Token": token,
+          },
+          body: form,
+        });
+      } else {
+        res = await fetch(SUPPORT_API, {
+          method: "POST",
+          headers: {
+            ...headers,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            host_id: Number(hostId),
+            bug_location,
+            subject_line,
+            describe_the_issue,
+            upload_image_of_the_issue: null,
+          }),
+        });
+      }
+
+      let data = null;
+      try {
+        data = await res.json();
+      } catch {
+        data = null;
+      }
+
+      if (!res.ok) {
+        const detail =
+          data?.detail ||
+          data?.message ||
+          (typeof data === "object" ? JSON.stringify(data) : null) ||
+          `Request failed (${res.status})`;
+        throw new Error(detail);
+      }
+
+      document.getElementById("bugReportForm").classList.add("hidden");
+      document.getElementById("bugSuccess").classList.remove("hidden");
+    } catch (err) {
+      console.error("Bug report error:", err);
+      showStatus(err?.message || "Could not submit report. Try again.", false);
+      btn.disabled = false;
+      btn.textContent = "Submit Report";
+    }
+  });
 });
 </script>
 
@@ -554,31 +906,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </footer>
 
-<!-- SIDEBAR SCRIPT -->
-<script>
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("sidebarOverlay");
-  const openBtn = document.getElementById("openSidebar");
-  const closeBtn = document.getElementById("closeSidebar");
-
-  if (openBtn) {
-    openBtn.addEventListener("click", () => {
-      sidebar.classList.remove("-translate-x-full");
-      overlay.classList.remove("hidden");
-    });
-  }
-
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      sidebar.classList.add("-translate-x-full");
-      overlay.classList.add("hidden");
-    });
-  }
-
-  overlay.addEventListener("click", () => {
-    sidebar.classList.add("-translate-x-full");
-    overlay.classList.add("hidden");
-  });
-</script>
 </body>
 </html>

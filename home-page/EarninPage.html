@@ -2,6 +2,43 @@
 <html lang="en">
 
 <head>
+<!-- EGP DARK MODE -->
+<script>
+(function () {
+  try {
+    if (localStorage.getItem("egp-dark-mode") === "1") {
+      document.documentElement.classList.add("egp-dark");
+    }
+  } catch (e) {}
+})();
+</script>
+<style>
+  html.egp-dark { color-scheme: dark; }
+  html.egp-dark body { background: #0b1220 !important; color: #e5e7eb; }
+  html.egp-dark #egp-page-loader { background: #0b1220 !important; }
+  html.egp-dark main,
+  html.egp-dark .bg-\[#f5f7fb\] { background: #0b1220 !important; }
+  html.egp-dark #sidebar,
+  html.egp-dark .bg-\[#f8f9ff\] {
+    background: #111827 !important;
+    border-color: #1f2937 !important;
+  }
+  html.egp-dark .bg-white { background-color: #1e293b !important; }
+  html.egp-dark .text-black,
+  html.egp-dark .text-black\/80,
+  html.egp-dark .text-\[#222\],
+  html.egp-dark .text-\[#333\] { color: #f3f4f6 !important; }
+  html.egp-dark .text-black\/50,
+  html.egp-dark .text-gray-500,
+  html.egp-dark .text-gray-600 { color: #94a3b8 !important; }
+  html.egp-dark .border,
+  html.egp-dark .border-\[#e6e6e6\],
+  html.egp-dark .border-\[#e5e5e5\] { border-color: #334155 !important; }
+  html.egp-dark .bg-\[#f1f1f1\] { background-color: #334155 !important; }
+  html.egp-dark .hover\:bg-\[#f9f9f9\]:hover,
+  html.egp-dark .hover\:bg-gray-50:hover { background-color: #334155 !important; }
+</style>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EGP Earnings</title>
@@ -10,6 +47,88 @@
 </head>
 
 <body class="overflow-x-hidden bg-white font-[Arial,sans-serif] flex flex-col min-h-screen">
+<!-- EGP PAGE LOADER -->
+<div id="egp-page-loader" role="status" aria-live="polite" aria-label="Loading">
+  <div class="egp-loader-box">
+    <div class="egp-loader-badge">EGP</div>
+    <span class="egp-loader-ring" aria-hidden="true"></span>
+  </div>
+</div>
+<style>
+  #egp-page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  #egp-page-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .egp-loader-box {
+    position: relative;
+    width: 118px;
+    height: 118px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .egp-loader-badge {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    background: #007DB5;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  .egp-loader-ring {
+    position: absolute;
+    inset: 0;
+    border: 4px solid #e6eef3;
+    border-top-color: #007DB5;
+    border-radius: 50%;
+    animation: egp-spin 0.8s linear infinite;
+  }
+  @keyframes egp-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+<script>
+  (function () {
+    var loader = document.getElementById("egp-page-loader");
+    if (!loader) return;
+    var shownAt = Date.now();
+    function hide() {
+      if (!loader || loader.classList.contains("is-hidden")) return;
+      var wait = Math.max(0, 700 - (Date.now() - shownAt));
+      setTimeout(function () {
+        if (!loader || loader.classList.contains("is-hidden")) return;
+        loader.classList.add("is-hidden");
+        setTimeout(function () {
+          if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 400);
+      }, wait);
+    }
+    if (document.readyState === "complete") hide();
+    else window.addEventListener("load", hide);
+    setTimeout(hide, 8000);
+  })();
+</script>
+
 
 <!-- HEADER -->
 <div class="w-full
@@ -121,47 +240,62 @@
 
     <!-- CLOSE BUTTON (MOBILE ONLY) -->
     <div class="flex items-center justify-end mb-8 md:hidden">
-      <button id="closeSidebar" class="text-[34px] leading-none text-[#333]">×</button>
+      <button id="closeSidebar" class="text-[34px] leading-none text-[#333]"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
     <div class="flex flex-col gap-2">
 
       <a href="https://eventgarageparking.net/home-owner-listing-page/"
         class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-        <i class="fa-solid fa-house"></i> Listing
+        <i class="fa-solid fa-house fa-fw"></i> Listing
       </a>
 
       <a href="https://eventgarageparking.net/home-owner-availability-page/"
         class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-        <i class="fa-solid fa-calendar"></i> Availability
+        <i class="fa-solid fa-calendar fa-fw"></i> Availability
       </a>
 
       <a href="https://eventgarageparking.net/home-owner-booking-page/"
         class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-        <i class="fa-solid fa-car"></i> Booking
+        <i class="fa-solid fa-car fa-fw"></i> Booking
       </a>
 
       <a href="https://eventgarageparking.net/home-owner-earning-page/"
         class="flex items-center gap-2 p-[10px] text-[#007DB5] font-bold text-[13px] bg-[rgba(0,125,181,0.08)] rounded-[6px]">
-        <i class="fa-solid fa-piggy-bank"></i>Earnings
+        <i class="fa-solid fa-piggy-bank fa-fw"></i> Earnings
       </a>
 
       <a href="https://eventgarageparking.net/home-owner-profile-page/"
         class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-        <i class="fa-solid fa-user"></i> Profile
+        <i class="fa-solid fa-user fa-fw"></i> Profile
       </a>
 
       <a href="https://eventgarageparking.net/home-owner-payment-page/"
         class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-        $ Payment
+        <i class="fa-solid fa-dollar-sign fa-fw"></i> Payment
+      </a>
+
+      <a href="https://eventgarageparking.net/egp-training-center/"
+        class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+        <i class="fa-solid fa-graduation-cap fa-fw"></i> Training
       </a>
 
       <a href="https://eventgarageparking.net/egp-setting/"
         class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-        ⚙️ Settings
+        <i class="fa-solid fa-gear fa-fw"></i> Settings
       </a>
-        <a href="http://127.0.0.1:5500/home-page/loginPage.html"
-                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                <a href="https://eventgarageparking.net/contact-us/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-envelope fa-fw"></i> Contact
+                </a>
+                <a href="https://eventgarageparking.net/report-a-bug/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-bug fa-fw"></i> Report a Bug
+                </a>
+<a href="https://eventgarageparking.net/register/"
+                    id="egpLogoutBtn"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-arrow-right-from-bracket fa-fw"></i>
                         Logout
                     </a>
 
@@ -173,87 +307,105 @@
  <main class="flex-1 min-h-screen min-w-0 overflow-x-hidden p-4 sm:p-5 md:p-6 lg:p-8">
 
     <!-- TITLE -->
-    <div class="flex items-center justify-between mb-3 sm:mb-4 lg:mb-5">
+    <div class="flex items-center justify-between gap-3 mb-3 sm:mb-4 lg:mb-5">
 
       <div class="text-[20px] sm:text-[22px] font-bold text-[#007DB5]">
         Earnings
       </div>
 
-      <!-- MOBILE TOGGLE -->
-      <button id="openSidebar"
-        class="flex md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] items-center justify-center shadow-md">
-        ☰
-      </button>
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <label for="earningsFilterSelect" class="sr-only">Filter earnings</label>
+          <select id="earningsFilterSelect"
+                  class="appearance-none border border-[#ddd] rounded-[10px] pl-4 pr-9 py-[10px] w-[160px] sm:w-[200px] bg-white text-[13px] text-[#666] cursor-pointer">
+            <option value="14d">Last 14 Days</option>
+            <option value="30d">Last 30 Days</option>
+            <option value="6m">Last 6 Months</option>
+            <option value="12m">Last 12 Months</option>
+            <option value="all" selected>All Time</option>
+          </select>
+          <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#888] text-[12px]" aria-hidden="true">
+            <i class="fa-solid fa-chevron-down"></i>
+          </span>
+        </div>
+
+        <!-- MOBILE TOGGLE -->
+        <button id="openSidebar"
+          class="flex md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] items-center justify-center shadow-md"
+          aria-label="Open menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
 
     </div>
 
-    <!-- CARDS -->
+    <p id="earningsStatus" class="text-sm text-gray-500 mb-3 hidden"></p>
+
+    <!-- CARDS (static preview until login; replaced by API after login) -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 
       <div class="border rounded-xl p-5 shadow-sm bg-white">
         <p class="text-gray-500 text-sm">This Month</p>
-        <div class="text-2xl md:text-3xl font-bold">$430.00</div>
+        <div id="earningsThisMonth" class="text-2xl md:text-3xl font-bold">$430.00</div>
       </div>
 
       <div class="border rounded-xl p-5 shadow-sm bg-white">
         <p class="text-gray-500 text-sm">Last Month</p>
-        <div class="text-2xl md:text-3xl font-bold">$810.00</div>
+        <div id="earningsLastMonth" class="text-2xl md:text-3xl font-bold">$810.00</div>
       </div>
 
       <div class="border rounded-xl p-5 shadow-sm bg-white">
         <p class="text-gray-500 text-sm">Total Earnings</p>
-        <div class="text-2xl md:text-3xl font-bold">$1,240.00</div>
+        <div id="earningsTotal" class="text-2xl md:text-3xl font-bold">$1,240.00</div>
       </div>
 
     </section>
 
-    <!-- PAYOUTS -->
+    <!-- PAYOUTS (static preview until login; replaced by API after login) -->
     <section
       class="mt-5 border border-[#e6e6e6] rounded-[12px] p-4 sm:p-5 shadow-[0_2px_6px_rgba(0,0,0,0.05)] bg-white">
 
       <h2 class="text-lg font-bold mb-4">Recent Payouts</h2>
 
-      <div class="space-y-2">
+      <div class="w-full grid grid-cols-4 md:px-2 py-2 border-b text-[11px] sm:text-xs text-gray-400 font-semibold uppercase tracking-wide">
+        <div class="text-center md:text-left">Date</div>
+        <div class="text-center">Reservation ID</div>
+        <div class="text-center">Earning</div>
+        <div class="text-center md:text-right">Status</div>
+      </div>
 
-        <div class="w-full grid grid-cols-3 md:px-2 py-3 border-b">
-          <div class="flex items-center justify-center md:justify-start text-gray-500 text-sm">
+      <div id="recentPayoutsList" class="space-y-0">
+        <div class="payout-preview-row w-full grid grid-cols-4 md:px-2 py-3 border-b" data-ts="1773446400000">
+          <div class="flex items-center justify-center md:justify-start text-gray-500 text-[12px] sm:text-sm">
             March 14, 2026
           </div>
-          <div class="flex items-center justify-center font-bold">
-            $120.00
-          </div>
-          <div class="flex items-center justify-center md:justify-end text-gray-500 text-sm">
-            pending...
-          </div>
+          <div class="flex items-center justify-center text-[12px] sm:text-sm text-gray-700">1042</div>
+          <div class="flex items-center justify-center font-bold text-[13px] sm:text-base">$120.00</div>
+          <div class="flex items-center justify-center md:justify-end text-[12px] sm:text-sm font-medium text-amber-600">Pending</div>
         </div>
-
-        <div class="w-full grid grid-cols-3 md:px-2 py-3 border-b">
-          <div class="flex items-center justify-center md:justify-start text-gray-500 text-sm">
+        <div class="payout-preview-row w-full grid grid-cols-4 md:px-2 py-3 border-b" data-ts="1772410000000">
+          <div class="flex items-center justify-center md:justify-start text-gray-500 text-[12px] sm:text-sm">
             March 02, 2026
           </div>
-          <div class="flex items-center justify-center font-bold">
-            $140.00
-          </div>
-          <div class="flex items-center justify-center md:justify-end text-green-600 text-sm">
-            Paid
-          </div>
+          <div class="flex items-center justify-center text-[12px] sm:text-sm text-gray-700">1038</div>
+          <div class="flex items-center justify-center font-bold text-[13px] sm:text-base">$140.00</div>
+          <div class="flex items-center justify-center md:justify-end text-[12px] sm:text-sm font-medium text-green-600">Paid</div>
         </div>
-
-        <div class="w-full grid grid-cols-3 md:px-2 py-3">
-          <div class="flex items-center justify-center md:justify-start text-gray-500 text-sm">
+        <div class="payout-preview-row w-full grid grid-cols-4 md:px-2 py-3" data-ts="1771372800000">
+          <div class="flex items-center justify-center md:justify-start text-gray-500 text-[12px] sm:text-sm">
             Feb 18, 2026
           </div>
-          <div class="flex items-center justify-center font-bold">
-            $239.00
-          </div>
-          <div class="flex items-center justify-center md:justify-end text-green-600 text-sm">
-            Paid
-          </div>
+          <div class="flex items-center justify-center text-[12px] sm:text-sm text-gray-700">1031</div>
+          <div class="flex items-center justify-center font-bold text-[13px] sm:text-base">$239.00</div>
+          <div class="flex items-center justify-center md:justify-end text-[12px] sm:text-sm font-medium text-green-600">Paid</div>
         </div>
-
       </div>
 
     </section>
+
+    <p class="mt-3 text-[12px] sm:text-[13px] text-gray-500">
+      Earnings are gross profits, does not include net profit and/or service fees
+    </p>
 
   </main>
 
@@ -346,7 +498,7 @@
               rel="noopener noreferrer"
               class="hover:text-gray-200"
             >
-              privacy policy
+              Privacy Policy
             </a></li>
              <li>
             <a
@@ -355,7 +507,7 @@
               rel="noopener noreferrer"
               class="hover:text-gray-200"
             >
-              Tern of Service
+              Term of Services
             </a></li>
           </li>
         </ul>
@@ -433,9 +585,11 @@
         </a>
 
         <a href="https://www.visa.com" target="_blank" rel="noopener noreferrer"
-           class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
-               class="max-h-5 max-w-full object-contain" alt="Visa">
+           class="w-12 h-8 flex items-center justify-center border-r border-gray-200"
+           aria-label="Visa">
+          <svg viewBox="0 0 780 250" class="h-5 w-auto" aria-hidden="true">
+            <path fill="#1A1F71" d="M293.7 25.4L221.5 224.6H175L139.5 87.2c-2.1-8.5-3.9-11.6-10.5-15.2-10.7-5.8-28.4-11.2-44-14l1-4.6h74.8c9.5 0 18.1 6.3 20.3 17.2l18.7 99.4 46.2-116.6h47.7zm184.5 134.2c.2-52.6-72.8-55.5-72.3-79 0-7.2 7-14.8 22-16.7 7.4-.9 27.9-1.7 51.1 9l9.1-42.4c-12.5-4.5-28.5-8.9-48.4-8.9-51.2 0-87.2 27.2-87.5 66.2-.3 28.8 25.7 44.8 45.3 54.4 20.2 9.8 27 16.1 26.9 24.9-.1 13.5-16.2 19.5-31.2 19.7-26.2.4-41.4-7.1-53.5-12.8l-9.4 43.8c12.2 5.6 34.7 10.5 58.1 10.7 54.4 0 89.9-26.9 90-68.9zM454.7 224.6h-41.9l26.2-199.2h41.9l-26.2 199.2zm216.5-194.6c-8.3-3.1-21.3-6.5-37.5-6.5-41.4 0-70.5 22.1-70.7 53.7-.2 23.4 20.9 36.4 36.8 44.2 16.4 8 21.9 13.1 21.8 20.2-.1 10.9-13.1 15.9-25.3 16-16.9.3-26.6-4.6-40.9-15.5l-7.1 33.1c12.1 5.6 34.5 10.5 57.7 10.7 43.2 0 71.3-21.8 71.5-55.6.1-18.6-11.1-32.7-35.5-44.3-14.8-7.5-23.9-12.5-23.8-20.1.1-6.7 7.6-13.9 24-14.2 13.7-.2 23.6 2.9 31.3 6.2l7.5-34.9zm96.1 194.6h36.8l-32.1-199.2h-33.9c-8.5 0-14.8 2.5-18.5 11.5l-65.3 187.7h45.7l9.1-25.1h55.9l5.3 25.1zm-48.4-65.6l22.9-63.3 13.2 63.3h-36.1zM554.3 25.4l-35.9 199.2h-43.6l35.9-199.2h43.6z"/>
+          </svg>
         </a>
 
         <a href="https://www.mastercard.com" target="_blank" rel="noopener noreferrer"
@@ -468,11 +622,1058 @@
 
 </footer>
 
-<script src="js/common.js"></script>
+<script>
+/**
+ * Event Garage Parking — shared portal scripts
+ * Header username + mobile sidebar
+ */
+(function (window) {
+  const EGP = window.EGP || {};
+
+  function toDisplayUsername(...candidates) {
+    // Exact username handle only — never email or full name
+    for (const raw of candidates) {
+      if (raw == null) continue;
+      const name = String(raw).trim();
+      if (!name || name.includes("@") || /\s/.test(name)) continue;
+      return name;
+    }
+    return "";
+  }
+
+  function clearHeaderUserName() {
+    const desktopUser = document.getElementById("loggedInUserDesktop");
+    const mobileUser = document.getElementById("loggedInUserMobile");
+    const desktopDivider = document.getElementById("desktopUserDivider");
+    const mobileDivider = document.getElementById("mobileUserDivider");
+
+    if (desktopUser) {
+      desktopUser.textContent = "";
+      desktopUser.classList.add("hidden");
+    }
+    if (mobileUser) {
+      mobileUser.textContent = "";
+      mobileUser.classList.add("hidden");
+    }
+    if (desktopDivider) desktopDivider.classList.add("hidden");
+    if (mobileDivider) mobileDivider.classList.add("hidden");
+  }
+
+  function updateUserName(name) {
+    // Never paint a name unless the user is actually logged in
+    if (!localStorage.getItem("pmr_token")) {
+      clearHeaderUserName();
+      return;
+    }
+
+    name = toDisplayUsername(name);
+    if (!name) return;
+
+    const desktopUser = document.getElementById("loggedInUserDesktop");
+    const mobileUser = document.getElementById("loggedInUserMobile");
+    const desktopDivider = document.getElementById("desktopUserDivider");
+    const mobileDivider = document.getElementById("mobileUserDivider");
+
+    if (desktopUser) {
+      desktopUser.textContent = name;
+      desktopUser.classList.remove("hidden");
+    }
+    if (mobileUser) {
+      mobileUser.textContent = name;
+      mobileUser.classList.remove("hidden");
+    }
+    if (desktopDivider) desktopDivider.classList.remove("hidden");
+    if (mobileDivider) mobileDivider.classList.remove("hidden");
+
+    localStorage.setItem("loggedInUser", name);
+  }
+
+  function claimsFromJwt(jwt) {
+    try {
+      const part = String(jwt).split(".")[1];
+      if (!part) return null;
+      const json = atob(part.replace(/-/g, "+").replace(/_/g, "/"));
+      return JSON.parse(json);
+    } catch {
+      return null;
+    }
+  }
+
+  function unwrapOwner(payload) {
+    if (!payload || typeof payload !== "object") return null;
+    if (
+      payload.username != null ||
+      payload.host_id != null ||
+      payload.email != null
+    ) {
+      return payload;
+    }
+    if (payload.data && typeof payload.data === "object") {
+      return unwrapOwner(payload.data);
+    }
+    if (Array.isArray(payload.results) && payload.results[0]) {
+      return unwrapOwner(payload.results[0]);
+    }
+    return payload;
+  }
+
+  function displayNameFromOwner(owner) {
+    owner = unwrapOwner(owner);
+    if (!owner) return "";
+    // ONLY HomeOwner.username — never first/last name or email
+    return toDisplayUsername(owner.username, owner.Username);
+  }
+
+  function hostIdFromOwner(owner) {
+    owner = unwrapOwner(owner);
+    if (!owner) return null;
+    return (
+      owner.host_id ||
+      owner.home_owner_id ||
+      owner.homeowner_id ||
+      owner.id ||
+      null
+    );
+  }
+
+  function getHomeOwnerId() {
+    const savedId = localStorage.getItem("pmr_home_owner_id");
+    if (savedId) return savedId;
+
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const id = hostIdFromOwner(user);
+      if (id != null) return String(id);
+    } catch {
+      /* ignore */
+    }
+    return null;
+  }
+
+  function getSavedLoginEmail() {
+    const fromKey = localStorage.getItem("pmr_login_email");
+    if (fromKey) return String(fromKey).trim();
+    try {
+      return String(
+        JSON.parse(localStorage.getItem("user") || "{}")?.email || ""
+      ).trim();
+    } catch {
+      return "";
+    }
+  }
+
+  function clearAuthStorage() {
+    [
+      "pmr_token",
+      "pmr_refresh",
+      "pmr_home_owner_id",
+      "pmr_login_email",
+      "loggedInUser",
+      "user"
+    ].forEach((key) => {
+      try {
+        localStorage.removeItem(key);
+      } catch {
+        /* ignore */
+      }
+    });
+  }
+
+  async function initHeaderUser() {
+    const token = localStorage.getItem("pmr_token");
+
+    // WordPress keeps localStorage across visits — hide name unless logged in
+    if (!token) {
+      clearHeaderUserName();
+      return "";
+    }
+
+    let username = "";
+
+    try {
+      const stored = JSON.parse(localStorage.getItem("user") || "{}");
+      username = displayNameFromOwner(stored);
+    } catch {
+      /* ignore */
+    }
+
+    if (!username) {
+      username = toDisplayUsername(localStorage.getItem("loggedInUser"));
+    }
+
+    if (!username) {
+      try {
+        const claims = claimsFromJwt(token) || {};
+        // Never use claims.name (full name) or email-as-username
+        username = toDisplayUsername(
+          claims.username,
+          claims.preferred_username,
+          claims.user_name
+        );
+        const hostId =
+          claims.host_id ||
+          claims.home_owner_id ||
+          claims.homeowner_id ||
+          null;
+        if (hostId != null) {
+          localStorage.setItem("pmr_home_owner_id", String(hostId));
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+
+    // Drop polluted cache (email / full name left by older login code)
+    if (!username) {
+      try {
+        localStorage.removeItem("loggedInUser");
+      } catch {
+        /* ignore */
+      }
+      clearHeaderUserName();
+      return "";
+    }
+
+    updateUserName(username);
+    return username;
+  }
+
+  function getOverlayElement(overlayId) {
+    if (overlayId) {
+      return document.getElementById(overlayId);
+    }
+    return (
+      document.getElementById("sidebarOverlay") ||
+      document.getElementById("overlay")
+    );
+  }
+
+  function initSidebar(options = {}) {
+    const {
+      mobileOnly = false,
+      lockBodyScroll = false,
+      overlayId = null
+    } = options;
+
+    const sidebar = document.getElementById("sidebar");
+    const overlay = getOverlayElement(overlayId);
+    const openBtn = document.getElementById("openSidebar");
+    const closeBtn = document.getElementById("closeSidebar");
+
+    if (!sidebar) return;
+
+    function isMobile() {
+      return window.innerWidth < 768;
+    }
+
+    function openSidebarMenu() {
+      if (mobileOnly && !isMobile()) return;
+
+      sidebar.classList.remove("-translate-x-full");
+      if (overlay) overlay.classList.remove("hidden");
+      if (lockBodyScroll) {
+        document.body.classList.add("overflow-hidden");
+      }
+    }
+
+    function closeSidebarMenu() {
+      if (mobileOnly && !isMobile()) return;
+
+      sidebar.classList.add("-translate-x-full");
+      if (overlay) overlay.classList.add("hidden");
+      if (lockBodyScroll) {
+        document.body.classList.remove("overflow-hidden");
+      }
+    }
+
+    if (openBtn) {
+      openBtn.addEventListener("click", openSidebarMenu);
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeSidebarMenu);
+    }
+
+    if (overlay) {
+      overlay.addEventListener("click", closeSidebarMenu);
+    }
+
+    if (mobileOnly) {
+      window.addEventListener("resize", () => {
+        if (!isMobile()) {
+          sidebar.classList.remove("-translate-x-full");
+          if (overlay) overlay.classList.add("hidden");
+          document.body.classList.remove("overflow-hidden");
+        } else {
+          sidebar.classList.add("-translate-x-full");
+        }
+      });
+    }
+  }
+
+  async function initPortalPage(options = {}) {
+    await initHeaderUser();
+    initSidebar(options);
+  }
+
+  EGP.toDisplayUsername = toDisplayUsername;
+  EGP.updateUserName = updateUserName;
+  EGP.clearHeaderUserName = clearHeaderUserName;
+  EGP.clearAuthStorage = clearAuthStorage;
+  EGP.getSavedLoginEmail = getSavedLoginEmail;
+  EGP.getHomeOwnerId = getHomeOwnerId;
+  EGP.initHeaderUser = initHeaderUser;
+  EGP.initSidebar = initSidebar;
+  EGP.initPortalPage = initPortalPage;
+
+  window.EGP = EGP;
+
+  // Logout must clear localStorage — otherwise WordPress still shows the old name
+  document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("egpLogoutBtn");
+    if (!logoutBtn) return;
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      clearAuthStorage();
+      clearHeaderUserName();
+      window.location.href = "https://eventgarageparking.net/register/";
+    });
+  });
+})(window);
+
+</script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  EGP.initPortalPage();
+  if (window.EGP && typeof EGP.initPortalPage === "function") {
+    EGP.initPortalPage().catch((err) => console.error("Portal init error:", err));
+  }
+  bindEarningsFilter();
+  loadEarningsPage();
 });
+
+const RESERVATIONS_API = "https://eventgarageparking.online/api/reservations/";
+const EVENTS_API = "https://eventgarageparking.online/api/events/";
+const FETCH_TIMEOUT_MS = 12000;
+
+let activeEarningsFilter = "all";
+let earningsLoggedIn = false;
+let reservationsCache = [];
+let eventsMapCache = {};
+
+function getAuthHeaders() {
+  const token = localStorage.getItem("pmr_token") || "";
+  const headers = { Accept: "application/json" };
+  if (token) {
+    headers["X-Auth-Token"] = token;
+    headers["Authorization"] = "Bearer " + token;
+  }
+  return { token, headers };
+}
+
+function getHomeOwnerId(token) {
+  if (typeof EGP !== "undefined" && EGP.getHomeOwnerId) {
+    const id = EGP.getHomeOwnerId();
+    if (id) return String(id);
+  }
+  const saved = localStorage.getItem("pmr_home_owner_id");
+  if (saved) return String(saved);
+  try {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const id =
+      user?.host_id || user?.home_owner_id || user?.homeowner_id || user?.id;
+    if (id != null) return String(id);
+  } catch {
+    /* ignore */
+  }
+  try {
+    const part = String(token || "").split(".")[1];
+    if (!part) return null;
+    const claims = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/")));
+    const id = claims.host_id || claims.home_owner_id || claims.homeowner_id;
+    return id != null ? String(id) : null;
+  } catch {
+    return null;
+  }
+}
+
+function listFromResponse(data) {
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.results)) return data.results;
+  if (Array.isArray(data?.data)) return data.data;
+  return [];
+}
+
+async function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function formatMoney(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num)) return "$0.00";
+  return num.toLocaleString("en-US", { style: "currency", currency: "USD" });
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function reservationPrice(r) {
+  if (!r || typeof r !== "object") return 0;
+  for (const value of [
+    r.base_price,
+    r.outside_parking_cost_1,
+    r.outside_parking_cost_2,
+    r.interior_parking_cost_1,
+    r.interior_parking_cost_2,
+    r.rush_hour_price,
+  ]) {
+    const num = Number(value);
+    if (Number.isFinite(num) && num > 0) return num;
+  }
+  return 0;
+}
+
+function normalizeStatus(status) {
+  return String(status || "").toLowerCase().trim();
+}
+
+function isCanceledReservation(r) {
+  return ["cancelled", "canceled", "refunded", "failed"].includes(
+    normalizeStatus(r?.status)
+  );
+}
+
+function reservationStatusBucket(status) {
+  const s = normalizeStatus(status);
+  if (["cancelled", "canceled", "refunded", "failed"].includes(s)) {
+    return "canceled";
+  }
+  if (["complete", "completed", "finished"].includes(s)) {
+    return "completed";
+  }
+  return "upcoming";
+}
+
+function normalizeLocalTime(time) {
+  const raw = String(time || "").trim();
+  if (!raw) return "00:00:00";
+  const ampm = raw.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i);
+  if (ampm) {
+    let h = parseInt(ampm[1], 10);
+    const mer = ampm[4].toUpperCase();
+    if (mer === "PM" && h < 12) h += 12;
+    if (mer === "AM" && h === 12) h = 0;
+    return `${String(h).padStart(2, "0")}:${ampm[2]}:${ampm[3] || "00"}`;
+  }
+  if (/^\d{1,2}:\d{2}:\d{2}/.test(raw)) {
+    const p = raw.split(":");
+    return `${String(p[0]).padStart(2, "0")}:${p[1]}:${p[2].slice(0, 2)}`;
+  }
+  if (/^\d{1,2}:\d{2}$/.test(raw)) {
+    const p = raw.split(":");
+    return `${String(p[0]).padStart(2, "0")}:${p[1]}:00`;
+  }
+  return "00:00:00";
+}
+
+/** Parse YYYY-MM-DD[ T]HH:MM[:SS] as wall-clock (ignore a trailing Z). */
+function parseWallClockMs(iso) {
+  if (iso == null) return NaN;
+  const raw = String(iso).trim();
+  if (!raw) return NaN;
+  const m = raw.match(
+    /^(\d{4})-(\d{2})-(\d{2})(?:[T\s](\d{1,2}):(\d{2})(?::(\d{2}))?)?/
+  );
+  if (m) {
+    return new Date(
+      +m[1],
+      +m[2] - 1,
+      +m[3],
+      +(m[4] || 0),
+      +(m[5] || 0),
+      +(m[6] || 0)
+    ).getTime();
+  }
+  const d = new Date(raw);
+  return d.getTime();
+}
+
+function eventLocalDateParts(ev) {
+  if (!ev || typeof ev !== "object") return null;
+  const localDate = String(ev.event_start_local_date || "").trim();
+  const dateMatch = localDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!dateMatch) return null;
+  const hasTime = String(ev.event_start_local_time || "").trim() !== "";
+  const t = normalizeLocalTime(ev.event_start_local_time);
+  const tp = t.split(":").map(Number);
+  return {
+    year: +dateMatch[1],
+    month: +dateMatch[2],
+    day: +dateMatch[3],
+    hour: tp[0] || 0,
+    minute: tp[1] || 0,
+    second: tp[2] || 0,
+    hasTime,
+    timeStr: t,
+    dateStr: `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}`,
+  };
+}
+
+function parseEventLocalMs(ev) {
+  const parts = eventLocalDateParts(ev);
+  if (parts) {
+    return new Date(
+      parts.year,
+      parts.month - 1,
+      parts.day,
+      parts.hour,
+      parts.minute,
+      parts.second
+    ).getTime();
+  }
+  const fromLocalAt = parseWallClockMs(
+    ev?.event_start_local_at || ev?.event_start_time || ""
+  );
+  if (Number.isFinite(fromLocalAt) && fromLocalAt > 0) return fromLocalAt;
+  return NaN;
+}
+
+function zonedWallClockToUtcMs(dateStr, timeStr, timeZone) {
+  if (!dateStr || !timeZone) return NaN;
+  const t = normalizeLocalTime(timeStr);
+  const [y, mo, d] = String(dateStr).split("-").map(Number);
+  const [hh, mm, ss] = t.split(":").map(Number);
+  if (![y, mo, d].every((n) => Number.isFinite(n))) return NaN;
+  const utcGuess = Date.UTC(y, mo - 1, d, hh || 0, mm || 0, ss || 0);
+  try {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hourCycle: "h23",
+    }).formatToParts(new Date(utcGuess));
+    const get = (type) => Number(parts.find((p) => p.type === type)?.value);
+    let hour = get("hour");
+    if (hour === 24) hour = 0;
+    const asUTC = Date.UTC(
+      get("year"),
+      get("month") - 1,
+      get("day"),
+      hour,
+      get("minute"),
+      get("second")
+    );
+    if (![asUTC, utcGuess].every((n) => Number.isFinite(n))) return NaN;
+    return utcGuess + (utcGuess - asUTC);
+  } catch {
+    return NaN;
+  }
+}
+
+function eventTimeZone(ev) {
+  return String(ev?.time_zone || ev?.timezone || "").trim();
+}
+
+/** True start instant — local Ticketmaster start, not UTC `date` (same as Listing). */
+function eventStartDate(ev) {
+  const parts = eventLocalDateParts(ev);
+  if (parts) {
+    const tz = eventTimeZone(ev);
+    if (tz) {
+      const zoned = zonedWallClockToUtcMs(parts.dateStr, parts.timeStr, tz);
+      if (Number.isFinite(zoned) && zoned > 0) return new Date(zoned);
+    }
+    const localMs = parseEventLocalMs(ev);
+    if (Number.isFinite(localMs) && localMs > 0) return new Date(localMs);
+  }
+  if (ev?.date) {
+    const utc = new Date(ev.date);
+    if (!Number.isNaN(utc.getTime())) return utc;
+  }
+  const localMs = parseEventLocalMs(ev);
+  if (Number.isFinite(localMs) && localMs > 0) return new Date(localMs);
+  return null;
+}
+
+/** Local wall-clock instant for filters/sort (no UTC day shift). */
+function eventLocalStartMs(ev) {
+  const localMs = parseEventLocalMs(ev);
+  if (Number.isFinite(localMs) && localMs > 0) return localMs;
+  const d = eventStartDate(ev);
+  return d ? d.getTime() : 0;
+}
+
+/** Display Event Start — same string as Listing (local date/time, never UTC `date`). */
+function formatEventWhen(ev) {
+  const parts = eventLocalDateParts(ev);
+  if (parts) {
+    const datePart = new Date(parts.year, parts.month - 1, parts.day).toLocaleDateString(
+      "en-US",
+      {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }
+    );
+    if (!parts.hasTime) return datePart;
+    const timePart = new Date(
+      2000,
+      0,
+      1,
+      parts.hour,
+      parts.minute
+    ).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+    return `${datePart} • ${timePart}`;
+  }
+
+  const fromLocalAt = parseWallClockMs(
+    ev?.event_start_local_at || ev?.event_start_time || ""
+  );
+  if (Number.isFinite(fromLocalAt) && fromLocalAt > 0) {
+    const d = new Date(fromLocalAt);
+    return (
+      d.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }) +
+      " • " +
+      d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
+    );
+  }
+
+  if (ev?.date) {
+    const d = new Date(ev.date);
+    if (!Number.isNaN(d.getTime())) {
+      const tz = eventTimeZone(ev);
+      const opts = {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      };
+      if (tz) opts.timeZone = tz;
+      return d.toLocaleString("en-US", opts);
+    }
+  }
+
+  return "Date TBD";
+}
+
+function isEventPast(ev, now = Date.now()) {
+  const d = eventStartDate(ev);
+  if (!d) return false;
+  const graceMs = 6 * 60 * 60 * 1000;
+  return d.getTime() < now - graceMs;
+}
+
+function eventYearMonth(ev, fallbackIso) {
+  const parts = eventLocalDateParts(ev);
+  if (parts) return { year: parts.year, month: parts.month };
+  if (fallbackIso) {
+    const raw = String(fallbackIso).trim();
+    const m = raw.match(/^(\d{4})-(\d{2})/);
+    if (m) return { year: Number(m[1]), month: Number(m[2]) };
+  }
+  return null;
+}
+
+function reservationEventId(row) {
+  if (!row || typeof row !== "object") return null;
+  if (row.event_id != null && String(row.event_id).trim() !== "") {
+    return String(row.event_id).trim();
+  }
+  const nested = row.event && typeof row.event === "object" ? row.event : null;
+  if (nested?.event_id != null && String(nested.event_id).trim() !== "") {
+    return String(nested.event_id).trim();
+  }
+  return null;
+}
+
+function eventForReservation(reservation, eventsMap) {
+  const eid = reservationEventId(reservation);
+  if (eid && eventsMap && eventsMap[eid]) return eventsMap[eid];
+  if (reservation?.event && typeof reservation.event === "object") {
+    return reservation.event;
+  }
+  return null;
+}
+
+function synthesizeEventFromReservation(r) {
+  if (!r || typeof r !== "object") return null;
+  const nested = r.event && typeof r.event === "object" ? r.event : null;
+  const fallbackId = reservationEventId(r) || (r.reservation_id != null ? `res-${r.reservation_id}` : null);
+  if (fallbackId == null) return null;
+
+  const hold = String(r.starts_at || r.purchase_date || "").trim();
+  const holdMatch = hold.match(
+    /^(\d{4})-(\d{2})-(\d{2})(?:[T\s](\d{1,2}):(\d{2})(?::(\d{2}))?)?/
+  );
+  const holdDate = holdMatch
+    ? `${holdMatch[1]}-${holdMatch[2]}-${holdMatch[3]}`
+    : "";
+  const holdTime =
+    holdMatch && holdMatch[4]
+      ? `${String(holdMatch[4]).padStart(2, "0")}:${holdMatch[5]}:${holdMatch[6] || "00"}`
+      : "";
+
+  return {
+    ...(nested || {}),
+    event_id: fallbackId,
+    name: nested?.name || r.event_name || "Reserved event",
+    event_start_local_date: nested?.event_start_local_date || holdDate,
+    event_start_local_time: nested?.event_start_local_time || holdTime,
+    event_start_local_at: nested?.event_start_local_at || hold,
+    date: nested?.date || r.starts_at || r.purchase_date,
+    time_zone: nested?.time_zone || nested?.timezone || r.time_zone || "",
+  };
+}
+
+/** Payout date uses the same Event Start string as Listing. */
+function formatPayoutWhen(reservation, eventsMap) {
+  const ev =
+    eventForReservation(reservation, eventsMap) ||
+    synthesizeEventFromReservation(reservation);
+  if (ev) {
+    const formatted = formatEventWhen(ev);
+    if (formatted && formatted !== "Date TBD") return formatted;
+  }
+  return "Date TBD";
+}
+
+function setEarningsStatus(message, isError) {
+  const el = document.getElementById("earningsStatus");
+  if (!el) return;
+  if (!message) {
+    el.textContent = "";
+    el.classList.add("hidden");
+    return;
+  }
+  el.textContent = message;
+  el.classList.remove("hidden");
+  el.classList.toggle("text-red-600", !!isError);
+  el.classList.toggle("text-gray-500", !isError);
+}
+
+function setCardAmounts(thisMonth, lastMonth, total) {
+  const thisEl = document.getElementById("earningsThisMonth");
+  const lastEl = document.getElementById("earningsLastMonth");
+  const totalEl = document.getElementById("earningsTotal");
+  if (thisEl) thisEl.textContent = formatMoney(thisMonth);
+  if (lastEl) lastEl.textContent = formatMoney(lastMonth);
+  if (totalEl) totalEl.textContent = formatMoney(total);
+}
+
+async function fetchHostReservations(headers, hostId) {
+  const res = await fetchWithTimeout(RESERVATIONS_API, {
+    method: "GET",
+    headers,
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(
+      `Reservations failed (${res.status})${body ? ": " + body.slice(0, 120) : ""}`
+    );
+  }
+  return listFromResponse(await res.json()).filter(
+    (r) => r && String(r.host_id) === String(hostId)
+  );
+}
+
+async function fetchEventsMap(reservations, headers) {
+  const ids = [
+    ...new Set(
+      (reservations || [])
+        .map((r) => reservationEventId(r))
+        .filter((id) => id != null && id !== "")
+    ),
+  ];
+  const map = {};
+  await Promise.all(
+    ids.slice(0, 60).map(async (eid) => {
+      try {
+        const res = await fetchWithTimeout(`${EVENTS_API}${encodeURIComponent(eid)}/`, {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        });
+        if (!res.ok) return;
+        const ev = await res.json();
+        const record =
+          ev?.data && typeof ev.data === "object" && !Array.isArray(ev.data)
+            ? ev.data
+            : ev;
+        if (record?.event_id != null) map[String(record.event_id)] = record;
+      } catch {
+        /* ignore */
+      }
+    })
+  );
+  return map;
+}
+
+/**
+ * Completed booking = reservation status completed, OR still-active booking
+ * whose event has already passed (same rule as Listing page).
+ */
+function isCompletedBooking(r, eventsMap) {
+  if (!r || isCanceledReservation(r)) return false;
+  const bucket = reservationStatusBucket(r.status);
+  if (bucket === "completed") return true;
+  if (bucket !== "upcoming") return false;
+  const ev = eventForReservation(r, eventsMap);
+  return !!(ev && isEventPast(ev));
+}
+
+/**
+ * Frontend payout status from Reservation model:
+ * - status completed (or completed event / past reserved booking) → Paid
+ * - otherwise → Pending
+ */
+function payoutStatusLabel(r, eventsMap) {
+  if (!r || isCanceledReservation(r)) return "Pending";
+  if (reservationStatusBucket(r.status) === "completed") return "Paid";
+  // Same "Completed Events" rule as Listing: past event + active booking → Paid
+  if (isCompletedBooking(r, eventsMap || {})) return "Paid";
+  return "Pending";
+}
+
+function rangeStartMs(key) {
+  const now = Date.now();
+  const day = 24 * 60 * 60 * 1000;
+  if (key === "14d") return now - 14 * day;
+  if (key === "30d") return now - 30 * day;
+  if (key === "6m") return now - 183 * day;
+  if (key === "12m") return now - 365 * day;
+  return null;
+}
+
+function payoutSortTime(reservation, eventsMap) {
+  // Prefer local event start (same as Booking) so filters match displayed dates
+  const ev = eventForReservation(reservation, eventsMap);
+  if (ev) {
+    const localMs = eventLocalStartMs(ev);
+    if (localMs > 0) return localMs;
+  }
+  for (const iso of [reservation?.purchase_date]) {
+    if (!iso) continue;
+    const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})[T\s]?(\d{2})?:?(\d{2})?/);
+    if (m) {
+      const d = new Date(
+        Number(m[1]),
+        Number(m[2]) - 1,
+        Number(m[3]),
+        Number(m[4] || 0),
+        Number(m[5] || 0)
+      );
+      if (!Number.isNaN(d.getTime())) return d.getTime();
+    }
+    const t = new Date(iso).getTime();
+    if (Number.isFinite(t) && t > 0) return t;
+  }
+  return 0;
+}
+
+function inActiveDateRange(ts) {
+  const start = rangeStartMs(activeEarningsFilter);
+  if (start == null) return true;
+  if (!Number.isFinite(ts) || ts <= 0) return true;
+  return ts >= start;
+}
+
+function filterPreviewRows() {
+  const rows = document.querySelectorAll(".payout-preview-row");
+  if (!rows.length) return;
+  const start = rangeStartMs(activeEarningsFilter);
+  rows.forEach((row) => {
+    const ts = Number(row.getAttribute("data-ts") || 0);
+    const show = start == null || !ts || ts >= start;
+    row.classList.toggle("hidden", !show);
+  });
+}
+
+function bindEarningsFilter() {
+  const select = document.getElementById("earningsFilterSelect");
+  if (!select || select.dataset.bound === "1") return;
+  select.dataset.bound = "1";
+  select.addEventListener("change", () => {
+    activeEarningsFilter = select.value || "30d";
+    applyEarningsFilter();
+  });
+  select.value = activeEarningsFilter;
+  applyEarningsFilter();
+}
+
+function applyEarningsFilter() {
+  const select = document.getElementById("earningsFilterSelect");
+  if (select) select.value = activeEarningsFilter;
+
+  if (!earningsLoggedIn) {
+    filterPreviewRows();
+    return;
+  }
+
+  renderRecentPayouts(reservationsCache, eventsMapCache);
+}
+
+function computeMonthlyEarnings(completedReservations, eventsMap) {
+  const now = new Date();
+  const thisY = now.getFullYear();
+  const thisM = now.getMonth() + 1;
+  let lastY = thisY;
+  let lastM = thisM - 1;
+  if (lastM < 1) {
+    lastM = 12;
+    lastY -= 1;
+  }
+
+  let thisMonth = 0;
+  let lastMonth = 0;
+  let total = 0;
+
+  for (const r of completedReservations || []) {
+    const price = reservationPrice(r);
+    total += price;
+    const ev = eventForReservation(r, eventsMap);
+    const ym = eventYearMonth(ev, r.purchase_date);
+    if (!ym) continue;
+    if (ym.year === thisY && ym.month === thisM) thisMonth += price;
+    else if (ym.year === lastY && ym.month === lastM) lastMonth += price;
+  }
+
+  return { thisMonth, lastMonth, total };
+}
+
+function payoutRowHtml(dateText, reservationId, earning, status, isLast) {
+  const statusClass =
+    status === "Paid" ? "text-green-600" : "text-amber-600";
+  const border = isLast ? "" : "border-b";
+  return (
+    '<div class="w-full grid grid-cols-4 md:px-2 py-3 ' +
+    border +
+    '">' +
+    '<div class="flex items-center justify-center md:justify-start text-gray-500 text-[12px] sm:text-sm leading-snug pr-1">' +
+    escapeHtml(dateText) +
+    "</div>" +
+    '<div class="flex items-center justify-center text-[12px] sm:text-sm text-gray-700">' +
+    escapeHtml(reservationId) +
+    "</div>" +
+    '<div class="flex items-center justify-center font-bold text-[13px] sm:text-base">' +
+    escapeHtml(earning) +
+    "</div>" +
+    '<div class="flex items-center justify-center md:justify-end text-[12px] sm:text-sm font-medium ' +
+    statusClass +
+    '">' +
+    escapeHtml(status) +
+    "</div>" +
+    "</div>"
+  );
+}
+
+/**
+ * Recent Payouts come from the Reservation endpoint (host bookings).
+ * Shows Reservation ID. Status: Pending → Paid once reservation/event is completed.
+ */
+function renderRecentPayouts(reservations, eventsMap) {
+  const listEl = document.getElementById("recentPayoutsList");
+  if (!listEl) return;
+
+  const map = eventsMap || {};
+
+  const rows = (reservations || [])
+    .filter((r) => r && !isCanceledReservation(r))
+    .map((reservation) => ({
+      reservation,
+      ts: payoutSortTime(reservation, map),
+    }))
+    .filter((row) => inActiveDateRange(row.ts))
+    .sort((a, b) => b.ts - a.ts);
+
+  if (!rows.length) {
+    listEl.innerHTML =
+      '<p class="px-1 py-6 text-sm text-gray-500 text-center">No payouts in this date range.</p>';
+    return;
+  }
+
+  listEl.innerHTML = rows
+    .map((row, i) => {
+      const { reservation } = row;
+      const rid = reservation?.reservation_id ?? reservation?.id;
+      const dateText = formatPayoutWhen(reservation, map);
+      const reservationId = rid != null ? String(rid) : "—";
+      const earning = formatMoney(reservationPrice(reservation || {}));
+      const status = payoutStatusLabel(reservation, map);
+      return payoutRowHtml(
+        dateText,
+        reservationId,
+        earning,
+        status,
+        i === rows.length - 1
+      );
+    })
+    .join("");
+}
+
+async function loadEarningsPage() {
+  const { token, headers } = getAuthHeaders();
+
+  // Not logged in — keep the static HTML preview as-is (same as Listing page)
+  if (!token) return;
+
+  const hostId = getHomeOwnerId(token);
+  if (!hostId) {
+    setEarningsStatus("Host account not found. Please sign in again.", true);
+    return;
+  }
+
+  setEarningsStatus("Loading earnings…", false);
+
+  try {
+    const reservations = await fetchHostReservations(headers, hostId);
+
+    const eventsMap = await fetchEventsMap(reservations, headers);
+    const completed = (reservations || []).filter((r) =>
+      isCompletedBooking(r, eventsMap)
+    );
+    const { thisMonth, lastMonth, total } = computeMonthlyEarnings(
+      completed,
+      eventsMap
+    );
+
+    reservationsCache = reservations || [];
+    eventsMapCache = eventsMap || {};
+    earningsLoggedIn = true;
+
+    setCardAmounts(thisMonth, lastMonth, total);
+    setEarningsStatus("", false);
+    applyEarningsFilter();
+  } catch (err) {
+    console.error("Earnings load error:", err);
+    setEarningsStatus(
+      err?.name === "AbortError"
+        ? "Request timed out. Check your connection and try again."
+        : err?.message || "Could not load earnings. Try again later.",
+      true
+    );
+  }
+}
 </script>
 
 </body>

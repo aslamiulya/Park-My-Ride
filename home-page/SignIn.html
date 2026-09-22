@@ -39,23 +39,128 @@
     body {
       font-family: var(--font-family-open-sans);
       overflow-x: hidden;
-      
-  min-height: 100vh;
-  background: radial-gradient(
-    circle at bottom right,
-    rgba(255,255,255,0.12),
-    rgba(0,125,181,0.35) 35%,
-    #00608a 70%,
-    #004f73
-  );
-}
-    
+      min-height: 100vh;
+      background: radial-gradient(
+        circle at bottom right,
+        rgba(255,255,255,0.12),
+        rgba(0,125,181,0.35) 35%,
+        #00608a 70%,
+        #004f73
+      );
+    }
+
+    .frame-3-15 .input-focus:focus-within {
+      border-color: #007db5;
+      box-shadow: 0 0 0 3px rgba(0, 125, 181, 0.12);
+    }
+
+    .password-error-box {
+      border-color: #dc2626 !important;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+    }
+
+    @keyframes shake-x {
+      0%, 100% { transform: translateX(0); }
+      15% { transform: translateX(-8px); }
+      30% { transform: translateX(8px); }
+      45% { transform: translateX(-6px); }
+      60% { transform: translateX(6px); }
+      75% { transform: translateX(-3px); }
+      90% { transform: translateX(3px); }
+    }
+
+    .shake-x {
+      animation: shake-x 0.5s ease-in-out;
+    }
+
   </style>
 </head>
 
 
 
 <body >
+<!-- EGP PAGE LOADER -->
+<div id="egp-page-loader" role="status" aria-live="polite" aria-label="Loading">
+  <div class="egp-loader-box">
+    <div class="egp-loader-badge">EGP</div>
+    <span class="egp-loader-ring" aria-hidden="true"></span>
+  </div>
+</div>
+<style>
+  #egp-page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  #egp-page-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .egp-loader-box {
+    position: relative;
+    width: 118px;
+    height: 118px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .egp-loader-badge {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    background: #007DB5;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  .egp-loader-ring {
+    position: absolute;
+    inset: 0;
+    border: 4px solid #e6eef3;
+    border-top-color: #007DB5;
+    border-radius: 50%;
+    animation: egp-spin 0.8s linear infinite;
+  }
+  @keyframes egp-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+<script>
+  (function () {
+    var loader = document.getElementById("egp-page-loader");
+    if (!loader) return;
+    var shownAt = Date.now();
+    function hide() {
+      if (!loader || loader.classList.contains("is-hidden")) return;
+      var wait = Math.max(0, 700 - (Date.now() - shownAt));
+      setTimeout(function () {
+        if (!loader || loader.classList.contains("is-hidden")) return;
+        loader.classList.add("is-hidden");
+        setTimeout(function () {
+          if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 400);
+      }, wait);
+    }
+    if (document.readyState === "complete") hide();
+    else window.addEventListener("load", hide);
+    setTimeout(hide, 8000);
+  })();
+</script>
+
 
   <div class="node-1 relative z-10 w-full min-h-screen flex flex-col" >
 
@@ -91,11 +196,16 @@
                  Help
              </a>
 
-   
+            <span class="opacity-40">|</span>
+
+            <a href="https://eventgarageparking.net/contact-us/"
+              class="cursor-pointer hover:text-white transition duration-300">
+              Contact
+            </a>
 
             <span class="opacity-40">|</span>
 
-            <a href="https://eventgarageparking.net/"
+            <a href="https://eventgarageparking.net/home-owner-listing-page/"
               class="cursor-pointer hover:text-white transition duration-300">
               Homeowner Portal
             </a>
@@ -139,7 +249,14 @@
 
             <span>|</span>
 
-            <a href="https://eventgarageparking.net/"
+            <a href="https://eventgarageparking.net/contact-us/"
+              class="hover:text-white transition duration-300">
+              Contact
+            </a>
+
+            <span>|</span>
+
+            <a href="https://eventgarageparking.net/home-owner-listing-page/"
               class="hover:text-white transition duration-300">
               Homeowner Portal
             </a>
@@ -153,7 +270,7 @@
     </header>
 
     <!-- MAIN -->
-    <main class="flex-1 flex items-center justify-center px-4 py-10 sm:py-12 md:py-16">
+    <main class="flex-1 flex items-center justify-center px-4 pt-12 pb-12 sm:pt-14 sm:pb-14 md:pt-16 md:pb-16">
 
       <!-- LOGIN CARD -->
       <div
@@ -161,44 +278,44 @@
         relative
         z-20
         w-full
-        sm:w-[90%]
-        md:w-[80%]
-        lg:w-[60%]
-        xl:w-[500px]
+        max-w-[460px]
+        mx-auto
         bg-white
         rounded-[24px]
-        p-5
-        sm:p-6
-        md:p-8
-        lg:p-10
+        px-7
+        pt-9
+        pb-8
+        sm:px-9
+        sm:pt-10
+        sm:pb-9
         shadow-[0_20px_60px_rgba(0,0,0,0.18)]
         flex
         flex-col
-        gap-6
+        gap-7
         backdrop-blur-sm">
 
         <!-- TITLE -->
         <div>
 
           <p
-            class="text-16 font-bold text-[30px] sm:text-[34px] md:text-[38px] lg:text-[42px] text-gray-900"
+            class="text-16 font-semibold text-[28px] sm:text-[32px] text-gray-900 leading-snug tracking-tight"
             style="font-family: var(--font-family-roboto);">
             Welcome Back!
           </p>
 
-          <p class="text-17 text-[16px] text-gray-500 mt-1">
+          <p class="text-17 text-[15px] sm:text-[16px] text-gray-500 mt-2.5 leading-relaxed font-normal">
             Please enter your details.
           </p>
 
         </div>
 
         <!-- FORM -->
-        <form id="loginForm" class="credentials-18 flex flex-col gap-6">
+        <form id="loginForm" class="credentials-18 flex flex-col gap-5">
 
           <!-- USERNAME -->
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-2.5">
 
-           <label class="text-[15px] font-semibold text-gray-700">
+           <label class="text-[14px] font-medium text-gray-600">
             Email
           </label>
 
@@ -208,7 +325,7 @@
               border-gray-300
               rounded-[12px]
               px-4
-              py-[14px]
+              py-[13px]
               flex
               items-center
               gap-[10px]
@@ -222,7 +339,7 @@
                 name="email"
                 autocomplete="email"
                 placeholder="Enter your Email"
-                class="w-full outline-none border-none focus:outline-none focus:ring-0 bg-transparent text-[16px]"
+                class="w-full outline-none border-none focus:outline-none focus:ring-0 bg-transparent text-[15px] text-gray-800 placeholder:text-gray-400"
                 required />
 
             </div>
@@ -230,21 +347,22 @@
           </div>
 
           <!-- PASSWORD -->
-          <div class="password-rem-21 flex flex-col gap-3">
+          <div class="password-rem-21 flex flex-col gap-3.5">
 
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2.5">
 
-              <label class="text-[15px] font-semibold text-gray-700">
+              <label class="text-[14px] font-medium text-gray-600">
                 Password
               </label>
 
               <div
+                id="passwordBox"
                 class="password-22
                 border
                 border-gray-300
                 rounded-[12px]
                 px-4
-                py-[14px]
+                py-[13px]
                 flex
                 items-center
                 justify-between
@@ -259,7 +377,7 @@
                   name="password"
                   autocomplete="current-password"
                   placeholder="Enter your password"
-                  class="w-full outline-none border-none focus:outline-none focus:ring-0 bg-transparent text-[16px]"
+                  class="w-full outline-none border-none focus:outline-none focus:ring-0 bg-transparent text-[15px] text-gray-800 placeholder:text-gray-400"
                   required />
 
                 <button
@@ -274,10 +392,15 @@
 
               </div>
 
+              <p id="passwordError"
+                 class="hidden text-red-600 text-sm font-semibold text-center">
+                Incorrect password
+              </p>
+
             </div>
 
             <!-- REMEMBER -->
-            <div class="remember-26 flex items-center justify-between gap-3 flex-wrap">
+            <div class="remember-26 flex items-center justify-between gap-3 flex-wrap mb-1 pt-1">
 
               <label class="flex items-center gap-2 cursor-pointer">
 
@@ -285,20 +408,26 @@
                   type="checkbox"
                   class="accent-[#007db5] w-4 h-4" />
 
-                <span class="text-[15px] text-gray-700">
+                <span class="text-[14px] text-gray-600 font-normal">
                   Remember me
                 </span>
 
               </label>
 
               <a
-                href="passwordReset.html"
-                class="text-[15px] text-[#007db5] hover:underline">
+                id="forgotPasswordLink"
+                href="https://eventgarageparking.net/resetpassword/"
+                class="text-[14px] text-[#007db5] hover:underline font-medium">
                 Forgot password?
               </a>
 
             </div>
 
+          </div>
+
+          <!-- reCAPTCHA -->
+          <div class="flex justify-center">
+            <div id="recaptchaWidget"></div>
           </div>
 
           <!-- LOGIN BUTTON -->
@@ -312,16 +441,17 @@
             transition-all
             duration-300
             rounded-[12px]
-            py-[14px]
+            py-[13px]
             px-[10px]
             flex
             justify-center
             items-center
-            shadow-lg
+            shadow-md
             text-white
-            text-[18px]
-            sm:text-[20px]
-            font-bold">
+            text-[16px]
+            sm:text-[17px]
+            font-semibold
+            tracking-wide">
 
             Login
 
@@ -334,106 +464,8 @@
           id="statusMessage"
           class="hidden rounded-lg p-3 text-sm font-medium"></div>
 
-        <!-- OR -->
-      <div class="other-logins-33 w-full">
-        
-          <div class="or-34 flex items-center gap-4">
-        
-            <hr class="flex-1 border-t border-[rgba(77,77,77,0.2)]" />
-        
-            <p
-              class="text-36 text-[16px] text-[#4d4d4d]"
-              style="font-family: var(--font-family-noto-sans);">
-              Or
-            </p>
-        
-            <hr class="flex-1 border-t border-[rgba(77,77,77,0.2)]" />
-        
-          </div>
-        
-        </div>
-
-       
-
-        <!-- FACEBOOK -->
-        <a
-          href="https://www.facebook.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="username-40
-          w-full
-          border
-          border-gray-200
-          rounded-[12px]
-          px-4
-          py-[14px]
-          flex
-          justify-center
-          items-center
-          hover:bg-[#f5f5f5]
-          transition-all
-          duration-300">
-
-          <div class="group-107-41 flex items-center gap-3">
-
-            <div class="platform-facebook-color-original flex items-center gap-1">
-
-              <i
-                class="fa-brands fa-facebook text-[22px]"
-                style="color:#1877F2;"></i>
-
-            </div>
-
-            <p class="text-42 text-[14px] sm:text-[16px] font-medium text-gray-700">
-              Continue with Facebook
-            </p>
-
-          </div>
-
-        </a>
-
-        <!-- GOOGLE -->
-        <a
-          href="https://accounts.google.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="username-46
-          w-full
-          border
-          border-gray-200
-          rounded-[12px]
-          px-4
-          py-[14px]
-          flex
-          justify-center
-          items-center
-          hover:bg-[#f5f5f5]
-          transition-all
-          duration-300">
-
-          <div class="group-108-47 flex items-center gap-3">
-
-            <div class="group-50 flex items-center gap-1">
-
-              <i
-                class="fa-brands fa-google text-[22px]"
-                style="color:#DB4437;"></i>
-
-            </div>
-
-            <div class="group-107-48">
-
-              <p class="text-49 text-[14px] sm:text-[16px] font-medium text-gray-700">
-                Continue with Google
-              </p>
-
-            </div>
-
-          </div>
-
-        </a>
-         <!-- SIGNUP -->
-        <p class="text-39 text-center text-[15px] text-gray-600">
+        <!-- SIGNUP -->
+        <p class="text-39 text-center text-[14px] text-gray-600 leading-relaxed">
 
           Don’t have an account?
 
@@ -441,7 +473,7 @@
            href="https://42bs8c.share-na2.hsforms.com/2h9ic7f91RPiKzrbRzkwrmg"
            target="_blank"
            rel="noopener noreferrer"
-           class="underline font-semibold text-[#007db5] hover:text-[#005b9a]">
+           class="underline font-medium text-[#007db5] hover:text-[#005b9a]">
           Signup
         </a>
 
@@ -452,13 +484,44 @@
     </main>
 
   </div>
+
+<!-- Google reCAPTCHA v2 -->
+<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+
 <!-- JAVASCRIPT -->
 <script>
+  const RECAPTCHA_SITE_KEY = "6Le3pYEtAAAAAO-6NNAKHcr9Stgyc5SK0By3D7Jb";
+  let recaptchaWidgetId = null;
+
+  function onRecaptchaLoad() {
+    const el = document.getElementById("recaptchaWidget");
+    if (!el || !RECAPTCHA_SITE_KEY || RECAPTCHA_SITE_KEY === "YOUR_RECAPTCHA_SITE_KEY") return;
+
+    recaptchaWidgetId = grecaptcha.render(el, {
+      sitekey: RECAPTCHA_SITE_KEY,
+      theme: "light"
+    });
+  }
+
 document.addEventListener("DOMContentLoaded", () => {
   const passwordInput = document.getElementById("password");
   const togglePassword = document.getElementById("togglePassword");
   const loginForm = document.getElementById("loginForm");
   const statusMessage = document.getElementById("statusMessage");
+  const forgotPasswordLink = document.getElementById("forgotPasswordLink");
+  const passwordBox = document.getElementById("passwordBox");
+  const passwordError = document.getElementById("passwordError");
+
+  if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener("click", (e) => {
+      const typedEmail = document.getElementById("email")?.value.trim() || "";
+      if (!typedEmail) return;
+      e.preventDefault();
+      window.location.href =
+        "https://eventgarageparking.net/resetpassword/?email=" +
+        encodeURIComponent(typedEmail);
+    });
+  }
 
   // Helper for status messages
   function showStatus(message, type = "error") {
@@ -489,6 +552,42 @@ document.addEventListener("DOMContentLoaded", () => {
     statusMessage.textContent = message;
   }
 
+  function shakeEl(el) {
+    if (!el) return;
+    el.classList.remove("shake-x");
+    void el.offsetWidth;
+    el.classList.add("shake-x");
+  }
+
+  function clearPasswordError() {
+    if (passwordError) passwordError.classList.add("hidden");
+    if (passwordBox) passwordBox.classList.remove("password-error-box", "shake-x");
+    if (passwordError) passwordError.classList.remove("shake-x");
+  }
+
+  function showIncorrectPassword() {
+    if (statusMessage) statusMessage.classList.add("hidden");
+    if (passwordError) {
+      passwordError.textContent = "Incorrect password";
+      passwordError.classList.remove("hidden");
+      shakeEl(passwordError);
+    }
+    if (passwordBox) {
+      passwordBox.classList.add("password-error-box");
+      shakeEl(passwordBox);
+    }
+    if (passwordInput) passwordInput.focus();
+  }
+
+  function isWrongPasswordError(response, data) {
+    const status = response?.status;
+    if (status === 401 || status === 404) return true;
+    const text = JSON.stringify(data || {}).toLowerCase();
+    return /invalid|incorrect|password|credentials|unauthorized|not found/.test(
+      text
+    );
+  }
+
   // Password Toggle
   if (togglePassword && passwordInput) {
     const eyeIcon = togglePassword.querySelector("i");
@@ -512,8 +611,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const email = document.getElementById("email")?.value.trim() || "";
       const password = passwordInput?.value.trim() || "";
 
+      clearPasswordError();
+
       if (!email || !password) {
         showStatus("Please enter both email and password.");
+        return;
+      }
+
+      if (!RECAPTCHA_SITE_KEY || RECAPTCHA_SITE_KEY === "YOUR_RECAPTCHA_SITE_KEY") {
+        showStatus("reCAPTCHA is not configured. Add your Google site key first.");
+        return;
+      }
+
+      const recaptchaToken =
+        typeof grecaptcha !== "undefined"
+          ? grecaptcha.getResponse(recaptchaWidgetId ?? undefined)
+          : "";
+
+      if (!recaptchaToken) {
+        showStatus("Please complete the reCAPTCHA check.");
         return;
       }
 
@@ -537,7 +653,8 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify({
               email,
-              password
+              password,
+              recaptcha_token: recaptchaToken
             })
           }
         );
@@ -554,6 +671,55 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("FULL LOGIN DATA:", JSON.stringify(data, null, 2));
 
         if (response.ok) {
+          const newEmail = String(email || "").toLowerCase().trim();
+          let mediaCache = {};
+          try {
+            mediaCache =
+              JSON.parse(localStorage.getItem("pmr_profile_media_v1") || "{}") ||
+              {};
+          } catch (err) {
+            mediaCache = {};
+          }
+          const cacheEmail = String(mediaCache._owner_email || "")
+            .toLowerCase()
+            .trim();
+          const cacheHostId = String(mediaCache._owner_id || "").trim();
+          const prevEmail = String(localStorage.getItem("pmr_login_email") || "")
+            .toLowerCase()
+            .trim();
+          const prevHostId = String(
+            localStorage.getItem("pmr_home_owner_id") || ""
+          ).trim();
+
+          // Same account → keep uploaded image cache; different account → wipe it
+          const sameAccount =
+            (newEmail && (newEmail === cacheEmail || newEmail === prevEmail)) ||
+            (prevHostId && cacheHostId && prevHostId === cacheHostId);
+
+          [
+            "pmr_token",
+            "pmr_refresh",
+            "pmr_home_owner_id",
+            "pmr_login_email",
+            "loggedInUser",
+            "user",
+            "pmr_owner_patch_blocked"
+          ].forEach((key) => {
+            try {
+              localStorage.removeItem(key);
+            } catch (err) {
+              /* ignore */
+            }
+          });
+
+          if (!sameAccount) {
+            try {
+              localStorage.removeItem("pmr_profile_media_v1");
+              mediaCache = {};
+            } catch (err) {
+              /* ignore */
+            }
+          }
 
           // Login API returns only { access, refresh } — no profile payload
           const token =
@@ -572,6 +738,89 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("pmr_refresh", data.refresh);
           }
 
+          const mustChangePassword = Boolean(
+            data?.must_change_password ||
+              data?.user_must_change_password ||
+              data?.data?.must_change_password
+          );
+          try {
+            if (mustChangePassword) {
+              sessionStorage.setItem("pmr_must_change_password", "1");
+            } else {
+              sessionStorage.removeItem("pmr_must_change_password");
+            }
+          } catch (err) {
+            /* ignore */
+          }
+
+          // Keep login email for profile matching on other pages
+          localStorage.setItem("pmr_login_email", email);
+
+          // Re-tag kept media cache for this session
+          if (sameAccount && mediaCache && typeof mediaCache === "object") {
+            try {
+              mediaCache._owner_email = newEmail || mediaCache._owner_email || "";
+              localStorage.setItem(
+                "pmr_profile_media_v1",
+                JSON.stringify(mediaCache)
+              );
+            } catch (err) {
+              /* ignore */
+            }
+          }
+
+          // Exact username handle only — never email or full name (claims.name)
+          function exactUsername(...candidates) {
+            for (const raw of candidates) {
+              if (raw == null) continue;
+              const name = String(raw).trim();
+              if (!name || name.includes("@") || /\s/.test(name)) continue;
+              return name;
+            }
+            return "";
+          }
+
+          // Save username from login payload / JWT immediately
+          // (GET /api/home-owners/ often returns 403 for homeowner tokens)
+          (function saveUsernameEarly() {
+            let name =
+              exactUsername(
+                data?.username,
+                data?.user?.username,
+                data?.data?.username
+              ) || "";
+            if (!name && token) {
+              try {
+                const part = token.split(".")[1];
+                const claims = JSON.parse(
+                  atob(part.replace(/-/g, "+").replace(/_/g, "/"))
+                );
+                console.log("JWT claims:", claims);
+                // Do NOT use claims.name — that is often a full display name
+                name =
+                  exactUsername(
+                    claims.username,
+                    claims.preferred_username,
+                    claims.user_name
+                  ) || "";
+                const hid =
+                  claims.host_id ||
+                  claims.home_owner_id ||
+                  claims.homeowner_id ||
+                  null;
+                if (hid != null) {
+                  localStorage.setItem("pmr_home_owner_id", String(hid));
+                }
+              } catch (e) {
+                console.warn("JWT decode failed", e);
+              }
+            }
+            if (name) {
+              localStorage.setItem("loggedInUser", name);
+              console.log("Saved username from login/JWT:", name);
+            }
+          })();
+
           function claimsFromJwt(jwt) {
             try {
               const part = String(jwt).split(".")[1];
@@ -583,32 +832,29 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           }
 
-          // Header: username only (never full email). Fallback = part before @
-          function toDisplayUsername(...candidates) {
-            for (const raw of candidates) {
-              if (raw == null) continue;
-              let name = String(raw).trim();
-              if (!name) continue;
-              if (name.includes("@")) {
-                name = name.split("@")[0].trim();
-              }
-              if (name) return name;
-            }
-            return "";
-          }
+          // Double checking for USERNAME
+          function displayNameFromOwner(owner) {
+              if (!owner || typeof owner !== "object") return "";
 
-          function displayNameFromOwner(owner, loginEmail) {
-            if (!owner || typeof owner !== "object") {
-              return toDisplayUsername(loginEmail);
-            }
-            return toDisplayUsername(
-              owner.username,
-              owner.user?.username,
-              [owner.first_name, owner.last_name].filter(Boolean).join(" "),
-              owner.email,
-              owner.user?.email,
-              loginEmail
-            );
+              const direct = exactUsername(owner.username, owner.Username);
+              if (direct) return direct;
+
+              const nested = exactUsername(
+                  typeof owner.user === "object"
+                      ? owner.user?.username
+                      : ""
+              );
+
+              if (nested) {
+                  const ownerEmail = String(owner.email || "").toLowerCase().trim();
+                  const loginEmail = String(email || "").toLowerCase().trim();
+
+                  if (!ownerEmail || ownerEmail === loginEmail)
+                      return nested;
+              }
+
+              // Never use first/last name
+              return "";
           }
 
           function hostIdFromOwner(owner) {
@@ -623,29 +869,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
           async function fetchHomeOwnerProfile(accessToken, loginEmail) {
             const claims = claimsFromJwt(accessToken) || {};
-            // Prefer host_id — user_id is often the Django auth user, not Host ID
-            let hostId =
-              claims.host_id ||
-              claims.home_owner_id ||
-              claims.homeowner_id ||
-              null;
+            const ids = [
+              claims.host_id,
+              claims.home_owner_id,
+              claims.homeowner_id,
+              claims.user_id,
+              claims.userId,
+              claims.id
+            ].filter((v) => v != null && String(v).trim() !== "");
 
             const authHeaders = {
               "X-Auth-Token": accessToken,
               Accept: "application/json"
             };
 
-            if (hostId != null) {
-              const byId = await fetch(
-                `https://eventgarageparking.online/api/home-owners/${hostId}/`,
-                { method: "GET", headers: authHeaders }
-              );
-              if (byId.ok) {
-                return await byId.json();
+            for (const hostId of ids) {
+              try {
+                const byId = await fetch(
+                  `https://eventgarageparking.online/api/home-owners/${hostId}/`,
+                  { method: "GET", headers: authHeaders }
+                );
+                if (byId.ok) {
+                  const json = await byId.json();
+                  return json?.data && typeof json.data === "object"
+                    ? json.data
+                    : json;
+                }
+              } catch {
+                /* try next */
               }
             }
 
-            // Fallback: list homeowners and match login email
             const listRes = await fetch(
               "https://eventgarageparking.online/api/home-owners/",
               { method: "GET", headers: authHeaders }
@@ -659,15 +913,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!owners.length) return null;
 
-            const emailLower = String(loginEmail || "").toLowerCase();
-            const matched =
-              owners.find(
-                (o) =>
-                  String(o?.email || "").toLowerCase() === emailLower ||
-                  String(o?.username || "").toLowerCase() === emailLower
-              ) || (owners.length === 1 ? owners[0] : null);
+            const emailLower = String(loginEmail || "").toLowerCase().trim();
+            if (emailLower) {
+              const byEmail = owners.find(
+                (o) => String(o?.email || "").toLowerCase().trim() === emailLower
+              );
+              if (byEmail) return byEmail;
+            }
+            return null;
+          }
 
-            return matched || null;
+          // Always keep login email for later profile matching
+          localStorage.setItem("pmr_login_email", email);
+
+          function retagKeptMediaCache(hostId) {
+            if (!sameAccount) return;
+            try {
+              const cache =
+                JSON.parse(localStorage.getItem("pmr_profile_media_v1") || "{}") ||
+                {};
+              const hasFiles = Object.keys(cache).some((k) => k.charAt(0) !== "_");
+              if (!hasFiles) return;
+              cache._owner_email = newEmail || cache._owner_email || "";
+              if (hostId != null && String(hostId).trim() !== "") {
+                cache._owner_id = String(hostId);
+              }
+              localStorage.setItem(
+                "pmr_profile_media_v1",
+                JSON.stringify(cache)
+              );
+            } catch (err) {
+              /* ignore */
+            }
           }
 
           let owner = null;
@@ -680,13 +957,27 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           if (owner) {
-            localStorage.setItem("user", JSON.stringify(owner));
+            localStorage.setItem(
+              "user",
+              JSON.stringify({ ...owner, email: owner.email || email })
+            );
             const homeOwnerId = hostIdFromOwner(owner);
             if (homeOwnerId != null) {
               localStorage.setItem("pmr_home_owner_id", String(homeOwnerId));
             }
-            const username = displayNameFromOwner(owner, email);
-            localStorage.setItem("loggedInUser", username || toDisplayUsername(email));
+            retagKeptMediaCache(homeOwnerId);
+            let username = displayNameFromOwner(owner);
+            if (!username) {
+              const claims = claimsFromJwt(token) || {};
+              username = exactUsername(
+                claims.username,
+                claims.preferred_username,
+                claims.user_name
+              );
+            }
+            if (username) {
+              localStorage.setItem("loggedInUser", username);
+            }
             console.log("Saved User:", localStorage.getItem("loggedInUser"));
             console.log("Saved Home Owner ID:", homeOwnerId);
             console.log("Home Owner Profile:", owner);
@@ -704,12 +995,26 @@ document.addEventListener("DOMContentLoaded", () => {
               "user",
               JSON.stringify({ email, host_id: hostId })
             );
-            // Still show a short name from the login email (e.g. Robb)
-            localStorage.setItem("loggedInUser", toDisplayUsername(email));
-            console.warn("Profile not loaded; using email local-part as username.");
+            retagKeptMediaCache(hostId);
+            const jwtUser = exactUsername(
+              claims.username,
+              claims.preferred_username,
+              claims.user_name
+            );
+            if (jwtUser) {
+              localStorage.setItem("loggedInUser", jwtUser);
+            }
+            console.warn("Profile not loaded yet; will retry on portal pages.");
           }
 
           console.log("Saved Token:", token);
+
+          if (mustChangePassword) {
+            showStatus("Please choose a new password to continue.", "success");
+            window.location.href =
+              "https://eventgarageparking.net/resetpassword/";
+            return;
+          }
 
           showStatus("Login successful! Redirecting...", "success");
 
@@ -719,14 +1024,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else {
 
-          const errorMessage =
-            data?.message ||
-            data?.error ||
-            data?.errors?.email?.[0] ||
-            data?.errors?.password?.[0] ||
-            `Login failed (${response.status})`;
+          if (isWrongPasswordError(response, data)) {
+            showIncorrectPassword();
+          } else {
+            const errorMessage =
+              data?.message ||
+              data?.error ||
+              data?.errors?.email?.[0] ||
+              data?.errors?.password?.[0] ||
+              "Login failed. Please try again.";
 
-          showStatus(errorMessage);
+            showStatus(errorMessage);
+          }
+          if (typeof grecaptcha !== "undefined") {
+            grecaptcha.reset(recaptchaWidgetId ?? undefined);
+          }
 
         }
 
@@ -734,6 +1046,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.error("Login Error:", error);
         showStatus("Server not reachable.");
+        if (typeof grecaptcha !== "undefined") {
+          grecaptcha.reset(recaptchaWidgetId ?? undefined);
+        }
 
       } finally {
 

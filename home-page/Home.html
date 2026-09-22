@@ -15,6 +15,88 @@
 </head>
 
 <body class="bg-white m-0 p-0 overflow-x-hidden">
+<!-- EGP PAGE LOADER -->
+<div id="egp-page-loader" role="status" aria-live="polite" aria-label="Loading">
+  <div class="egp-loader-box">
+    <div class="egp-loader-badge">EGP</div>
+    <span class="egp-loader-ring" aria-hidden="true"></span>
+  </div>
+</div>
+<style>
+  #egp-page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  #egp-page-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .egp-loader-box {
+    position: relative;
+    width: 118px;
+    height: 118px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .egp-loader-badge {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    background: #007DB5;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  .egp-loader-ring {
+    position: absolute;
+    inset: 0;
+    border: 4px solid #e6eef3;
+    border-top-color: #007DB5;
+    border-radius: 50%;
+    animation: egp-spin 0.8s linear infinite;
+  }
+  @keyframes egp-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+<script>
+  (function () {
+    var loader = document.getElementById("egp-page-loader");
+    if (!loader) return;
+    var shownAt = Date.now();
+    function hide() {
+      if (!loader || loader.classList.contains("is-hidden")) return;
+      var wait = Math.max(0, 700 - (Date.now() - shownAt));
+      setTimeout(function () {
+        if (!loader || loader.classList.contains("is-hidden")) return;
+        loader.classList.add("is-hidden");
+        setTimeout(function () {
+          if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 400);
+      }, wait);
+    }
+    if (document.readyState === "complete") hide();
+    else window.addEventListener("load", hide);
+    setTimeout(hide, 8000);
+  })();
+</script>
+
 
 <!-- HERO -->
 <section class="w-full min-h-screen bg-gradient-to-b from-[#0b2a4a] via-[#1a78c2] to-[#afcbda] text-white overflow-hidden">

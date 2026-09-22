@@ -1,16 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- EGP DARK MODE -->
+<script>
+(function () {
+  try {
+    if (localStorage.getItem("egp-dark-mode") === "1") {
+      document.documentElement.classList.add("egp-dark");
+    }
+  } catch (e) {}
+})();
+</script>
+<style>
+  html.egp-dark { color-scheme: dark; }
+  html.egp-dark body { background: #0b1220 !important; color: #e5e7eb; }
+  html.egp-dark #egp-page-loader { background: #0b1220 !important; }
+  html.egp-dark main,
+  html.egp-dark .bg-\[#f5f7fb\] { background: #0b1220 !important; }
+  html.egp-dark #sidebar,
+  html.egp-dark .bg-\[#f8f9ff\] {
+    background: #111827 !important;
+    border-color: #1f2937 !important;
+  }
+  html.egp-dark .bg-white { background-color: #1e293b !important; }
+  html.egp-dark .text-black,
+  html.egp-dark .text-black\/80,
+  html.egp-dark .text-\[#222\],
+  html.egp-dark .text-\[#333\] { color: #f3f4f6 !important; }
+  html.egp-dark .text-black\/50,
+  html.egp-dark .text-gray-500,
+  html.egp-dark .text-gray-600 { color: #94a3b8 !important; }
+  html.egp-dark .border,
+  html.egp-dark .border-\[#e6e6e6\],
+  html.egp-dark .border-\[#e5e5e5\] { border-color: #334155 !important; }
+  html.egp-dark .bg-\[#f1f1f1\] { background-color: #334155 !important; }
+  html.egp-dark .hover\:bg-\[#f9f9f9\]:hover,
+  html.egp-dark .hover\:bg-gray-50:hover { background-color: #334155 !important; }
+</style>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EGP Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      textarea { resize: none; }
+      #garageSpotCount {
+        width: 90px !important;
+        max-width: 90px !important;
+        border: 1px solid rgba(0, 0, 0, 0.2) !important;
+        box-sizing: border-box;
+      }
+      #gateCodeInput {
+        width: 140px !important;
+        max-width: 140px !important;
+        border: 1px solid rgba(0, 0, 0, 0.2) !important;
+        box-sizing: border-box;
+      }
+      #profileImage {
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 9999px !important;
+        background: #9CA3AF !important;
+        border: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
+        color: #ffffff !important;
+        font-size: 20px !important;
+      }
+      #profileImage i {
+        color: #ffffff !important;
+        font-size: 20px !important;
+        line-height: 1 !important;
+      }
+      #profileImage img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+      }
+      #frontHouseUpload {
+        width: 100% !important;
+        min-height: 170px !important;
+        height: 170px !important;
+        position: relative !important;
+        overflow: hidden !important;
+      }
+      #frontHouseUpload.has-image {
+        width: 1200px !important;
+        max-width: 100% !important;
+        height: 800px !important;
+        min-height: 800px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+      #frontHousePreview {
+        width: 100% !important;
+        min-height: 170px !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      #frontHousePreview i,
+      #frontHousePreview i.upload-icon {
+        font-size: 32px !important;
+        color: rgba(0, 0, 0, 0.35) !important;
+        line-height: 1 !important;
+      }
+      #frontHousePreview.has-image {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 800px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+      #frontHousePreview.has-image img {
+        width: 1200px !important;
+        height: 800px !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        display: block !important;
+      }
+      #verificationUpload {
+        width: 100% !important;
+        min-height: 170px !important;
+        height: 170px !important;
+        position: relative !important;
+        overflow: hidden !important;
+        cursor: pointer !important;
+      }
+      #verificationUpload.has-preview {
+        height: auto !important;
+        min-height: 170px !important;
+        overflow: hidden !important;
+      }
+      #verificationUpload.has-preview.is-pdf,
+      #verificationUpload.has-preview.is-doc {
+        height: 170px !important;
+        min-height: 170px !important;
+      }
+      #verificationUpload.has-preview .egp-file-input {
+        inset: 0 !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 5 !important;
+        cursor: pointer !important;
+      }
+      #verificationPreview {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 170px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 6 !important;
+        pointer-events: none !important;
+      }
+      #verificationPreview i.upload-icon {
+        font-size: 40px !important;
+        color: rgba(0, 0, 0, 0.35) !important;
+        line-height: 1 !important;
+      }
+      #verificationPreview .upload-hint {
+        font-size: 12px !important;
+        color: rgba(0, 0, 0, 0.4) !important;
+        margin-top: 8px !important;
+        text-align: center !important;
+        line-height: 1.3 !important;
+      }
+      #frontHousePreview .upload-hint {
+        font-size: 12px !important;
+        color: rgba(0, 0, 0, 0.4) !important;
+        margin-top: 8px !important;
+        text-align: center !important;
+      }
+      #verificationPreview.has-preview {
+        min-height: 170px !important;
+        padding: 8px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      #verificationPreview.has-preview.is-pdf,
+      #verificationPreview.has-preview.is-doc {
+        min-height: 170px !important;
+        height: 100% !important;
+        padding: 12px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+        pointer-events: none !important;
+      }
+      #verificationPreview.has-preview img {
+        width: auto !important;
+        height: auto !important;
+        max-width: 100% !important;
+        max-height: 70vh !important;
+        object-fit: contain !important;
+        object-position: center !important;
+        display: block !important;
+      }
+      #verificationPreview .verification-file-card {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        pointer-events: none !important;
+      }
+      #verificationPreview .verification-file-card i {
+        font-size: 28px !important;
+        color: #007DB5 !important;
+      }
+      #verificationPreview .verification-file-card .verification-file-name {
+        font-size: 12px !important;
+        color: rgba(0, 0, 0, 0.6) !important;
+        max-width: 100% !important;
+        padding: 0 12px !important;
+        text-align: center !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+      }
+      #verificationPreview .verification-open-link {
+        pointer-events: auto !important;
+        position: relative !important;
+        z-index: 7 !important;
+        font-size: 12px !important;
+        color: #007DB5 !important;
+        text-decoration: underline !important;
+        cursor: pointer !important;
+      }
+      #verificationPreview .verification-file-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 14px !important;
+        pointer-events: none !important;
+      }
+      /* Profile photo input stays visually hidden; label/avatar open it */
+      #profileImageUpload.egp-file-input {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+        opacity: 0 !important;
+        inset: auto !important;
+        z-index: auto !important;
+        font-size: inherit !important;
+      }
+      /* Front-of-house / verification: invisible input covers the whole drop zone */
+      #frontHouseUpload .egp-file-input,
+      #verificationUpload .egp-file-input {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        opacity: 0 !important;
+        cursor: pointer !important;
+        z-index: 2 !important;
+        border: 0 !important;
+        font-size: 0 !important;
+      }
+    </style>
 </head>
 
 <body class="bg-white m-0 p-0 overflow-x-hidden">
+<!-- EGP PAGE LOADER -->
+<div id="egp-page-loader" role="status" aria-live="polite" aria-label="Loading">
+  <div class="egp-loader-box">
+    <div class="egp-loader-badge">EGP</div>
+    <span class="egp-loader-ring" aria-hidden="true"></span>
+  </div>
+</div>
+<style>
+  #egp-page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  #egp-page-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .egp-loader-box {
+    position: relative;
+    width: 118px;
+    height: 118px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .egp-loader-badge {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    background: #007DB5;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  .egp-loader-ring {
+    position: absolute;
+    inset: 0;
+    border: 4px solid #e6eef3;
+    border-top-color: #007DB5;
+    border-radius: 50%;
+    animation: egp-spin 0.8s linear infinite;
+  }
+  @keyframes egp-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+<script>
+  (function () {
+    var loader = document.getElementById("egp-page-loader");
+    if (!loader) return;
+    var shownAt = Date.now();
+    function hide() {
+      if (!loader || loader.classList.contains("is-hidden")) return;
+      var wait = Math.max(0, 700 - (Date.now() - shownAt));
+      setTimeout(function () {
+        if (!loader || loader.classList.contains("is-hidden")) return;
+        loader.classList.add("is-hidden");
+        setTimeout(function () {
+          if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 400);
+      }, wait);
+    }
+    if (document.readyState === "complete") hide();
+    else window.addEventListener("load", hide);
+    setTimeout(hide, 8000);
+  })();
+</script>
 
- <!-- Header -->
+
+ 
 <div class="w-full
      px-5
      sm:px-6
@@ -26,7 +383,7 @@
 
      <div class="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full gap-4">
 
-                <!-- LEFT -->
+                
                 <div class="flex justify-start">
     <a href="https://eventgarageparking.net/"
        class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">
@@ -34,7 +391,7 @@
     </a>
 </div>
 
-                <!-- CENTER -->
+                
                 <div class="flex justify-center">
                     <div
                         class="text-white font-bold tracking-[1px] text-[18px] md:text-[20px] lg:text-[28px] leading-tight text-center whitespace-nowrap">
@@ -42,7 +399,7 @@
                     </div>
                 </div>
 
-                <!-- RIGHT -->
+                
                 <div
                       class="flex justify-end items-center gap-1 text-[9px] lg:text-[11px] text-white/75 whitespace-nowrap md:ml-3">
                     
@@ -70,7 +427,7 @@
 
             </div>
 
-            <!-- MOBILE -->
+            
             <div class="flex md:hidden flex-col items-center justify-center gap-4 text-center">
 
                 <div class="flex justify-start">
@@ -106,65 +463,77 @@
             </div>
 
 </div>
-<!-- END HEADER -->
 
-<!-- BODY -->
+
+
 <div class="flex min-h-screen font-[Arial,sans-serif] relative">
 
-  <!-- OVERLAY -->
-   <div id="sidebarOverlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
-
-
-  <!-- SIDEBAR -->
+  
+   <div id="sidebarOverlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>  
         <aside id="sidebar"
             class="fixed md:static top-0 left-0 w-[260px] sm:w-[280px] md:w-[240px] min-h-screen md:min-h-full bg-[#f8f9ff] border-r border-[#e6e6e6] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 p-5 md:p-[20px_12px] overflow-y-auto">
 
-            <!-- MOBILE CLOSE -->
+            
             <div class="flex items-center justify-end mb-8 md:hidden">
-                <button id="closeSidebar" class="text-[34px] leading-none text-[#333]">
-                    ×
+                <button id="closeSidebar" class="text-[28px] leading-none text-[#333]" aria-label="Close menu">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- MENU -->
+            
              <div class="flex flex-col gap-2">
 
                 <a href="https://eventgarageparking.net/home-owner-listing-page/"
                     class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                    <i class="fa-solid fa-house"></i> Listing
+                    <i class="fa-solid fa-house fa-fw"></i> Listing
                 </a>
 
                 <a href="https://eventgarageparking.net/home-owner-availability-page/"
                     class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                    <i class="fa-solid fa-calendar"></i>Availability
+                    <i class="fa-solid fa-calendar fa-fw"></i> Availability
                 </a>
 
                 <a href="https://eventgarageparking.net/home-owner-booking-page/"
                     class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                    <i class="fa-solid fa-car"></i> Booking
+                    <i class="fa-solid fa-car fa-fw"></i> Booking
                 </a>
 
                 <a href="https://eventgarageparking.net/home-owner-earning-page/"
                     class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                    <i class="fa-solid fa-piggy-bank"></i>Earnings
+                    <i class="fa-solid fa-piggy-bank fa-fw"></i> Earnings
                 </a>
 
                 <a href="https://eventgarageparking.net/home-owner-profile-page/"
                      class="flex items-center gap-2 p-[10px] text-[#007DB5] font-bold text-[13px] bg-[rgba(0,125,181,0.08)] rounded-[6px]">
-                    <i class="fa-solid fa-user"></i> Profile
+                    <i class="fa-solid fa-user fa-fw"></i> Profile
                 </a>
 
                 <a href="https://eventgarageparking.net/home-owner-payment-page/"
                     class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                    $ Payment
+                    <i class="fa-solid fa-dollar-sign fa-fw"></i> Payment
                 </a>
 
-                <a href="http://127.0.0.1:5500/home-page/setting.html"
+                <a href="https://eventgarageparking.net/egp-training-center/"
                     class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                    ⚙️ Settings
+                    <i class="fa-solid fa-graduation-cap fa-fw"></i> Training
                 </a>
-                  <a href="http://127.0.0.1:5500/home-page/loginPage.html"
-                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                <a href="https://eventgarageparking.net/egp-setting/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-gear fa-fw"></i> Settings
+                </a>
+
+                <a href="https://eventgarageparking.net/contact-us/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-envelope fa-fw"></i> Contact
+                </a>
+                <a href="https://eventgarageparking.net/report-a-bug/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-bug fa-fw"></i> Report a Bug
+                </a>
+<a href="https://eventgarageparking.net/register/"
+                    id="egpLogoutBtn"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-arrow-right-from-bracket fa-fw"></i>
                         Logout
                     </a>
 
@@ -172,10 +541,10 @@
 
         </aside>
 
-  <!-- MAIN CONTENT -->
+  
  <main class="flex-1 p-3 sm:p-4 md:p-6 lg:p-7 min-w-0">
 
-  <!-- TITLE + MOBILE TOGGLE -->
+  
   <div class="flex items-center justify-between mb-6">
 
     <div class="text-[20px] sm:text-[22px] font-bold text-[#007DB5]">
@@ -184,7 +553,7 @@
 
     <button id="openSidebar"
       class="flex md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] items-center justify-center shadow-md">
-      ☰
+      <i class="fa-solid fa-bars"></i>
     </button>
 
   </div>
@@ -193,145 +562,255 @@
 
     <div class="rounded-[12px] border border-black/10 bg-white p-5">
 
-      <div class="text-[18px] font-semibold">Profile</div>
-      <div class="text-[13px] text-black/40 mt-1">
-        Manage your hosting details
-      </div>
-
-      <!-- PROFILE IMAGE -->
-      <div class="flex items-center gap-4 mt-6">
-
+      <div class="flex items-center gap-4">
         <div id="profileImage"
-          class="w-[60px] h-[60px] rounded-full bg-[#e9eef2] flex items-center justify-center text-[22px]">
-          👤
+          class="w-[48px] h-[48px] rounded-full bg-[#9CA3AF] flex items-center justify-center cursor-pointer overflow-hidden box-border">
+          <i class="fa-solid fa-user fa-fw"></i>
         </div>
-
         <div>
-          <div id="displayNameText" class="text-[16px] font-semibold">
-            Loading...
-          </div>
-
-          <!-- CLICK → upload profile image -->
-          <div id="changeProfilePhotoBtn"
-            class="text-[#007DB5] text-[12px] mt-1 cursor-pointer">
+          <div id="displayNameText" class="text-[16px] font-semibold"></div>
+          <label id="changeProfilePhotoBtn"
+            for="profileImageUpload"
+            class="text-[#007DB5] text-[12px] mt-1 cursor-pointer inline-block">
             Change profile photo
-          </div>
-
-          <!-- hidden file input -->
-          <input type="file" id="profileImageUpload" hidden />
+          </label>
+          <input type="file" id="profileImageUpload" class="egp-file-input" accept="image/*" tabindex="-1" />
+          <div id="profileImageStatus" class="text-[11px] text-black/45 mt-1"></div>
         </div>
-
       </div>
 
-      <!-- DISPLAY NAME -->
       <div class="mt-6">
         <div class="text-[13px] text-black/50 mb-2">Display Name</div>
-
         <input
           id="displayNameInput"
           type="text"
-          class="w-full h-[46px] border border-black/10 rounded-[10px] px-4 text-[13px]"
+          readonly
+          aria-readonly="true"
+          class="w-full h-[46px] border border-black/10 rounded-[10px] px-4 text-[13px] bg-[#f5f7f9] text-black/70 cursor-default"
         />
       </div>
 
-      <!-- ABOUT -->
       <div class="mt-5">
-        <div class="text-[13px] text-black/50 mb-2">About</div>
+        <div class="text-[13px] text-black/50 mb-2">Stadium/Venue</div>
+        <input
+          id="stadiumVenueInput"
+          type="text"
+          readonly
+          aria-readonly="true"
+          class="w-full h-[46px] border border-black/10 rounded-[10px] px-4 text-[13px] bg-[#f5f7f9] text-black/70 cursor-default"
+        />
+      </div>
 
+      <div class="mt-5">
+        <div class="text-[13px] text-black/50 mb-2">Address</div>
+        <input
+          id="addressInput"
+          type="text"
+          readonly
+          aria-readonly="true"
+          class="w-full h-[46px] border border-black/10 rounded-[10px] px-4 text-[13px] bg-[#f5f7f9] text-black/70 cursor-default"
+        />
+      </div>
+
+      <div class="mt-5">
+        <div class="text-[13px] text-black/50 mb-2">About Me</div>
         <textarea
           id="aboutInput"
-          class="w-full min-h-[110px] border border-black/10 rounded-[10px] px-4 py-4 text-[12px] text-black/50 leading-[1.6]"
+          placeholder="Tell guests a bit about yourself"
+          class="w-full min-h-[110px] rounded-[10px] px-4 py-4 text-[12px] leading-[1.6] bg-white outline-none resize-none"
+          style="border: 1px solid rgba(0,0,0,0.12);"
         ></textarea>
+      </div>
+
+      <div class="mt-5">
+        <div class="text-[13px] text-black/50 mb-2">Secondary Contact Name</div>
+        <input
+          id="secondaryContactNameInput"
+          type="text"
+          inputmode="text"
+          autocomplete="name"
+          pattern="[A-Za-z ]*"
+          title="Letters and spaces only — no numbers or special characters"
+          class="w-full h-[46px] rounded-[10px] px-4 text-[13px] bg-white outline-none"
+          style="border: 1px solid rgba(0,0,0,0.12);"
+        />
+      </div>
+
+      <div class="mt-5">
+        <div class="text-[13px] text-black/50 mb-2">Secondary Contact Phone</div>
+        <input
+          id="secondaryContactPhoneInput"
+          type="tel"
+          inputmode="numeric"
+          autocomplete="tel"
+          pattern="[0-9]*"
+          title="Numbers only — no letters or special characters"
+          class="w-full h-[46px] rounded-[10px] px-4 text-[13px] bg-white outline-none"
+          style="border: 1px solid rgba(0,0,0,0.12);"
+        />
       </div>
 
     </div>
 
-    <!-- ===========================
-    SAFETY (READY FOR LATER API)
-    =========================== -->
+    
     <div class="rounded-[12px] border border-black/10 bg-white p-5">
 
       <div class="text-[18px] font-semibold">Safety & Access</div>
 
       <div class="mt-5">
         <div class="text-[13px] text-black/50 mb-2">Gate Code</div>
-        <div id="gateCodeDisplay"
-          class="w-full h-[46px] border border-black/10 rounded-[10px] px-4 py-3 text-left text-[13px]">
-        </div>
+        <input
+          id="gateCodeInput"
+          type="text"
+          placeholder="Enter gate / access code"
+          class="w-[140px] max-w-full h-[46px] rounded-[10px] px-4 text-[13px] bg-white outline-none"
+          style="border: 1px solid rgba(0,0,0,0.2);"
+        />
       </div>
 
       <div class="mt-5">
         <div class="text-[13px] text-black/50 mb-2">Pets</div>
-        <div id="petsDisplay"
-          class="w-full h-[46px] border border-black/10 rounded-[10px] px-4 py-3 text-left text-[13px]">
-        </div>
+        <select
+          id="petsInput"
+          class="w-full h-[46px] border border-black/10 rounded-[10px] px-4 text-[13px] bg-white"
+        >
+          <option value="">Select</option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
       </div>
 
       <div class="mt-5">
         <div class="text-[13px] text-black/50 mb-2">
           Anything to beware of?
         </div>
-
-        <div id="notesDisplay"
-          class="w-full min-h-[110px] border border-black/10 rounded-[10px] px-4 py-4 text-left text-[12px] text-black/50 leading-[1.6]">
-        </div>
+        <textarea
+          id="notesInput"
+          placeholder="Steps, cameras, dogs, low clearance, etc."
+          class="w-full min-h-[110px] rounded-[10px] px-4 py-4 text-[12px] leading-[1.6] bg-white outline-none resize-none"
+          style="border: 1px solid rgba(0,0,0,0.12);"
+        ></textarea>
       </div>
 
     </div>
 
-    <!-- ===========================
-    GARAGE (API READY)
-    =========================== -->
+    
     <div class="rounded-[12px] border border-black/10 bg-white p-5">
 
       <div class="text-[18px] font-semibold">Garage Spots</div>
+      <div class="text-[13px] text-black/40 mt-1">
+        Spot count is managed in the backend
+      </div>
 
       <div class="mt-5">
-        <div class="text-[13px] text-black/50">Number of Spots Available</div>
-
-        <div id="garageSpotCount"
-          class="mt-2 w-[60px] h-[38px] border border-black/10 rounded-[8px] text-[13px] px-6 py-3"> 3
-        </div>
+        <div class="text-[13px] text-black/50 mb-2">Number of Spots Available</div>
+        <div
+          id="garageSpotCount"
+          class="w-[90px] h-[38px] rounded-[8px] text-[13px] px-3 flex items-center bg-[#f5f7f9] text-black/70"
+          style="border: 1px solid rgba(0,0,0,0.2) !important; box-sizing: border-box;"
+        >—</div>
       </div>
 
       <div class="mt-5 text-[13px] text-black/50">Garage Images</div>
+      <div class="text-[12px] text-black/40 mt-1 select-none pointer-events-none">
+        Garage images are managed in the backend
+      </div>
 
-      <!-- DYNAMIC GARAGE IMAGES -->
       <div id="garageImagesContainer"
         class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
       </div>
 
     </div>
 
-    <!-- FRONT OF HOUSE -->
+    
+    <div class="rounded-[12px] border border-black/10 bg-white p-5">
+
+      <div class="text-[18px] font-semibold">Parking Instructions</div>
+
+      <div class="mt-4">
+        <textarea
+          id="parkingInstructionsInput"
+          placeholder="e.g. Use the right-side driveway and text on arrival."
+          class="w-full min-h-[72px] rounded-[10px] px-4 py-3 text-[12px] leading-[1.6] bg-white outline-none resize-none"
+          style="border: 1px solid rgba(0,0,0,0.12);"
+        ></textarea>
+      </div>
+
+    </div>
+
+    
     <div class="rounded-[12px] border border-black/10 bg-white p-5">
 
       <div class="text-[18px] font-semibold">Front of House</div>
-
-      <div class="mt-5 w-full h-[170px] border border-dashed border-black/20 rounded-[12px] flex flex-col items-center justify-center cursor-pointer"
-        id="frontHouseUpload">
-        <div class="text-[16px] opacity-50">⬆️</div>
-        <div class="text-[12px] text-black/40 mt-2">Upload Image</div>
-        <input type="file" id="frontHouseInput" hidden />
+      <div class="text-[13px] text-black/40 mt-1">
+        Please upload an image of the front of your house.
       </div>
+      <div class="text-[12px] text-black/45 mt-2 select-none pointer-events-none">
+        Accepted file types: JPEG or PNG
+      </div>
+
+      <label class="mt-5 w-full border border-black/15 rounded-[12px] flex flex-col items-center justify-center cursor-pointer overflow-hidden relative block"
+        id="frontHouseUpload"
+        for="frontHouseInput">
+        <div id="frontHousePreview" class="w-full h-full flex flex-col items-center justify-center pointer-events-none">
+          <i class="fa-solid fa-cloud-arrow-up upload-icon" aria-hidden="true"></i>
+          <span class="upload-hint">Click to upload</span>
+        </div>
+        <input
+          type="file"
+          id="frontHouseInput"
+          class="egp-file-input"
+          accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+          tabindex="-1"
+        />
+      </label>
+      <div id="frontHouseStatus" class="text-[11px] text-black/45 mt-2"></div>
 
     </div>
 
-    <!-- VERIFICATION -->
+    
     <div class="rounded-[12px] border border-black/10 bg-white p-5">
 
       <div class="text-[18px] font-semibold">Verification</div>
-
-      <div class="mt-5 w-full h-[170px] border border-dashed border-black/20 rounded-[12px] flex flex-col items-center justify-center cursor-pointer"
-        id="verificationUpload">
-        <div class="text-[16px] opacity-50">⬆️</div>
-        <div class="text-[12px] text-black/40 mt-2">Upload document</div>
-        <input type="file" id="verificationInput" hidden />
+      <div class="text-[13px] text-black/40 mt-1">
+        Upload a verification document.
       </div>
+
+      <div class="mt-5">
+        <div class="text-[13px] text-black/50 mb-2">Document Type</div>
+        <select
+          id="verificationTypeInput"
+          class="w-full h-[46px] rounded-[10px] px-4 text-[13px] bg-white outline-none"
+          style="border: 1px solid rgba(0,0,0,0.12);"
+        >
+          <option value="">Select document type</option>
+          <option value="utility_bill">Utility Bill</option>
+          <option value="mortgage_document">Mortgage</option>
+        </select>
+        <div class="text-[12px] text-black/45 mt-2 select-none pointer-events-none">
+          Accepted file types: JPEG, PNG, Word Doc (.doc, .docx), or PDF
+        </div>
+      </div>
+
+      <label class="mt-5 w-full border border-black/15 rounded-[12px] flex flex-col items-center justify-center cursor-pointer overflow-hidden relative block"
+        id="verificationUpload"
+        for="verificationInput">
+        <div id="verificationPreview" class="w-full h-full flex flex-col items-center justify-center pointer-events-none">
+          <i class="fa-solid fa-cloud-arrow-up upload-icon" aria-hidden="true"></i>
+        </div>
+        <input
+          type="file"
+          id="verificationInput"
+          class="egp-file-input"
+          accept=".jpg,.jpeg,.png,.doc,.docx,.pdf,image/jpeg,image/png,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          tabindex="-1"
+        />
+      </label>
+      <div id="verificationStatus" class="text-[11px] text-black/45 mt-2"></div>
 
     </div>
 
-    <!-- SAVE -->
+    
     <div class="flex justify-center sm:justify-start">
       <button id="saveProfileBtn"
         class="bg-[#007DB5] text-white px-6 py-3 rounded-[10px] text-[13px] font-semibold">
@@ -344,17 +823,14 @@
 </main>
 
 </div>
-
-
-<!--</section>-->
 <footer class="w-full bg-[#007DB5] text-white text-sm">
 
-  <!-- MAIN -->
+  
   <div class="w-full px-10 py-10">
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center lg:text-left">
 
-      <!-- BRAND -->
+      
       <div class="flex flex-col items-center lg:items-start">
         <h2 class="text-xl font-semibold mb-3">Event Garage Parking</h2>
         <p class="text-xs text-gray-100 max-w-xs leading-5">
@@ -362,7 +838,7 @@
         </p>
       </div>
 
-      <!-- LINKS -->
+      
       <div class="flex flex-col items-center lg:items-start">
         <h2 class="text-xl font-semibold mb-3">Get to Know Us</h2>
         <ul class="space-y-2 text-xs">
@@ -372,7 +848,7 @@
         </ul>
       </div>
 
-      <!-- QUICK LINKS -->
+      
       <div class="flex flex-col items-center lg:items-start">
         <h2 class="text-xl font-semibold mb-3">Quick Links</h2>
         <ul class="space-y-2 text-xs">
@@ -380,11 +856,11 @@
           <li><a href="https://42bs8c.share-na2.hsforms.com/2h9ic7f91RPiKzrbRzkwrmg" class="hover:text-gray-200">Become A Host</a></li>
           <li><a href="https://eventgarageparking.net/homeowner-agreement/" class="hover:text-gray-200">Host Agreement</a></li>
           <li><a href="https://eventgarageparking.com/privacy-policy/" class="hover:text-gray-200">Privacy Policy</a></li>
-          <li><a href="https://eventgarageparking.com/terms-of-service/" class="hover:text-gray-200">Tern of Service</a></li>
+          <li><a href="https://eventgarageparking.com/terms-of-service/" class="hover:text-gray-200">Term of Services</a></li>
         </ul>
       </div>
 
-      <!-- STAY UPDATED (FIXED LAYOUT) -->
+      
       <div class="flex flex-col items-center lg:items-start">
 
         <h2 class="text-xl font-semibold mb-1">
@@ -395,7 +871,7 @@
           Get latest parking updates and offers.
         </p>
 
-        <!-- EMAIL -->
+        
         <form class="flex w-full max-w-[220px] overflow-hidden rounded-md mb-4">
 
           <div class="flex items-center bg-white w-full px-2">
@@ -413,28 +889,27 @@
           <a
             href="mailto:eventgarageparking@gmail.com?subject=Subscribe"
             class="inline-block bg-blue-700 hover:bg-blue-800 px-3 py-2 text-xs text-white rounded"
+            data-no-instant
+            data-no-prefetch
           >
             Subscribe
           </a>
 
-        </form>
-        
-
-        <!-- SOCIAL -->
+        </form>        
        <div class="flex gap-4 text-base justify-center lg:justify-start mt-3">
-            <a href="https://x.com/ParkMyRide_" target="_blank" rel="noopener noreferrer">
+            <a href="https://x.com/ParkMyRide_" target="_blank" rel="noopener noreferrer" data-no-instant data-no-prefetch>
                 <i class="fa-brands fa-x-twitter"></i>
             </a>
 
-            <a href="https://www.facebook.com/EventGarageParking" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.facebook.com/EventGarageParking" target="_blank" rel="noopener noreferrer" data-no-instant data-no-prefetch>
                 <i class="fa-brands fa-facebook"></i>
             </a>
 
-            <a href="https://www.instagram.com/park_my_ride/" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/park_my_ride/" target="_blank" rel="noopener noreferrer" data-no-instant data-no-prefetch>
                 <i class="fa-brands fa-instagram"></i>
             </a>
 
-            <a href="mailto:eventgarageparkiing@gmail.com">
+            <a href="mailto:eventgarageparking@gmail.com" data-no-instant data-no-prefetch>
                 <i class="fa-solid fa-envelope"></i>
             </a>
             </div>
@@ -444,7 +919,7 @@
     </div>
   </div>
 
-  <!-- BOTTOM -->
+  
   <div class="border-t border-white/20 px-5 py-6">
 
     <div class="flex justify-center mb-4">
@@ -485,196 +960,4656 @@
 
 </footer>
 
-<script src="js/common.js"></script>
 <script>
-  // ===============================
-  // API CONFIG
-  // ===============================
-  const API_CUSTOMERS = "https://eventgarageparking.online/api/customers/";
-  const API_GARAGES = "https://eventgarageparking.online/api/home-garages/";
 
-  const CUSTOMER_ID = 1; // TODO: replace with real logged-in user later
+(function (window) {
+  function egpMerge() {
+    var out = {};
+    for (var i = 0; i < arguments.length; i++) {
+      var src = arguments[i];
+      if (src && typeof src === "object") Object.assign(out, src);
+    }
+    return out;
+  }
 
-  const AUTH_HEADERS = {
-    "Content-Type": "application/json",
-    // "Authorization": "Bearer TOKEN"
+  const EGP = window.EGP || {};
+
+  function toDisplayUsername() {
+    var candidates = Array.prototype.slice.call(arguments);
+    
+    for (const raw of candidates) {
+      if (raw == null) continue;
+      const name = String(raw).trim();
+      if (!name || name.includes("@") || /\s/.test(name)) continue;
+      return name;
+    }
+    return "";
+  }
+
+  function clearHeaderUserName() {
+    const desktopUser = document.getElementById("loggedInUserDesktop");
+    const mobileUser = document.getElementById("loggedInUserMobile");
+    const desktopDivider = document.getElementById("desktopUserDivider");
+    const mobileDivider = document.getElementById("mobileUserDivider");
+
+    if (desktopUser) {
+      desktopUser.textContent = "";
+      desktopUser.classList.add("hidden");
+    }
+    if (mobileUser) {
+      mobileUser.textContent = "";
+      mobileUser.classList.add("hidden");
+    }
+    if (desktopDivider) desktopDivider.classList.add("hidden");
+    if (mobileDivider) mobileDivider.classList.add("hidden");
+  }
+
+  function updateUserName(name) {
+    
+    if (!localStorage.getItem("pmr_token")) {
+      clearHeaderUserName();
+      return;
+    }
+
+    name = toDisplayUsername(name);
+    if (!name) return;
+
+    const desktopUser = document.getElementById("loggedInUserDesktop");
+    const mobileUser = document.getElementById("loggedInUserMobile");
+    const desktopDivider = document.getElementById("desktopUserDivider");
+    const mobileDivider = document.getElementById("mobileUserDivider");
+
+    if (desktopUser) {
+      desktopUser.textContent = name;
+      desktopUser.classList.remove("hidden");
+    }
+    if (mobileUser) {
+      mobileUser.textContent = name;
+      mobileUser.classList.remove("hidden");
+    }
+    if (desktopDivider) desktopDivider.classList.remove("hidden");
+    if (mobileDivider) mobileDivider.classList.remove("hidden");
+
+    localStorage.setItem("loggedInUser", name);
+  }
+
+  function claimsFromJwt(jwt) {
+    try {
+      const part = String(jwt).split(".")[1];
+      if (!part) return null;
+      const json = atob(part.replace(/-/g, "+").replace(/_/g, "/"));
+      return JSON.parse(json);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function unwrapOwner(payload) {
+    if (!payload || typeof payload !== "object") return null;
+    if (
+      payload.username != null ||
+      payload.host_id != null ||
+      payload.email != null
+    ) {
+      return payload;
+    }
+    if (payload.data && typeof payload.data === "object") {
+      return unwrapOwner(payload.data);
+    }
+    if (Array.isArray(payload.results) && payload.results[0]) {
+      return unwrapOwner(payload.results[0]);
+    }
+    return payload;
+  }
+
+  function displayNameFromOwner(owner) {
+    owner = unwrapOwner(owner);
+    if (!owner) return "";
+    
+    return toDisplayUsername(owner.username, owner.Username);
+  }
+
+  function hostIdFromOwner(owner) {
+    owner = unwrapOwner(owner);
+    if (!owner) return null;
+    return (
+      owner.host_id ||
+      owner.home_owner_id ||
+      owner.homeowner_id ||
+      owner.id ||
+      null
+    );
+  }
+
+  function getHomeOwnerId() {
+    const savedId = localStorage.getItem("pmr_home_owner_id");
+    if (savedId) return savedId;
+
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const id = hostIdFromOwner(user);
+      if (id != null) return String(id);
+    } catch (e) {
+      
+    }
+    return null;
+  }
+
+  function getSavedLoginEmail() {
+    const fromKey = localStorage.getItem("pmr_login_email");
+    if (fromKey) return String(fromKey).trim();
+    try {
+      return String(
+        (function(){ var __o=JSON.parse(localStorage.getItem("user") || "{}"); return (__o && __o.email); })() || ""
+      ).trim();
+    } catch (e) {
+      return "";
+    }
+  }
+
+  function clearAuthStorage() {
+    // Keep pmr_profile_media_v1 — tagged by owner so same user can see
+    // uploads again after re-login; SignIn clears it only for a different account.
+    [
+      "pmr_token",
+      "pmr_refresh",
+      "pmr_home_owner_id",
+      "pmr_login_email",
+      "loggedInUser",
+      "user",
+      "pmr_owner_patch_blocked"
+    ].forEach((key) => {
+      try {
+        localStorage.removeItem(key);
+      } catch (e) {
+        
+      }
+    });
+  }
+
+  const HOME_OWNER_REFRESH_API =
+    "https://eventgarageparking.online/api/home-owners/token/refresh/";
+  const SIGN_IN_URL = "https://eventgarageparking.net/register/";
+
+  let refreshInFlight = null;
+
+  function isTokenExpiredError(status, bodyText) {
+    if (status !== 401 && status !== 403) return false;
+    const text = String(bodyText || "").toLowerCase();
+    
+    if (
+      text.includes("forbidden_portal") ||
+      text.includes("account role cannot access") ||
+      text.includes("cannot access this portal")
+    ) {
+      return false;
+    }
+    return (
+      text.includes("token is expired") ||
+      text.includes("token_invalid_or_expired") ||
+      text.includes("token_not_valid") ||
+      text.includes("authentication credentials were not provided") ||
+      text.includes("invalid token")
+    );
+  }
+
+  function jwtIsExpired(token, skewSeconds = 30) {
+    const claims = claimsFromJwt(token);
+    if (!claims || claims.exp == null) return false;
+    return Number(claims.exp) * 1000 <= Date.now() + skewSeconds * 1000;
+  }
+
+  async function refreshAccessToken() {
+    if (refreshInFlight) return refreshInFlight;
+
+    refreshInFlight = (async () => {
+      const refresh = localStorage.getItem("pmr_refresh");
+      if (!refresh) return null;
+
+      const res = await fetch(HOME_OWNER_REFRESH_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ refresh }),
+      });
+
+      let data = null;
+      try {
+        data = await res.json();
+      } catch (e) {
+        data = null;
+      }
+
+      if (!res.ok) {
+        console.warn("[EGP Auth] refresh failed:", res.status, data);
+        return null;
+      }
+
+      const access =
+        (data && data.access) ||
+        (data && data.token) ||
+        (data && data.accessToken) ||(function(){ var __o=
+        (data && data.data); return (__o && __o.access); })() ||
+        null;
+
+      if (!access) return null;
+
+      localStorage.setItem("pmr_token", access);
+      if ((data && data.refresh)) {
+        localStorage.setItem("pmr_refresh", data.refresh);
+      }
+      return access;
+    })();
+
+    try {
+      return await refreshInFlight;
+    } finally {
+      refreshInFlight = null;
+    }
+  }
+
+  async function ensureFreshAccessToken() {
+    const token = localStorage.getItem("pmr_token") || "";
+    if (!token) return null;
+    if (!jwtIsExpired(token)) return token;
+    return (await refreshAccessToken()) || null;
+  }
+
+  function redirectToSignIn(message) {
+    clearAuthStorage();
+    clearHeaderUserName();
+    if (message) {
+      try {
+        sessionStorage.setItem("egp_auth_message", message);
+      } catch (e) {
+        
+      }
+    }
+    window.location.href = SIGN_IN_URL;
+  }
+
+  async function initHeaderUser() {
+    const token = localStorage.getItem("pmr_token");
+
+    
+    if (!token) {
+      clearHeaderUserName();
+      return "";
+    }
+
+    let username = "";
+
+    try {
+      const stored = JSON.parse(localStorage.getItem("user") || "{}");
+      username = displayNameFromOwner(stored);
+    } catch (e) {
+      
+    }
+
+    if (!username) {
+      username = toDisplayUsername(localStorage.getItem("loggedInUser"));
+    }
+
+    if (!username) {
+      try {
+        const claims = claimsFromJwt(token) || {};
+        
+        username = toDisplayUsername(
+          claims.username,
+          claims.preferred_username,
+          claims.user_name
+        );
+        const hostId =
+          claims.host_id ||
+          claims.home_owner_id ||
+          claims.homeowner_id ||
+          null;
+        if (hostId != null) {
+          localStorage.setItem("pmr_home_owner_id", String(hostId));
+        }
+      } catch (e) {
+        
+      }
+    }
+
+    
+    if (!username) {
+      try {
+        localStorage.removeItem("loggedInUser");
+      } catch (e) {
+        
+      }
+      clearHeaderUserName();
+      return "";
+    }
+
+    updateUserName(username);
+    return username;
+  }
+
+  function getOverlayElement(overlayId) {
+    if (overlayId) {
+      return document.getElementById(overlayId);
+    }
+    return (
+      document.getElementById("sidebarOverlay") ||
+      document.getElementById("overlay")
+    );
+  }
+
+  function initSidebar(options = {}) {
+    const {
+      mobileOnly = false,
+      lockBodyScroll = false,
+      overlayId = null
+    } = options;
+
+    const sidebar = document.getElementById("sidebar");
+    const overlay = getOverlayElement(overlayId);
+    const openBtn = document.getElementById("openSidebar");
+    const closeBtn = document.getElementById("closeSidebar");
+
+    if (!sidebar) return;
+
+    function isMobile() {
+      return window.innerWidth < 768;
+    }
+
+    function openSidebarMenu() {
+      if (mobileOnly && !isMobile()) return;
+
+      sidebar.classList.remove("-translate-x-full");
+      if (overlay) overlay.classList.remove("hidden");
+      if (lockBodyScroll) {
+        document.body.classList.add("overflow-hidden");
+      }
+    }
+
+    function closeSidebarMenu() {
+      if (mobileOnly && !isMobile()) return;
+
+      sidebar.classList.add("-translate-x-full");
+      if (overlay) overlay.classList.add("hidden");
+      if (lockBodyScroll) {
+        document.body.classList.remove("overflow-hidden");
+      }
+    }
+
+    if (openBtn) {
+      openBtn.addEventListener("click", openSidebarMenu);
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeSidebarMenu);
+    }
+
+    if (overlay) {
+      overlay.addEventListener("click", closeSidebarMenu);
+    }
+
+    if (mobileOnly) {
+      window.addEventListener("resize", () => {
+        if (!isMobile()) {
+          sidebar.classList.remove("-translate-x-full");
+          if (overlay) overlay.classList.add("hidden");
+          document.body.classList.remove("overflow-hidden");
+        } else {
+          sidebar.classList.add("-translate-x-full");
+        }
+      });
+    }
+  }
+
+  async function initPortalPage(options = {}) {
+    
+    try {
+      await ensureFreshAccessToken();
+    } catch (err) {
+      console.warn("[EGP Auth] ensureFreshAccessToken failed:", err);
+    }
+    await initHeaderUser();
+    initSidebar(options);
+  }
+
+  EGP.toDisplayUsername = toDisplayUsername;
+  EGP.updateUserName = updateUserName;
+  EGP.clearHeaderUserName = clearHeaderUserName;
+  EGP.clearAuthStorage = clearAuthStorage;
+  EGP.getSavedLoginEmail = getSavedLoginEmail;
+  EGP.getHomeOwnerId = getHomeOwnerId;
+  EGP.initHeaderUser = initHeaderUser;
+  EGP.initSidebar = initSidebar;
+  EGP.initPortalPage = initPortalPage;
+  EGP.refreshAccessToken = refreshAccessToken;
+  EGP.ensureFreshAccessToken = ensureFreshAccessToken;
+  EGP.isTokenExpiredError = isTokenExpiredError;
+  EGP.redirectToSignIn = redirectToSignIn;
+  EGP.SIGN_IN_URL = SIGN_IN_URL;
+
+  window.EGP = EGP;
+
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("egpLogoutBtn");
+    if (!logoutBtn) return;
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      clearAuthStorage();
+      clearHeaderUserName();
+      window.location.href = SIGN_IN_URL;
+    });
+  });
+})(window);
+
+</script>
+<script>
+
+(function () {
+  const OWNERS_API = "https://eventgarageparking.online/api/home-owners/";
+  const GARAGES_API = "https://eventgarageparking.online/api/home-garages/";
+  const STADIUMS_API = "https://eventgarageparking.online/api/stadiums/";
+  const VENUES_API = "https://eventgarageparking.online/api/venues/";
+  const FETCH_TIMEOUT_MS = 20000;
+  const UPLOAD_TIMEOUT_MS = 90000;
+  const OWNER_PATCH_BLOCKED_KEY = "pmr_owner_patch_blocked";
+
+  function isOwnerPatchBlocked() {
+    try {
+      return localStorage.getItem(OWNER_PATCH_BLOCKED_KEY) === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function markOwnerPatchBlocked() {
+    try {
+      localStorage.setItem(OWNER_PATCH_BLOCKED_KEY, "1");
+    } catch (e) {
+      
+    }
+  }
+
+  function clearOwnerPatchBlocked() {
+    try {
+      localStorage.removeItem(OWNER_PATCH_BLOCKED_KEY);
+    } catch (e) {
+      
+    }
+  }
+
+  function isOwnerForbiddenError(errOrText) {
+    const text = String(
+      errOrText && errOrText.message ? errOrText.message : errOrText || ""
+    ).toLowerCase();
+    return (
+      text.includes("forbidden_portal") ||
+      text.includes("403") ||
+      text.includes("account role cannot access") ||
+      text.includes("cannot access this portal")
+    );
+  }
+
+  const GARAGE_IMAGE_FIELDS = [
+    { key: "interior_garage_spot_image_1", label: "Garage Spot 1" },
+    { key: "interior_garage_spot_image_2", label: "Garage Spot 2" },
+    { key: "outside_garage_spot_image_1", label: "Garage Spot 3" },
+    { key: "outside_garage_spot_image_2", label: "Garage Spot 4" },
+  ];
+
+  let profileOwnerCache = null;
+  let profileGarageCache = null;
+  
+  let pendingHomeImageFile = null;
+  
+  let pendingGarageImageFiles = {};
+  
+  let frontHouseDisplayUrl = "";
+  /** Server home_image path (kept even when /media 404s so other browsers know it's saved) */
+  let frontHouseRemoteUrl = "";
+  
+  let profileImageDisplayUrl = "";
+  let profileImageRemoteUrl = "";
+  
+  let verificationDisplayUrl = "";
+  
+  let profilePhotoSavedRecently = false;
+  
+  let garageMediaDirty = false;
+  
+  let garageImageDisplayUrls = {};
+  
+  let pendingVerificationFile = null;
+  let verificationOriginalFile = null;
+
+  const VERIFICATION_TYPES = {
+    utility_bill: "Utility Bill",
+    mortgage_document: "Mortgage",
   };
 
-  // ===============================
-  // LOAD PROFILE
-  // ===============================
-  async function loadHomeownerProfile() {
+  const VERIFICATION_ACCEPT_LABEL =
+    "Accepted file types: JPEG, PNG, Word Doc (.doc, .docx), or PDF";
+
+  function getSelectedVerificationType() {
+    const el = document.getElementById("verificationTypeInput");
+    const value = el ? String(el.value || "").trim() : "";
+    if (VERIFICATION_TYPES[value]) return value;
+    const inferred =
+      verificationTypeFromName(
+        verificationRemoteUrl,
+        readMediaCache().verification_name
+      ) || String(readMediaCache().verification_type || "");
+    if (el && VERIFICATION_TYPES[inferred]) {
+      el.value = inferred;
+      return inferred;
+    }
+    return "";
+  }
+
+  function verificationTypeFromName(url, fileName) {
+    const s = (String(fileName || "") + " " + String(url || "")).toLowerCase();
+    if (/utility[-_ ]?bill/.test(s)) return "utility_bill";
+    if (s.indexOf("mortgage") >= 0) return "mortgage_document";
+    return "";
+  }
+
+  function labeledVerificationFileName(file, docType) {
+    const prefix = docType === "utility_bill" ? "utility-bill" : "mortgage";
+    let kind = "img";
+    if (isPdfVerificationFile(file)) kind = "pdf";
+    else if (
+      isDocxVerificationFile(file) ||
+      isLegacyDocVerificationFile(file)
+    ) {
+      kind = "doc";
+    }
+    const raw = String((file && file.name) || "verification").replace(
+      /[^\w.\-]+/g,
+      "-"
+    );
+    const name = raw
+      .replace(/^(utility-bill|mortgage)-/i, "")
+      .replace(/^(pdf|doc|img)-/i, "");
+    return prefix + "-" + kind + "-" + (name || "verification");
+  }
+
+  function isAcceptedVerificationFile(file) {
+    if (!file) return false;
+    const name = String(file.name || "").toLowerCase();
+    const type = String(file.type || "").toLowerCase();
+    if (
+      type === "image/jpeg" ||
+      type === "image/png" ||
+      type === "application/pdf" ||
+      type === "application/x-pdf" ||
+      type === "application/msword" ||
+      type ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ) {
+      return true;
+    }
+    return /\.(jpe?g|png|pdf|docx?)$/i.test(name);
+  }
+
+  function fileNameFromMediaUrl(url) {
+    const path = String(url || "").split("?")[0].split("#")[0];
+    let last = path.substring(path.lastIndexOf("/") + 1);
     try {
-      const res = await fetch(`${API_CUSTOMERS}${CUSTOMER_ID}/`, {
-  method: "PUT",
-  headers: AUTH_HEADERS,
-  body: JSON.stringify(payload),
-  credentials: "include" // 🔥 ADD THIS
-});
+      last = decodeURIComponent(last);
+    } catch (e) {}
+    return last;
+  }
 
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText);
-      }
+  function verificationFileKind(fileName, fileType, url) {
+    const name = String(fileName || "").toLowerCase();
+    const type = String(fileType || "").toLowerCase();
+    const src = String(url || "").toLowerCase().split("?")[0];
+    const blob = name + " " + src;
+    if (
+      type === "application/pdf" ||
+      /\.pdf$/i.test(name) ||
+      /\.pdf(\?|#|$)/i.test(src) ||
+      /-pdf-/.test(blob) ||
+      src.startsWith("data:application/pdf")
+    ) {
+      return "pdf";
+    }
+    if (
+      type === "application/msword" ||
+      type ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      /\.docx?$/i.test(name) ||
+      /\.docx?(\?|#|$)/i.test(src) ||
+      /-docx?-/.test(blob) ||
+      src.startsWith("data:application/msword") ||
+      src.startsWith(
+        "data:application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      )
+    ) {
+      return "doc";
+    }
+    const cachedKind = String(readMediaCache().verification_kind || "");
+    if (
+      (cachedKind === "pdf" || cachedKind === "doc") &&
+      !/-img-/.test(blob)
+    ) {
+      return cachedKind;
+    }
+    return "image";
+  }
 
-      const c = await res.json();
-      console.log("CUSTOMER DATA:", c);
+  let verificationStatusTimer = null;
+  /** Last server-returned verification URL (not blob/data) */
+  let verificationRemoteUrl = "";
 
-      // PROFILE IMAGE
-      const profileImg = document.getElementById("profileImage");
-
-      if (c.profile_image) {
-        profileImg.innerHTML = `
-          <img src="${c.profile_image}" class="w-full h-full object-cover rounded-full"/>
-        `;
-      }
-
-      // NAME
-      const fullName = `${c.first_name || ""} ${c.last_name || ""}`.trim();
-
-      document.getElementById("displayNameText").innerText =
-        fullName || "No Name";
-
-      document.getElementById("displayNameInput").value =
-        fullName || "";
-
-      // ABOUT
-      document.getElementById("aboutInput").value =
-        c.about_me || "";
-
-      // SAFETY / NOTES
-      document.getElementById("notesDisplay").innerText =
-        c.address || "No address info";
-
-    } catch (err) {
-      console.error("PROFILE LOAD ERROR:", err);
+  function setVerificationStatus(message, isError) {
+    const el = document.getElementById("verificationStatus");
+    if (!el) return;
+    if (verificationStatusTimer) {
+      clearTimeout(verificationStatusTimer);
+      verificationStatusTimer = null;
+    }
+    el.textContent = message || "";
+    el.className = isError
+      ? "text-[11px] text-red-600 mt-2"
+      : "text-[11px] text-black/45 mt-2";
+    if (message && !isError) {
+      verificationStatusTimer = setTimeout(() => {
+        el.textContent = "";
+        verificationStatusTimer = null;
+      }, 4000);
     }
   }
 
-  // ===============================
-  // LOAD GARAGE
-  // ===============================
-  async function loadGarage() {
+  function paintVerificationUrl(url) {
+    // URL text intentionally not shown in the UI
+    var remote = pickPersistentImageUrl(url, verificationRemoteUrl);
+    if (remote) verificationRemoteUrl = remote;
+  }
+
+  function getAuthHeaders() {
+    const token = localStorage.getItem("pmr_token") || "";
+    const headers = { Accept: "application/json" };
+    
+    if (token) headers["X-Auth-Token"] = token;
+    return { token, headers };
+  }
+
+  function authOnlyHeaders(token) {
+    const headers = { Accept: "application/json" };
+    if (token) headers["X-Auth-Token"] = token;
+    return headers;
+  }
+
+  function getHomeOwnerId(token) {
+    if (typeof EGP !== "undefined" && EGP.getHomeOwnerId) {
+      const id = EGP.getHomeOwnerId();
+      if (id) return String(id);
+    }
+    const saved = localStorage.getItem("pmr_home_owner_id");
+    if (saved) return String(saved);
     try {
-      const res = await fetch(API_GARAGES, {
-        method: "GET",
-        headers: AUTH_HEADERS
-      });
-
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText);
-      }
-
-      const g = await res.json();
-      console.log("GARAGE DATA:", g);
-
-      document.getElementById("garageSpotCount").innerText =
-        g.spots_available ?? g.total_parking_spots ?? 0;
-
-      document.getElementById("gateCodeDisplay").innerText =
-        g.home_gate_code || "N/A";
-
-      document.getElementById("petsDisplay").innerText =
-        g.any_pets ? "Yes" : "No";
-
-      document.getElementById("notesDisplay").innerText =
-        g.beware_of || "None";
-
-      // IMAGES
-      const container = document.getElementById("garageImagesContainer");
-      container.innerHTML = "";
-
-      const images = [
-        g.interior_garage_spot_image_1,
-        g.interior_garage_spot_image_2,
-        g.outside_garage_spot_image_1,
-        g.outside_garage_spot_image_2
-      ];
-
-      const labels = [
-        "Interior Spot 1",
-        "Interior Spot 2",
-        "Outside Spot 1",
-        "Outside Spot 2"
-      ];
-
-      images.forEach((url, i) => {
-        container.innerHTML += `
-          <div class="flex flex-col items-center">
-            <div class="w-full h-[110px] border border-dashed border-black/20 rounded-[10px] overflow-hidden flex items-center justify-center">
-              ${
-                url
-                  ? `<img src="${url}" class="w-full h-full object-cover"/>`
-                  : `<div class="text-[11px] text-black/40">No Image</div>`
-              }
-            </div>
-            <div class="mt-2 text-[11px] text-black/50">${labels[i]}</div>
-          </div>
-        `;
-      });
-
-    } catch (err) {
-      console.error("GARAGE LOAD ERROR:", err);
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const id =
+        (user && user.host_id) ||
+        (user && user.home_owner_id) ||
+        (user && user.homeowner_id) ||
+        (user && user.id) ||
+        null;
+      if (id != null) return String(id);
+    } catch (e) {
+      
+    }
+    try {
+      const part = String(token || "").split(".")[1];
+      if (!part) return null;
+      const claims = JSON.parse(
+        atob(part.replace(/-/g, "+").replace(/_/g, "/"))
+      );
+      const id =
+        claims.host_id || claims.home_owner_id || claims.homeowner_id || null;
+      return id != null ? String(id) : null;
+    } catch (e) {
+      return null;
     }
   }
 
-  // ===============================
-  // SAVE PROFILE (FIXED PUT + DEBUG)
-  // ===============================
-  async function saveProfile() {
-    try {
-      const fullName = document.getElementById("displayNameInput").value;
-      const about = document.getElementById("aboutInput").value;
+  function ownerIdOf(owner) {
+    if (!owner || typeof owner !== "object") return null;
+    var id = null;
+    if (owner.host_id != null) id = owner.host_id;
+    else if (owner.home_owner_id != null) id = owner.home_owner_id;
+    else if (owner.homeowner_id != null) id = owner.homeowner_id;
+    else if (owner.id != null) id = owner.id;
+    return id != null && String(id).trim() !== "" ? String(id) : null;
+  }
 
-      const nameParts = fullName.split(" ");
+  function garageIdOf(g) {
+    if (!g || typeof g !== "object") return null;
+    var id = null;
+    if (g.garage_id != null) id = g.garage_id;
+    else if (g.home_garage_id != null) id = g.home_garage_id;
+    else if (g.id != null) id = g.id;
+    else if (g.pk != null) id = g.pk;
+    return id != null && String(id).trim() !== "" ? String(id) : null;
+  }
 
-      const payload = {
-        first_name: nameParts[0] || "",
-        last_name: nameParts.slice(1).join(" ") || "",
-        about_me: about
+  function pickText() {
+    var candidates = Array.prototype.slice.call(arguments);
+    for (const c of candidates) {
+      if (c == null) continue;
+      if (typeof c === "object") continue;
+      const s = String(c).trim();
+      if (s) return s;
+    }
+    return "";
+  }
+
+  
+  function stadiumOrVenueFromGarage(garage) {
+    const g = garage && typeof garage === "object" ? garage : {};
+    const stadiumObj = g.stadium && typeof g.stadium === "object" ? g.stadium : null;
+    const venueObj = g.venue && typeof g.venue === "object" ? g.venue : null;
+    const stadiumName = pickText(
+      g.stadium_name,
+      g.Stadium_name,
+      stadiumObj && stadiumObj.name,
+      typeof g.stadium === "string" ? g.stadium : ""
+    );
+    const venueName = pickText(
+      g.venue_name,
+      g.Venue_name,
+      venueObj && venueObj.name,
+      typeof g.venue === "string" ? g.venue : ""
+    );
+    var stadiumId = null;
+    if (g.stadium_id != null) stadiumId = g.stadium_id;
+    else if (stadiumObj && stadiumObj.stadium_id != null) stadiumId = stadiumObj.stadium_id;
+    else if (stadiumObj && stadiumObj.id != null) stadiumId = stadiumObj.id;
+    var venueId = null;
+    if (g.venue_id != null) venueId = g.venue_id;
+    else if (venueObj && venueObj.venue_id != null) venueId = venueObj.venue_id;
+    else if (venueObj && venueObj.id != null) venueId = venueObj.id;
+
+    const hasStadium =
+      (stadiumId != null && String(stadiumId).trim() !== "") || !!stadiumName;
+    const hasVenue =
+      (venueId != null && String(venueId).trim() !== "") || !!venueName;
+
+    if (hasStadium) {
+      return {
+        type: "stadium",
+        id:
+          stadiumId != null && String(stadiumId).trim() !== ""
+            ? String(stadiumId)
+            : null,
+        name: stadiumName,
       };
+    }
+    if (hasVenue) {
+      return {
+        type: "venue",
+        id:
+          venueId != null && String(venueId).trim() !== ""
+            ? String(venueId)
+            : null,
+        name: venueName,
+      };
+    }
+    return { type: null, id: null, name: "" };
+  }
 
-      console.log("SENDING PAYLOAD:", payload);
+  function paintStadiumVenue(name) {
+    const el = document.getElementById("stadiumVenueInput");
+    if (el) el.value = name || "";
+  }
 
-      const res = await fetch(`${API_CUSTOMERS}${CUSTOMER_ID}/`, {
-        method: "PUT", // FIXED HERE
-        headers: AUTH_HEADERS,
-        body: JSON.stringify(payload)
+  function formatOwnerAddress(source) {
+    const s = source && typeof source === "object" ? source : {};
+    const parts = [s.address, s.city, s.state, s.zip_code]
+      .map((p) => String(p || "").trim())
+      .filter(Boolean);
+    return parts.join(", ");
+  }
+
+  function paintAddress(owner, garage) {
+    const el = document.getElementById("addressInput");
+    if (!el) return;
+    el.value =
+      formatOwnerAddress(garage) ||
+      formatOwnerAddress(owner) ||
+      formatOwnerAddress(profileGarageCache) ||
+      formatOwnerAddress(profileOwnerCache) ||
+      "";
+  }
+
+  async function resolveStadiumVenueName(garage, headers) {
+    const info = stadiumOrVenueFromGarage(garage);
+    if (info.name) return info.name;
+    if (!info.type || !info.id) return "";
+
+    const base = info.type === "stadium" ? STADIUMS_API : VENUES_API;
+    try {
+      const res = await authFetch(`${base}${info.id}/`, {
+        method: "GET",
+        headers: headers || getAuthHeaders().headers,
       });
-
       if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText);
+        console.warn(
+          `[EGP Profile] GET ${info.type}s/${info.id} failed:`,
+          res.status
+        );
+        return "";
       }
-
-      const data = await res.json();
-      console.log("PROFILE UPDATED:", data);
-
-      alert("Profile saved successfully!");
-
-      loadHomeownerProfile();
-
+      const rec = unwrapRecord(await res.json());
+      return pickText((rec && rec.name), (rec && rec.stadium_name), (rec && rec.venue_name));
     } catch (err) {
-      console.error("SAVE PROFILE ERROR:", err);
-      alert("Failed to save profile (check console)");
+      console.warn(`[EGP Profile] ${info.type} name load failed:`, err);
+      return "";
     }
   }
 
-  // ===============================
-  // INIT
-  // ===============================
-  document.addEventListener("DOMContentLoaded", async () => {
-    await EGP.initPortalPage();
-    loadHomeownerProfile();
-    loadGarage();
+  async function paintStadiumVenueFromGarage(garage, headers) {
+    const name = await resolveStadiumVenueName(garage, headers);
+    paintStadiumVenue(name);
+    return name;
+  }
+
+  function paintSecondaryContact(owner, garage) {
+    const nameEl = document.getElementById("secondaryContactNameInput");
+    const phoneEl = document.getElementById("secondaryContactPhoneInput");
+    const o = owner || profileOwnerCache || {};
+    const g = garage || profileGarageCache || {};
+    if (nameEl) {
+      nameEl.value = sanitizeContactName(
+        pickText(o.secondary_contact_name, g.secondary_contact_name)
+      );
+    }
+    if (phoneEl) {
+      phoneEl.value = sanitizeContactPhone(
+        pickText(o.secondary_contact_phone, g.secondary_contact_phone)
+      );
+    }
+  }
+
+  function listFromResponse(data) {
+    if (Array.isArray(data)) return data;
+    if (Array.isArray((data && data.results))) return data.results;
+    if (Array.isArray((data && data.data))) return data.data;
+    return [];
+  }
+
+  function unwrapRecord(payload) {
+    if (!payload || typeof payload !== "object") return null;
+    if (
+      payload.data &&
+      typeof payload.data === "object" &&
+      !Array.isArray(payload.data)
+    ) {
+      return payload.data;
+    }
+    return payload;
+  }
+
+  async function fetchWithTimeout(url, options = {}) {
+    const timeoutMs =
+      typeof options.timeoutMs === "number" && options.timeoutMs > 0
+        ? options.timeoutMs
+        : FETCH_TIMEOUT_MS;
+    const fetchOpts = egpMerge((options));
+    delete fetchOpts.timeoutMs;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(url, egpMerge((fetchOpts), { signal: controller.signal }));
+    } catch (err) {
+      const name = String((err && err.name) || "");
+      const msg = String((err && err.message) || "");
+      if (
+        name === "AbortError" ||
+        /aborted|abort/i.test(msg)
+      ) {
+        throw new Error(
+          "Request timed out. Try again — large photos can take longer to upload."
+        );
+      }
+      throw err;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function withAuthHeader(headers, token) {
+    const next = egpMerge(((headers || {})));
+    
+    delete next["Authorization"];
+    if (token) {
+      next["X-Auth-Token"] = token;
+    } else {
+      delete next["X-Auth-Token"];
+    }
+    return next;
+  }
+
+  function isForbiddenPortalError(status, bodyText) {
+    if (status !== 401 && status !== 403) return false;
+    const text = String(bodyText || "").toLowerCase();
+    return (
+      text.includes("forbidden_portal") ||
+      text.includes("account role cannot access") ||
+      text.includes("cannot access this portal")
+    );
+  }
+
+  async function authFetch(url, options = {}, retryOnExpire = true) {
+    let token =
+      (typeof EGP !== "undefined" && EGP.ensureFreshAccessToken
+        ? await EGP.ensureFreshAccessToken()
+        : null) ||
+      localStorage.getItem("pmr_token") ||
+      "";
+
+    const headers = withAuthHeader(options.headers || {}, token);
+    let res = await fetchWithTimeout(url, egpMerge((options), { headers }));
+
+    if (!retryOnExpire || (res.status !== 401 && res.status !== 403)) {
+      return res;
+    }
+
+    const bodyText = await res.clone().text().catch(() => "");
+
+    
+    if (isForbiddenPortalError(res.status, bodyText)) {
+      return res;
+    }
+
+    const expired =
+      typeof EGP !== "undefined" && EGP.isTokenExpiredError
+        ? EGP.isTokenExpiredError(res.status, bodyText)
+        : /token is expired|token_invalid_or_expired/i.test(bodyText);
+
+    if (!expired) return res;
+
+    const refreshed =
+      typeof EGP !== "undefined" && EGP.refreshAccessToken
+        ? await EGP.refreshAccessToken()
+        : null;
+
+    if (!refreshed) {
+      if (typeof EGP !== "undefined" && EGP.redirectToSignIn) {
+        EGP.redirectToSignIn(
+          "Your session expired. Please sign in again."
+        );
+      }
+      throw new Error("Your session expired. Please sign in again.");
+    }
+
+    return fetchWithTimeout(url, egpMerge((options), { headers: withAuthHeader(options.headers || {}, refreshed) }));
+  }
+
+  const MEDIA_ORIGIN = "https://eventgarageparking.online";
+  
+  const MEDIA_CACHE_KEY = "pmr_profile_media_v1";
+
+  function clearMediaCache() {
+    try {
+      localStorage.removeItem(MEDIA_CACHE_KEY);
+    } catch (e) {
+      
+    }
+  }
+
+  function resetSessionMediaState() {
+    profileImageDisplayUrl = "";
+    profileImageRemoteUrl = "";
+    frontHouseDisplayUrl = "";
+    frontHouseRemoteUrl = "";
+    verificationDisplayUrl = "";
+    verificationRemoteUrl = "";
+    garageImageDisplayUrls = {};
+    pendingHomeImageFile = null;
+    pendingGarageImageFiles = {};
+    pendingVerificationFile = null;
+    verificationOriginalFile = null;
+    garageMediaDirty = false;
+    profilePhotoSavedRecently = false;
+  }
+
+  function showSavedUploadState(preview, title, subtitle) {
+    preview.replaceChildren();
+    const icon = document.createElement("i");
+    icon.className = "fa-solid fa-circle-check text-[22px] text-[#007DB5]";
+    const titleEl = document.createElement("div");
+    titleEl.className = "text-[13px] text-black/70 mt-2 font-medium";
+    titleEl.textContent = title || "Saved";
+    const subEl = document.createElement("div");
+    subEl.className = "text-[12px] text-black/40 mt-1";
+    subEl.textContent = subtitle || "Click to change";
+    preview.append(icon, titleEl, subEl);
+  }
+
+  function mediaCacheHasFiles(cache) {
+    return Object.keys(cache || {}).some(function (k) {
+      return k.charAt(0) !== "_";
+    });
+  }
+
+  /** Drop cached photos when they belong to a different homeowner. */
+  function ensureMediaCacheForCurrentUser() {
+    const hostId = String(localStorage.getItem("pmr_home_owner_id") || "").trim();
+    const email = String(localStorage.getItem("pmr_login_email") || "")
+      .toLowerCase()
+      .trim();
+    const cache = readMediaCache();
+    if (!mediaCacheHasFiles(cache) && !cache._owner && !cache._owner_id && !cache._owner_email) {
+      return;
+    }
+
+    let cacheId = String(cache._owner_id || "").trim();
+    let cacheEmail = String(cache._owner_email || "")
+      .toLowerCase()
+      .trim();
+    const legacy = String(cache._owner || "");
+    if (!cacheId && legacy.indexOf("id:") === 0) cacheId = legacy.slice(3);
+    if (!cacheEmail && legacy.indexOf("email:") === 0) {
+      cacheEmail = legacy.slice(6).toLowerCase();
+    }
+
+    // Untagged legacy cache from an older build — never reuse across accounts
+    if (!cacheId && !cacheEmail && mediaCacheHasFiles(cache)) {
+      clearMediaCache();
+      resetSessionMediaState();
+      return;
+    }
+
+    const idConflict = hostId && cacheId && hostId !== cacheId;
+    const emailConflict = email && cacheEmail && email !== cacheEmail;
+    if (idConflict || emailConflict) {
+      clearMediaCache();
+      resetSessionMediaState();
+    }
+  }
+
+  function resolveMediaUrl(raw) {
+    if (raw == null) return "";
+    if (typeof raw === "object") {
+      var nested = "";
+      if (raw.url != null) nested = raw.url;
+      else if (raw.src != null) nested = raw.src;
+      else if (raw.image != null) nested = raw.image;
+      else if (raw.file != null) nested = raw.file;
+      else if (raw.path != null) nested = raw.path;
+      else if (raw.absolute_url != null) nested = raw.absolute_url;
+      return resolveMediaUrl(nested);
+    }
+    let s = String(raw).trim();
+    if (!s || s === "null" || s === "undefined") return "";
+    if (/^https?:\/\//i.test(s) || s.startsWith("data:") || s.startsWith("blob:")) {
+      return s;
+    }
+    if (s.startsWith("//")) return "https:" + s;
+    if (s.startsWith("/")) return MEDIA_ORIGIN + s;
+    if (s.startsWith("media/")) return MEDIA_ORIGIN + "/" + s;
+    return MEDIA_ORIGIN + "/media/" + s.replace(/^\/+/, "");
+  }
+
+  /** Server placeholder / 1x1 pixel files — treat as no photo. */
+  function isPlaceholderMediaUrl(url) {
+    const s = String(url || "").toLowerCase();
+    if (!s) return true;
+    if (s.startsWith("blob:")) return false;
+    // Tiny transparent GIF / PNG data-URLs used as spacers
+    if (
+      s.startsWith("data:image/gif") ||
+      s.indexOf("r0lgodlhaqab") >= 0 ||
+      s.indexOf("ivborw0kggoaaaansuheugaaaaeaaaab") >= 0
+    ) {
+      return true;
+    }
+    if (s.startsWith("data:")) return false;
+    const path = s.split("?")[0].split("#")[0];
+    const name = path.substring(path.lastIndexOf("/") + 1);
+    return (
+      /blank[-_]?avatar/.test(name) ||
+      /default[-_]?avatar/.test(name) ||
+      /default[-_]?image/.test(name) ||
+      /no[-_]?photo/.test(name) ||
+      /^(blank|placeholder|no[-_]?image|empty|pixel|spacer|dummy|1x1|clear)(\.|$)/.test(
+        name
+      ) ||
+      /\/(blank|placeholders?|defaults?|pixels?|spacers?)\//.test(path) ||
+      /pixel\.gif|spacer\.gif|transparent\.gif|1x1\.(gif|png)/.test(path)
+    );
+  }
+
+  /** True when a loaded <img> is a 1×1 (or tiny) tracking/placeholder pixel. */
+  function isTinyPixelImage(img) {
+    if (!img) return false;
+    const w = Number(img.naturalWidth) || 0;
+    const h = Number(img.naturalHeight) || 0;
+    return w > 0 && h > 0 && w <= 2 && h <= 2;
+  }
+
+  function pickImageUrl() {
+    var candidates = Array.prototype.slice.call(arguments);
+    for (const raw of candidates) {
+      const url = resolveMediaUrl(raw);
+      if (url && !isPlaceholderMediaUrl(url)) return url;
+    }
+    return "";
+  }
+
+  
+  function pickPersistentImageUrl() {
+    var candidates = Array.prototype.slice.call(arguments);
+    for (const raw of candidates) {
+      const url = resolveMediaUrl(raw);
+      if (
+        url &&
+        !url.startsWith("blob:") &&
+        !url.startsWith("data:") &&
+        !isPlaceholderMediaUrl(url)
+      ) {
+        return url;
+      }
+    }
+    return "";
+  }
+
+  function isLocalMediaUrl(url) {
+    const s = String(url || "");
+    return s.startsWith("blob:") || s.startsWith("data:");
+  }
+
+  function readMediaCache() {
+    try {
+      return JSON.parse(localStorage.getItem(MEDIA_CACHE_KEY) || "{}") || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function egpMerge() {
+    var out = {};
+    for (var i = 0; i < arguments.length; i++) {
+      var src = arguments[i];
+      if (src && typeof src === "object") Object.assign(out, src);
+    }
+    return out;
+  }
+
+  /** Drop bulky data: URLs so localStorage quota doesn't block new uploads. */
+  function pruneMediaCacheDataUrls(cache) {
+    const next = egpMerge(cache || {});
+    Object.keys(next).forEach(function (key) {
+      if (key.charAt(0) === "_") return;
+      const val = next[key];
+      if (typeof val === "string" && val.indexOf("data:") === 0) {
+        delete next[key];
+      }
+    });
+    return next;
+  }
+
+  function writeMediaCache(patch) {
+    const hostId = String(localStorage.getItem("pmr_home_owner_id") || "").trim();
+    const email = String(localStorage.getItem("pmr_login_email") || "")
+      .toLowerCase()
+      .trim();
+    const meta = {
+      _ts: Date.now(),
+      _owner_id: hostId || "",
+      _owner_email: email || "",
+    };
+
+    function attempt(base) {
+      localStorage.setItem(
+        MEDIA_CACHE_KEY,
+        JSON.stringify(egpMerge(base, patch, meta, {
+          _owner_id: hostId || base._owner_id || "",
+          _owner_email: email || base._owner_email || "",
+        }))
+      );
+    }
+
+    try {
+      attempt(readMediaCache());
+    } catch (err) {
+      const msg = String((err && err.name) || "") + String((err && err.message) || "");
+      if (!/quota|exceeded/i.test(msg)) {
+        console.warn("[EGP Profile] media cache write failed:", err);
+        return;
+      }
+      // Quota full — strip old base64 blobs and retry with a slim cache
+      try {
+        const pruned = pruneMediaCacheDataUrls(readMediaCache());
+        // Also drop huge data: values from this patch
+        const slimPatch = egpMerge(patch);
+        Object.keys(slimPatch).forEach(function (key) {
+          const val = slimPatch[key];
+          if (typeof val === "string" && val.indexOf("data:") === 0 && val.length > 100000) {
+            delete slimPatch[key];
+          }
+        });
+        attempt(pruned);
+        console.warn(
+          "[EGP Profile] media cache pruned after QuotaExceededError"
+        );
+      } catch (err2) {
+        try {
+          // Last resort: remote URLs + names only
+          const slim = egpMerge(meta);
+          Object.keys(patch || {}).forEach(function (key) {
+            const val = patch[key];
+            if (typeof val !== "string") return;
+            if (val.indexOf("data:") === 0) return;
+            slim[key] = val;
+          });
+          localStorage.setItem(MEDIA_CACHE_KEY, JSON.stringify(slim));
+        } catch (err3) {
+          console.warn("[EGP Profile] media cache write failed:", err3);
+        }
+      }
+    }
+  }
+
+  function cachedMediaUrl(key) {
+    var v = readMediaCache()[key];
+    return typeof v === "string" && v.startsWith("data:") ? v : "";
+  }
+
+  /** Front-of-house: prefer compressed local preview, else saved remote URL. */
+  function cachedFrontHouseUrl() {
+    const cache = readMediaCache();
+    if (typeof cache.home_image === "string" && cache.home_image.startsWith("data:")) {
+      return cache.home_image;
+    }
+    return pickPersistentImageUrl(cache.home_image_remote) || "";
+  }
+
+  const VERIFICATION_FILE_DB = "pmr_verification_original_v1";
+  const VERIFICATION_FILE_STORE = "files";
+
+  function verificationOwnerKey() {
+    return (
+      String(localStorage.getItem("pmr_home_owner_id") || "").trim() +
+      ":" +
+      String(localStorage.getItem("pmr_login_email") || "")
+        .toLowerCase()
+        .trim()
+    );
+  }
+
+  function openVerificationFileDb() {
+    return new Promise(function (resolve, reject) {
+      if (!window.indexedDB) {
+        reject(new Error("IndexedDB is not available"));
+        return;
+      }
+      const req = indexedDB.open(VERIFICATION_FILE_DB, 1);
+      req.onupgradeneeded = function () {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(VERIFICATION_FILE_STORE)) {
+          db.createObjectStore(VERIFICATION_FILE_STORE);
+        }
+      };
+      req.onsuccess = function () {
+        resolve(req.result);
+      };
+      req.onerror = function () {
+        reject(req.error);
+      };
+    });
+  }
+
+  async function saveOriginalVerificationFile(file) {
+    if (!file || String(file.type || "").startsWith("image/")) {
+      verificationOriginalFile = null;
+      try {
+        const db = await openVerificationFileDb();
+        await new Promise(function (resolve, reject) {
+          const tx = db.transaction(VERIFICATION_FILE_STORE, "readwrite");
+          tx.objectStore(VERIFICATION_FILE_STORE).delete(verificationOwnerKey());
+          tx.oncomplete = resolve;
+          tx.onerror = function () {
+            reject(tx.error);
+          };
+        });
+      } catch (e) {}
+      return;
+    }
+    verificationOriginalFile = file;
+    try {
+      const db = await openVerificationFileDb();
+      await new Promise(function (resolve, reject) {
+        const tx = db.transaction(VERIFICATION_FILE_STORE, "readwrite");
+        tx.objectStore(VERIFICATION_FILE_STORE).put(
+          {
+            blob: file,
+            name: file.name || "document",
+            type: file.type || "",
+            kind: verificationKindOfFile(file),
+          },
+          verificationOwnerKey()
+        );
+        tx.oncomplete = resolve;
+        tx.onerror = function () {
+          reject(tx.error);
+        };
+      });
+    } catch (e) {
+      console.warn("[EGP Profile] could not store original document:", e);
+    }
+  }
+
+  async function loadOriginalVerificationFile() {
+    try {
+      const db = await openVerificationFileDb();
+      const rec = await new Promise(function (resolve, reject) {
+        const tx = db.transaction(VERIFICATION_FILE_STORE, "readonly");
+        const req = tx.objectStore(VERIFICATION_FILE_STORE).get(
+          verificationOwnerKey()
+        );
+        req.onsuccess = function () {
+          resolve(req.result || null);
+        };
+        req.onerror = function () {
+          reject(req.error);
+        };
+      });
+      if (!rec || !rec.blob) {
+        verificationOriginalFile = null;
+        return null;
+      }
+      const file =
+        rec.blob instanceof File
+          ? rec.blob
+          : new File([rec.blob], rec.name || "document", {
+              type: rec.type || rec.blob.type || "",
+            });
+      verificationOriginalFile = file;
+      return file;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function wordMimeType(file) {
+    if (isDocxVerificationFile(file)) {
+      return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    }
+    return "application/msword";
+  }
+
+  function wordFileName(file) {
+    const name = String((file && file.name) || "document").trim();
+    if (/\.docx$/i.test(name)) return name;
+    if (/\.doc$/i.test(name)) return name;
+    return isDocxVerificationFile(file) ? name + ".docx" : name + ".doc";
+  }
+
+  function nativeVerificationFileInfo(file, kind) {
+    if (file && (kind === "pdf" || isPdfVerificationFile(file))) {
+      return {
+        file: file,
+        mime: "application/pdf",
+        filename: /\.pdf$/i.test(file.name || "") ? file.name : "document.pdf",
+      };
+    }
+    if (
+      file &&
+      (kind === "doc" ||
+        isDocxVerificationFile(file) ||
+        isLegacyDocVerificationFile(file))
+    ) {
+      return {
+        file: file,
+        mime: wordMimeType(file),
+        filename: wordFileName(file),
+      };
+    }
+    return null;
+  }
+
+  async function resolveOriginalVerificationFile() {
+    return (
+      verificationOriginalFile ||
+      pendingVerificationFile ||
+      (await loadOriginalVerificationFile())
+    );
+  }
+
+  function openNativeFileInNewTab(file, mime, filename) {
+    const named = new File([file], filename || (file && file.name) || "document", {
+      type: mime,
+    });
+    const url = URL.createObjectURL(named);
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
+  function downloadNativeFile(file, mime, filename) {
+    const named = new File([file], filename || (file && file.name) || "document", {
+      type: mime,
+    });
+    const url = URL.createObjectURL(named);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename || named.name;
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () {
+      try {
+        URL.revokeObjectURL(url);
+      } catch (e) {}
+    }, 2000);
+  }
+
+  async function openOriginalVerificationDocument(kind) {
+    const info = nativeVerificationFileInfo(
+      await resolveOriginalVerificationFile(),
+      kind
+    );
+    if (!info) {
+      alert(
+        "The original PDF or Word file is not on this device. Upload it again to view the real document."
+      );
+      return;
+    }
+    openNativeFileInNewTab(info.file, info.mime, info.filename);
+  }
+
+  async function downloadOriginalVerificationDocument(kind) {
+    const info = nativeVerificationFileInfo(
+      await resolveOriginalVerificationFile(),
+      kind
+    );
+    if (!info) {
+      alert(
+        "The original PDF or Word file is not on this device. Upload it again to download."
+      );
+      return;
+    }
+    downloadNativeFile(info.file, info.mime, info.filename);
+  }
+
+  function fileToDataUrl(file) {
+    return new Promise(function (resolve, reject) {
+      if (!file) {
+        resolve("");
+        return;
+      }
+      var reader = new FileReader();
+      reader.onload = function () {
+        resolve(String(reader.result || ""));
+      };
+      reader.onerror = function () {
+        reject(reader.error || new Error("Could not read file"));
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /** Smaller JPEG data URL so front-of-house survives localStorage after re-login. */
+  function fileToCompressedDataUrl(file, maxW, maxH, quality) {
+    if (maxW == null) maxW = 1200;
+    if (maxH == null) maxH = 800;
+    if (quality == null) quality = 0.72;
+    return new Promise(function (resolve) {
+      if (!file || !String(file.type || "").startsWith("image/")) {
+        resolve("");
+        return;
+      }
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var w = img.naturalWidth || img.width || 1;
+          var h = img.naturalHeight || img.height || 1;
+          var scale = Math.min(1, maxW / w, maxH / h);
+          var cw = Math.max(1, Math.round(w * scale));
+          var ch = Math.max(1, Math.round(h * scale));
+          var canvas = document.createElement("canvas");
+          canvas.width = cw;
+          canvas.height = ch;
+          var ctx = canvas.getContext("2d");
+          if (!ctx) {
+            resolve("");
+            return;
+          }
+          ctx.drawImage(img, 0, 0, cw, ch);
+          resolve(canvas.toDataURL("image/jpeg", quality));
+        } catch (err) {
+          console.warn("[EGP Profile] compress image failed:", err);
+          resolve("");
+        } finally {
+          try {
+            URL.revokeObjectURL(url);
+          } catch (e) {}
+        }
+      };
+      img.onerror = function () {
+        try {
+          URL.revokeObjectURL(url);
+        } catch (e) {}
+        resolve("");
+      };
+      img.src = url;
+    });
+  }
+
+  function dataUrlToBlob(dataUrl) {
+    const s = String(dataUrl || "");
+    const parts = s.split(",");
+    if (parts.length < 2) return null;
+    const mimeMatch = parts[0].match(/:(.*?);/);
+    const mime = (mimeMatch && mimeMatch[1]) || "image/jpeg";
+    try {
+      const bin = atob(parts[1]);
+      const arr = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      return new Blob([arr], { type: mime });
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /** Compress large photos before upload — fewer timeouts in private/slow browsers. */
+  async function fileToUploadFile(file, fallbackName) {
+    if (!file || !String(file.type || "").startsWith("image/")) return file;
+    // Skip tiny files
+    if (file.size && file.size < 350000) return file;
+    try {
+      const dataUrl = await fileToCompressedDataUrl(file, 1200, 800, 0.75);
+      const blob = dataUrlToBlob(dataUrl);
+      if (!blob || !blob.size) return file;
+      const base = String(fallbackName || file.name || "upload.jpg").replace(
+        /\.[^.]+$/,
+        ""
+      );
+      const name = base + ".jpg";
+      try {
+        return new File([blob], name, { type: "image/jpeg" });
+      } catch (e) {
+        return blob;
+      }
+    } catch (err) {
+      console.warn("[EGP Profile] upload compress failed:", err);
+      return file;
+    }
+  }
+
+  function loadExternalScript(src) {
+    if (!loadExternalScript._p) loadExternalScript._p = {};
+    if (loadExternalScript._p[src]) return loadExternalScript._p[src];
+    loadExternalScript._p[src] = new Promise(function (resolve, reject) {
+      const existing = document.querySelector(
+        'script[data-egp-src="' + src + '"]'
+      );
+      if (existing && existing.getAttribute("data-egp-loaded") === "1") {
+        resolve();
+        return;
+      }
+      const s = existing || document.createElement("script");
+      if (!existing) {
+        s.src = src;
+        s.async = true;
+        s.setAttribute("data-egp-src", src);
+        document.head.appendChild(s);
+      }
+      s.addEventListener("load", function () {
+        s.setAttribute("data-egp-loaded", "1");
+        resolve();
+      });
+      s.addEventListener("error", function () {
+        delete loadExternalScript._p[src];
+        reject(new Error("Could not load viewer script."));
+      });
+    });
+    return loadExternalScript._p[src];
+  }
+
+  function canvasToJpegFile(canvas, fileName) {
+    return new Promise(function (resolve, reject) {
+      canvas.toBlob(
+        function (blob) {
+          if (!blob) {
+            reject(new Error("Could not create image from document."));
+            return;
+          }
+          const name = String(fileName || "verification.jpg").replace(
+            /\.[^.]+$/,
+            ""
+          ) + ".jpg";
+          try {
+            resolve(new File([blob], name, { type: "image/jpeg" }));
+          } catch (e) {
+            resolve(blob);
+          }
+        },
+        "image/jpeg",
+        0.82
+      );
+    });
+  }
+
+  function isPdfVerificationFile(file) {
+    if (!file) return false;
+    const name = String(file.name || "").toLowerCase();
+    const type = String(file.type || "").toLowerCase();
+    return type === "application/pdf" || type === "application/x-pdf" || /\.pdf$/i.test(name);
+  }
+
+  function verificationKindOfFile(file) {
+    if (isPdfVerificationFile(file)) return "pdf";
+    if (isDocxVerificationFile(file) || isLegacyDocVerificationFile(file)) {
+      return "doc";
+    }
+    return "image";
+  }
+
+  function isDocxVerificationFile(file) {
+    if (!file) return false;
+    const name = String(file.name || "").toLowerCase();
+    const type = String(file.type || "").toLowerCase();
+    return (
+      /\.docx$/i.test(name) ||
+      type ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    );
+  }
+
+  function isLegacyDocVerificationFile(file) {
+    if (!file) return false;
+    const name = String(file.name || "").toLowerCase();
+    return /\.doc$/i.test(name) && !/\.docx$/i.test(name);
+  }
+
+  async function pdfFileToJpegFile(file, fileName) {
+    await loadExternalScript(
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+    );
+    const pdfjsLib = window.pdfjsLib;
+    if (!pdfjsLib) throw new Error("PDF reader is not available.");
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    const data = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: data }).promise;
+    const pageCount = Math.min(pdf.numPages || 1, 4);
+    const pageCanvases = [];
+    for (let i = 1; i <= pageCount; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 1.4 });
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(viewport.width));
+      canvas.height = Math.max(1, Math.round(viewport.height));
+      await page.render({
+        canvasContext: canvas.getContext("2d"),
+        viewport: viewport,
+      }).promise;
+      pageCanvases.push(canvas);
+    }
+    const width = Math.min(
+      2000,
+      Math.max.apply(
+        null,
+        pageCanvases.map(function (c) {
+          return c.width;
+        })
+      )
+    );
+    let height = 0;
+    const scaled = pageCanvases.map(function (c) {
+      const scale = width / c.width;
+      const h = Math.round(c.height * scale);
+      height += h;
+      return { canvas: c, w: width, h: h };
+    });
+    if (height > 4500) {
+      const shrink = 4500 / height;
+      height = 4500;
+      scaled.forEach(function (item) {
+        item.w = Math.round(item.w * shrink);
+        item.h = Math.round(item.h * shrink);
+      });
+    }
+    const out = document.createElement("canvas");
+    out.width = Math.max(1, scaled[0] ? scaled[0].w : width);
+    out.height = Math.max(1, height);
+    const ctx = out.getContext("2d");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, out.width, out.height);
+    let y = 0;
+    scaled.forEach(function (item) {
+      ctx.drawImage(item.canvas, 0, y, item.w, item.h);
+      y += item.h;
+    });
+    return canvasToJpegFile(out, fileName);
+  }
+
+  async function wordFileToJpegFile(file, fileName) {
+    await loadExternalScript(
+      "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"
+    );
+    await loadExternalScript(
+      "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+    );
+    if (!window.mammoth || !window.html2canvas) {
+      throw new Error("Word document reader is not available.");
+    }
+    const data = await file.arrayBuffer();
+    const result = await window.mammoth.convertToHtml({ arrayBuffer: data });
+    const wrap = document.createElement("div");
+    wrap.style.cssText =
+      "position:fixed;left:-12000px;top:0;width:800px;background:#fff;padding:28px;color:#111;font:16px/1.45 Arial,sans-serif;";
+    wrap.innerHTML = result.value || "<p>Document</p>";
+    document.body.appendChild(wrap);
+    try {
+      const canvas = await window.html2canvas(wrap, {
+        backgroundColor: "#ffffff",
+        scale: 1.2,
+        useCORS: true,
+      });
+      return await canvasToJpegFile(canvas, fileName);
+    } finally {
+      wrap.remove();
+    }
+  }
+
+  async function prepareVerificationUploadFile(file, labeledName) {
+    if (!file) return file;
+    if (isPdfVerificationFile(file)) {
+      setVerificationStatus("Preparing PDF…");
+      const jpeg = await pdfFileToJpegFile(file, labeledName);
+      return jpeg || file;
+    }
+    if (isDocxVerificationFile(file)) {
+      setVerificationStatus("Preparing Word document…");
+      const jpeg = await wordFileToJpegFile(file, labeledName);
+      return jpeg || file;
+    }
+    if (isLegacyDocVerificationFile(file)) {
+      throw new Error(
+        "Please upload a .docx Word file, PDF, JPEG, or PNG. Older .doc files are not supported."
+      );
+    }
+    return fileToUploadFile(file, labeledName);
+  }
+
+  function isRetryableUploadError(err) {
+    const msg = String((err && err.message) || err || "");
+    return /timed out|timeout|network|failed to fetch|abort|aborted|signal is aborted/i.test(
+      msg
+    );
+  }
+
+  async function sleepMs(ms) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  /** Rebuild FormData each try — request bodies can't be reused after a failed send. */
+  async function patchRecordWithRetry(url, token, buildFormData, attempts) {
+    const max = attempts != null ? attempts : 3;
+    let lastErr = null;
+    for (let i = 0; i < max; i++) {
+      try {
+        return await patchRecord(url, token, buildFormData());
+      } catch (err) {
+        lastErr = err;
+        if (!isRetryableUploadError(err) || i === max - 1) throw err;
+        console.warn(
+          "[EGP Profile] upload retry",
+          i + 1,
+          "/",
+          max,
+          err && err.message
+        );
+        await sleepMs(700 * (i + 1));
+      }
+    }
+    throw lastErr || new Error("Upload failed.");
+  }
+
+  
+  function probeImageUrl(url, timeoutMs) {
+    if (timeoutMs == null) timeoutMs = 4500;
+    var resolved = resolveMediaUrl(url);
+    if (!resolved) return Promise.resolve("");
+    if (isLocalMediaUrl(resolved)) return Promise.resolve(resolved);
+    return new Promise(function (resolve) {
+      var img = new Image();
+      var done = false;
+      function finish(ok) {
+        if (done) return;
+        done = true;
+        resolve(ok ? resolved : "");
+      }
+      var timer = setTimeout(function () {
+        finish(false);
+      }, timeoutMs);
+      img.onload = function () {
+        clearTimeout(timer);
+        finish(true);
+      };
+      img.onerror = function () {
+        clearTimeout(timer);
+        finish(false);
+      };
+      try {
+        img.referrerPolicy = "no-referrer";
+      } catch (e) {}
+      img.src =
+        resolved +
+        (resolved.indexOf("?") >= 0 ? "&" : "?") +
+        "probe=" +
+        Date.now();
+    });
+  }
+
+  async function resolveWorkingMediaUrl(remoteUrl, fallbackUrl) {
+    var remote = resolveMediaUrl(remoteUrl);
+    if (remote && !isLocalMediaUrl(remote) && !isPlaceholderMediaUrl(remote)) {
+      // PDFs / docs can't be probed with <img> — keep the remote URL
+      if (/\.(pdf|docx?|doc)(\?|#|$)/i.test(remote)) {
+        return remote;
+      }
+      var ok = await probeImageUrl(remote);
+      if (ok) return ok;
+      // Probe 404/failed — do NOT keep using the broken /media URL (avoids
+      // endless 404s). Prefer local cache/preview instead.
+      console.warn(
+        "[EGP Profile] media URL not reachable (404/failed):",
+        remote
+      );
+    }
+    var fallback = resolveMediaUrl(fallbackUrl);
+    if (fallback && !isPlaceholderMediaUrl(fallback)) return fallback;
+    return "";
+  }
+
+  function withCacheBust(url) {
+    var resolved = resolveMediaUrl(url);
+    if (!resolved) return "";
+    if (
+      resolved.indexOf("blob:") === 0 ||
+      resolved.indexOf("data:") === 0 ||
+      /[?&]t=\d+/.test(resolved)
+    ) {
+      return resolved;
+    }
+    return resolved + (resolved.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+  }
+
+  function garageSpotImageUrl(garage, key) {
+    var g = garage && typeof garage === "object" ? garage : {};
+    var lowerKey = key && typeof key.toLowerCase === "function" ? key.toLowerCase() : "";
+    return pickImageUrl(
+      g[key],
+      lowerKey ? g[lowerKey] : "",
+      g[String(key || "").replace(/_image_/g, "_")],
+      key === "outside_garage_spot_image_1" ? g.outside_parking_spot_image_1 : null,
+      key === "outside_garage_spot_image_2" ? g.outside_parking_spot_image_2 : null
+    );
+  }
+
+  function setProfileImage(previewUrl) {
+    const el = document.getElementById("profileImage");
+    if (!el) return;
+
+    const remoteOnFile = pickPersistentImageUrl(
+      profileImageRemoteUrl,
+      (profileOwnerCache && profileOwnerCache.profile_image),
+      (profileOwnerCache && profileOwnerCache.Profile_image)
+    );
+    if (remoteOnFile) profileImageRemoteUrl = remoteOnFile;
+
+    const url = pickImageUrl(
+      isLocalMediaUrl(previewUrl) ? previewUrl : "",
+      isLocalMediaUrl(profileImageDisplayUrl) ? profileImageDisplayUrl : "",
+      remoteOnFile,
+      !isLocalMediaUrl(previewUrl) ? previewUrl : "",
+      !isLocalMediaUrl(profileImageDisplayUrl) ? profileImageDisplayUrl : "",
+      remoteOnFile ? "" : cachedMediaUrl("profile_image")
+    );
+
+    el.style.background = "#9CA3AF";
+    el.style.border = "none";
+
+    const showIcon = () => {
+      el.className =
+        "w-[48px] h-[48px] rounded-full bg-[#9CA3AF] flex items-center justify-center cursor-pointer overflow-hidden box-border";
+      el.replaceChildren();
+      const icon = document.createElement("i");
+      icon.className = "fa-solid fa-user fa-fw";
+      icon.setAttribute("aria-hidden", "true");
+      el.title = url || remoteOnFile ? "Change profile photo" : "Add profile photo";
+      el.append(icon);
+    };
+
+    if (url) {
+      el.className =
+        "w-[48px] h-[48px] rounded-full bg-[#9CA3AF] overflow-hidden cursor-pointer box-border";
+      el.replaceChildren();
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = "";
+      img.addEventListener(
+        "error",
+        () => {
+          const fallback = pickImageUrl(
+            cachedMediaUrl("profile_image"),
+            isLocalMediaUrl(profileImageDisplayUrl)
+              ? profileImageDisplayUrl
+              : "",
+            isLocalMediaUrl(previewUrl) ? previewUrl : ""
+          );
+          if (fallback && fallback !== url) {
+            img.src = fallback;
+            return;
+          }
+          showIcon();
+        },
+        { once: true }
+      );
+      el.append(img);
+      return;
+    }
+
+    showIcon();
+  }
+
+  function paintDisplayName(owner) {
+    const username =
+      typeof EGP !== "undefined" && EGP.toDisplayUsername
+        ? EGP.toDisplayUsername((owner && owner.username), (owner && owner.Username))
+        : String((owner && owner.username) || (owner && owner.Username) || "").trim();
+
+    const label = username || "No username";
+    const textEl = document.getElementById("displayNameText");
+    const inputEl = document.getElementById("displayNameInput");
+    if (textEl) textEl.textContent = label;
+    if (inputEl) {
+      inputEl.value = username || "";
+      inputEl.readOnly = true;
+    }
+    if (username && typeof EGP !== "undefined" && EGP.updateUserName) {
+      EGP.updateUserName(username);
+    }
+  }
+
+  function cachedOwnerFallback(hostId) {
+    try {
+      const cached = JSON.parse(localStorage.getItem("user") || "{}");
+      if (!cached || typeof cached !== "object") return null;
+      const hasIdentity =
+        cached.username ||
+        cached.host_id ||
+        cached.home_owner_id ||
+        cached.email ||
+        cached.about_me != null;
+      if (!hasIdentity) return null;
+      if (hostId) {
+        const cachedId = ownerIdOf(cached);
+        if (cachedId && String(cachedId) !== String(hostId)) return null;
+      }
+      return cached;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function fetchHomeOwner(headers, hostId) {
+    if (hostId) {
+      const res = await authFetch(`${OWNERS_API}${hostId}/`, {
+        method: "GET",
+        headers,
+      });
+      if (res.ok) return unwrapRecord(await res.json());
+      const body = await res.text().catch(() => "");
+      console.warn(
+        "[EGP Profile] GET home-owners/{id} failed:",
+        res.status,
+        body.slice(0, 160)
+      );
+      
+      if (res.status === 403 || res.status === 404) {
+        const cached = cachedOwnerFallback(hostId);
+        if (cached) return cached;
+      }
+    }
+
+    const listRes = await authFetch(OWNERS_API, {
+      method: "GET",
+      headers,
+    });
+    if (!listRes.ok) {
+      const body = await listRes.text().catch(() => "");
+      console.warn(
+        "[EGP Profile] GET home-owners/ failed:",
+        listRes.status,
+        body.slice(0, 160)
+      );
+      const cached = cachedOwnerFallback(hostId);
+      if (cached) return cached;
+      
+      if (hostId) {
+        return {
+          host_id: hostId,
+          username: localStorage.getItem("loggedInUser") || "",
+          email: localStorage.getItem("pmr_login_email") || "",
+        };
+      }
+      throw new Error(
+        `Could not load profile (${listRes.status})${body ? ": " + body.slice(0, 120) : ""}`
+      );
+    }
+    const list = listFromResponse(await listRes.json());
+    if (!list.length) {
+      const cached = cachedOwnerFallback(hostId);
+      if (cached) return cached;
+      throw new Error("No homeowner profile found for this account.");
+    }
+    if (list.length === 1) return list[0];
+
+    const email = String(
+      localStorage.getItem("pmr_login_email") ||
+        (function(){ var __o=JSON.parse(localStorage.getItem("user") || "{}"); return (__o && __o.email); })() ||
+        ""
+    )
+      .toLowerCase()
+      .trim();
+    if (email) {
+      const match = list.find(
+        (o) => String((o && o.email) || "").toLowerCase().trim() === email
+      );
+      if (match) return match;
+    }
+    if (hostId) {
+      const byId = list.find(
+        (o) => o && String(o.host_id || o.home_owner_id || "") === String(hostId)
+      );
+      if (byId) return byId;
+    }
+    const cached = cachedOwnerFallback(hostId);
+    if (cached) return cached;
+    throw new Error("No homeowner profile found for this account.");
+  }
+
+  async function fetchHostGarage(headers, hostId) {
+    const res = await authFetch(GARAGES_API, {
+      method: "GET",
+      headers,
+    });
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(
+        `Could not load garage (${res.status})${body ? ": " + body.slice(0, 120) : ""}`
+      );
+    }
+    const list = listFromResponse(await res.json());
+    if (!list.length) return null;
+    const mine = hostId
+      ? list.filter((g) => g && String(g.host_id) === String(hostId))
+      : [];
+    const seen = new Set();
+    const unique = [];
+    for (const g of mine) {
+      const gid = garageIdOf(g);
+      const key = gid || JSON.stringify(g);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      unique.push(g);
+    }
+    const summary = unique[0] || null;
+    if (!summary) return null;
+
+    
+    const garageId = garageIdOf(summary);
+    if (!garageId) return summary;
+
+    try {
+      const detailRes = await authFetch(`${GARAGES_API}${garageId}/`, {
+        method: "GET",
+        headers,
+      });
+      if (detailRes.ok) {
+        const detail = unwrapRecord(await detailRes.json());
+        if (detail) {
+          return egpMerge((summary), (detail));
+        }
+      } else {
+        console.warn(
+          "[EGP Profile] GET home-garages/{id} failed:",
+          detailRes.status
+        );
+      }
+    } catch (err) {
+      console.warn("[EGP Profile] garage detail load failed:", err);
+    }
+    return summary;
+  }
+
+  function formatApiError(status, bodyText) {
+    const raw = String(bodyText || "");
+    let code = "";
+    let detail = "";
+    let fieldErrors = "";
+    try {
+      const data = JSON.parse(raw);
+      code = String((data && data.code) || "");
+      detail = String((data && data.detail) || (data && data.message) || "");
+      if (data && typeof data === "object" && !detail) {
+        const parts = [];
+        for (const [key, val] of Object.entries(data)) {
+          if (key === "code") continue;
+          if (Array.isArray(val)) parts.push(`${key}: ${val.join(", ")}`);
+          else if (typeof val === "string") parts.push(`${key}: ${val}`);
+        }
+        fieldErrors = parts.join("\n");
+      }
+    } catch (e) {
+      
+    }
+
+    
+    console.warn("[EGP Profile] API error", {
+      status,
+      code,
+      detail,
+      body: raw.slice(0, 500),
+    });
+
+    if (
+      code === "forbidden_portal" ||
+      /account role cannot access/i.test(detail)
+    ) {
+      return "API blocked this homeowner update (403 forbidden_portal). Garage fields may still save.";
+    }
+    if (detail) {
+      if (status === 404 || /not found/i.test(detail)) {
+        return "Profile update returned 404 — check homeowner id or API self-update permissions.";
+      }
+      return detail;
+    }
+    if (fieldErrors) return fieldErrors;
+    if (status === 404) {
+      return "Profile update returned 404 — check homeowner id or API self-update permissions.";
+    }
+    if (status === 401 || status === 403) {
+      return "Could not save owner fields (403). Trying garage fields next.";
+    }
+    return "Could not save your changes. Please try again.";
+  }
+
+  
+  function resolveWritableHostId(token) {
+    return (
+      ownerIdOf(profileOwnerCache) ||
+      getHomeOwnerId(token) ||
+      null
+    );
+  }
+
+  function mediaPathOnly(url) {
+    const resolved = resolveMediaUrl(url);
+    if (!resolved) return "";
+    try {
+      const u = new URL(resolved, MEDIA_ORIGIN);
+      return u.origin + u.pathname;
+    } catch (e) {
+      return String(resolved).split("?")[0].split("#")[0];
+    }
+  }
+
+  async function patchRecord(url, token, formData) {
+    
+    let res = await authFetch(url, {
+      method: "PATCH",
+      headers: authOnlyHeaders(token),
+      body: formData,
+      timeoutMs: UPLOAD_TIMEOUT_MS,
+    });
+    if (!res.ok && res.status === 405) {
+      res = await authFetch(url, {
+        method: "PUT",
+        headers: authOnlyHeaders(token),
+        body: formData,
+        timeoutMs: UPLOAD_TIMEOUT_MS,
+      });
+    }
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(formatApiError(res.status, body));
+    }
+    try {
+      return unwrapRecord(await res.json()) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  
+  async function patchJson(url, token, payload) {
+    const headers = egpMerge((authOnlyHeaders(token)), { "Content-Type": "application/json" });
+    let res = await authFetch(url, {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify(payload),
+    });
+    
+    if (!res.ok && res.status === 405) {
+      res = await authFetch(url, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify(payload),
+      });
+    }
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(formatApiError(res.status, body));
+    }
+    try {
+      return unwrapRecord(await res.json()) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  async function patchOwnerJson(hostId, token, payload) {
+    return patchJson(`${OWNERS_API}${hostId}/`, token, payload);
+  }
+
+  async function patchGarageJson(garageId, token, payload) {
+    return patchJson(`${GARAGES_API}${garageId}/`, token, payload);
+  }
+
+  function frontHouseUrlFromGarage(garage) {
+    const g = garage && typeof garage === "object" ? garage : {};
+    return pickImageUrl(
+      g.home_image,
+      g.Home_image,
+      g.front_of_house_image,
+      g.front_house_image,
+      g.homeImage,
+      g.Front_of_house_image
+    );
+  }
+
+  function verificationUrlFromOwner(owner) {
+    const o = owner && typeof owner === "object" ? owner : {};
+    return pickImageUrl(o.verification, o.Verification);
+  }
+
+  function setFrontHouseStatus(message, isError) {
+    const el = document.getElementById("frontHouseStatus");
+    if (!el) return;
+    el.textContent = message || "";
+    el.className = isError
+      ? "text-[11px] text-red-600 mt-2"
+      : "text-[11px] text-black/45 mt-2";
+  }
+
+  function paintFrontHouse(garage, localUrl) {
+    const preview = document.getElementById("frontHousePreview");
+    const zone = document.getElementById("frontHouseUpload");
+    if (!preview) return;
+
+    const remoteOnFile = pickPersistentImageUrl(
+      frontHouseRemoteUrl,
+      frontHouseUrlFromGarage(garage),
+      frontHouseUrlFromGarage(profileGarageCache)
+    );
+    if (remoteOnFile) frontHouseRemoteUrl = remoteOnFile;
+
+    const url = pickImageUrl(
+      isLocalMediaUrl(localUrl) ? localUrl : "",
+      isLocalMediaUrl(frontHouseDisplayUrl) ? frontHouseDisplayUrl : "",
+      pendingHomeImageFile ? frontHouseDisplayUrl : "",
+      remoteOnFile,
+      !isLocalMediaUrl(frontHouseDisplayUrl) ? frontHouseDisplayUrl : "",
+      remoteOnFile ? "" : cachedFrontHouseUrl()
+    );
+
+    function showIcon() {
+      if (zone) zone.classList.remove("has-image");
+      preview.className =
+        "w-full h-full flex flex-col items-center justify-center pointer-events-none";
+      preview.style.backgroundImage = "";
+      preview.replaceChildren();
+      const icon = document.createElement("i");
+      icon.className = "fa-solid fa-cloud-arrow-up upload-icon";
+      icon.setAttribute("aria-hidden", "true");
+      const hint = document.createElement("span");
+      hint.className = "upload-hint";
+      hint.textContent = "Click to upload";
+      preview.append(icon, hint);
+    }
+
+    if (!url || isPlaceholderMediaUrl(url)) {
+      showIcon();
+      return;
+    }
+
+    if (zone) zone.classList.add("has-image");
+    preview.className =
+      "has-image w-full h-full flex items-center justify-center pointer-events-none";
+    preview.style.backgroundImage = "";
+    preview.replaceChildren();
+    const img = document.createElement("img");
+    img.alt = "Front of house";
+    img.addEventListener("load", () => {
+      if (isTinyPixelImage(img)) {
+        if (!isLocalMediaUrl(url)) {
+          frontHouseRemoteUrl = "";
+          if (frontHouseDisplayUrl === url) frontHouseDisplayUrl = "";
+        }
+        showIcon();
+      }
+    });
+    img.addEventListener(
+      "error",
+      () => {
+        if (isLocalMediaUrl(frontHouseDisplayUrl) && frontHouseDisplayUrl === url) {
+          frontHouseDisplayUrl = "";
+        }
+        const fallback = pickImageUrl(
+          cachedFrontHouseUrl(),
+          isLocalMediaUrl(frontHouseDisplayUrl) ? frontHouseDisplayUrl : "",
+          remoteOnFile
+        );
+        if (fallback && fallback !== url && !isPlaceholderMediaUrl(fallback)) {
+          img.src = fallback;
+          return;
+        }
+        showIcon();
+      },
+      { once: true }
+    );
+    img.src = url;
+    preview.append(img);
+  }
+
+  function paintVerification(localUrl, meta) {
+    const preview = document.getElementById("verificationPreview");
+    const zone = document.getElementById("verificationUpload");
+    if (!preview) return;
+
+    const remoteOnFile = pickPersistentImageUrl(
+      verificationRemoteUrl,
+      verificationUrlFromOwner(profileOwnerCache)
+    );
+    if (remoteOnFile) verificationRemoteUrl = remoteOnFile;
+    else if (isPlaceholderMediaUrl(verificationRemoteUrl)) {
+      verificationRemoteUrl = "";
+    }
+
+    const hasLocalPreview =
+      isLocalMediaUrl(localUrl) || isLocalMediaUrl(verificationDisplayUrl);
+
+    const url = pickImageUrl(
+      isLocalMediaUrl(localUrl) ? localUrl : "",
+      isLocalMediaUrl(verificationDisplayUrl) ? verificationDisplayUrl : "",
+      hasLocalPreview ? "" : remoteOnFile,
+      hasLocalPreview || !remoteOnFile ? "" : cachedMediaUrl("verification")
+    );
+
+    const fileName =
+      (meta && meta.fileName) ||
+      (pendingVerificationFile && pendingVerificationFile.name) ||
+      readMediaCache().verification_name ||
+      fileNameFromMediaUrl(url) ||
+      "";
+    const fileType =
+      (meta && meta.fileType) ||
+      String((pendingVerificationFile && pendingVerificationFile.type) || "");
+
+    function showIcon() {
+      if (zone) zone.classList.remove("has-preview", "is-pdf", "is-doc");
+      preview.className =
+        "w-full h-full flex flex-col items-center justify-center pointer-events-none";
+      preview.replaceChildren();
+      const icon = document.createElement("i");
+      icon.className = "fa-solid fa-cloud-arrow-up upload-icon";
+      icon.setAttribute("aria-hidden", "true");
+      preview.append(icon);
+      paintVerificationUrl(
+        isPlaceholderMediaUrl(remoteOnFile) ? "" : remoteOnFile || ""
+      );
+    }
+
+    if (!url || isPlaceholderMediaUrl(url)) {
+      showIcon();
+      return;
+    }
+
+    const kind = verificationFileKind(fileName, fileType, url);
+
+    function showFileCard(src, label, kind) {
+      const isPdf = kind === "pdf";
+      if (zone) {
+        zone.classList.add("has-preview", isPdf ? "is-pdf" : "is-doc");
+        zone.classList.remove(isPdf ? "is-doc" : "is-pdf");
+      }
+      preview.className =
+        "has-preview " +
+        (isPdf ? "is-pdf" : "is-doc") +
+        " w-full h-full flex flex-col items-center justify-center pointer-events-none";
+      preview.replaceChildren();
+
+      const card = document.createElement("div");
+      card.className = "verification-file-card";
+      const icon = document.createElement("i");
+      icon.className = isPdf
+        ? "fa-solid fa-file-pdf"
+        : "fa-solid fa-file-word";
+      icon.setAttribute("aria-hidden", "true");
+      const nameEl = document.createElement("div");
+      nameEl.className = "verification-file-name";
+      nameEl.textContent = isPdf ? "PDF file saved" : "Word file saved";
+      const actions = document.createElement("div");
+      actions.className = "verification-file-actions";
+      const openLink = document.createElement("a");
+      openLink.href = "#";
+      openLink.className = "verification-open-link";
+      openLink.textContent = isPdf ? "View PDF" : "View document";
+      openLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        openOriginalVerificationDocument(isPdf ? "pdf" : "doc").catch(
+          function (err) {
+            console.warn("[EGP Profile] open document failed:", err);
+            alert(
+              (err && err.message) ||
+                "Could not open the original document."
+            );
+          }
+        );
+      });
+      const downloadLink = document.createElement("a");
+      downloadLink.href = "#";
+      downloadLink.className = "verification-open-link";
+      downloadLink.textContent = "Download";
+      downloadLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        downloadOriginalVerificationDocument(isPdf ? "pdf" : "doc").catch(
+          function (err) {
+            console.warn("[EGP Profile] download document failed:", err);
+            alert((err && err.message) || "Could not download the document.");
+          }
+        );
+      });
+      actions.append(openLink, downloadLink);
+      card.append(icon, nameEl, actions);
+      preview.append(card);
+      paintVerificationUrl(remoteOnFile || verificationRemoteUrl || "");
+    }
+
+    function showImagePreview(src) {
+      if (zone) {
+        zone.classList.add("has-preview");
+        zone.classList.remove("is-pdf", "is-doc");
+      }
+      preview.className =
+        "has-preview w-full h-full flex items-center justify-center pointer-events-none";
+      preview.replaceChildren();
+      const img = document.createElement("img");
+      img.alt = "Verification document";
+      img.addEventListener("load", () => {
+        if (!isTinyPixelImage(img)) return;
+        if (!isLocalMediaUrl(src)) {
+          verificationRemoteUrl = "";
+          if (verificationDisplayUrl === src) verificationDisplayUrl = "";
+        }
+        showIcon();
+      });
+      img.addEventListener(
+        "error",
+        () => {
+          const fallback = pickImageUrl(
+            isLocalMediaUrl(verificationDisplayUrl)
+              ? verificationDisplayUrl
+              : "",
+            isLocalMediaUrl(localUrl) ? localUrl : "",
+            remoteOnFile ? cachedMediaUrl("verification") : ""
+          );
+          if (
+            fallback &&
+            fallback !== src &&
+            !isPlaceholderMediaUrl(fallback)
+          ) {
+            img.src = fallback;
+            return;
+          }
+          // Might be a PDF stored without .pdf in the URL
+          if (src && !isLocalMediaUrl(src)) {
+            showFileCard(src, fileName || "PDF file saved", "pdf");
+            return;
+          }
+          showIcon();
+        },
+        { once: true }
+      );
+      img.src = src;
+      preview.append(img);
+      paintVerificationUrl(remoteOnFile || verificationRemoteUrl || "");
+    }
+
+    if (kind === "pdf") {
+      showFileCard(url, fileName || "PDF file saved", "pdf");
+      return;
+    }
+
+    if (kind === "doc") {
+      showFileCard(url, fileName || "Word file saved", "doc");
+      return;
+    }
+
+    showImagePreview(url);
+  }
+
+  
+  function paintVerificationPending(localUrl) {
+    paintVerification(localUrl);
+  }
+
+  function syncGarageImageDisplayUrls(garage) {
+    const g = garage && typeof garage === "object" ? garage : {};
+    GARAGE_IMAGE_FIELDS.forEach((item) => {
+      const current = garageImageDisplayUrls[item.key] || "";
+      if (isLocalMediaUrl(current)) return;
+      const cached = cachedMediaUrl(item.key);
+      const fromApi = garageSpotImageUrl(g, item.key);
+      garageImageDisplayUrls[item.key] =
+        cached || current || fromApi || "";
+    });
+  }
+
+  async function hydrateWorkingGarageMedia(garage) {
+    const g = garage && typeof garage === "object" ? garage : {};
+    const savedFront = pickPersistentImageUrl(frontHouseUrlFromGarage(g));
+    if (savedFront) frontHouseRemoteUrl = savedFront;
+    const localFront = cachedFrontHouseUrl();
+    if (!isLocalMediaUrl(frontHouseDisplayUrl)) {
+      // API first — local cache is only a same-browser fallback
+      const workingFront = savedFront
+        ? await resolveWorkingMediaUrl(savedFront, "")
+        : "";
+      frontHouseDisplayUrl =
+        workingFront ||
+        savedFront ||
+        localFront ||
+        frontHouseDisplayUrl ||
+        "";
+      if (savedFront) {
+        try {
+          writeMediaCache({ home_image_remote: savedFront });
+        } catch (e) {}
+      }
+    }
+
+    for (const item of GARAGE_IMAGE_FIELDS) {
+      const current = garageImageDisplayUrls[item.key] || "";
+      if (isLocalMediaUrl(current)) continue;
+      const localSpot = cachedMediaUrl(item.key);
+      const remoteSpot = pickPersistentImageUrl(
+        garageSpotImageUrl(g, item.key),
+        current
+      );
+      const workingSpot = remoteSpot
+        ? await resolveWorkingMediaUrl(remoteSpot, localSpot)
+        : localSpot;
+      // Always keep a display URL — prefer working remote, then cache, then API path
+      garageImageDisplayUrls[item.key] =
+        workingSpot || localSpot || remoteSpot || current || "";
+      if (garageImageDisplayUrls[item.key]) {
+        g[item.key] = garageImageDisplayUrls[item.key];
+      }
+    }
+    return g;
+  }
+
+  function paintGarageImageSlots(garage) {
+    const container = document.getElementById("garageImagesContainer");
+    if (!container) return;
+
+    const g = garage || profileGarageCache || {};
+    syncGarageImageDisplayUrls(g);
+    container.replaceChildren();
+
+    GARAGE_IMAGE_FIELDS.forEach((item) => {
+      const imageUrl = pickImageUrl(
+        garageImageDisplayUrls[item.key],
+        cachedMediaUrl(item.key),
+        garageSpotImageUrl(g, item.key)
+      );
+
+      const wrap = document.createElement("div");
+      wrap.className = "flex flex-col items-center";
+
+      const frame = document.createElement("div");
+      frame.className = imageUrl
+        ? "w-full h-[110px] border border-black/10 rounded-[10px] overflow-hidden bg-[#f5f7f9]"
+        : "w-full h-[110px] border border-black/10 rounded-[10px] overflow-hidden bg-[#f5f7f9] flex items-center justify-center";
+
+      if (imageUrl) {
+        const img = document.createElement("img");
+        img.src = imageUrl;
+        img.alt = item.label;
+        img.className = "w-full h-full object-cover block";
+        img.loading = "lazy";
+        img.referrerPolicy = "no-referrer";
+        img.addEventListener(
+          "error",
+          () => {
+            const fallback = cachedMediaUrl(item.key);
+            if (fallback && fallback !== imageUrl) {
+              img.src = fallback;
+              return;
+            }
+            frame.replaceChildren();
+            frame.className =
+              "w-full h-[110px] border border-black/10 rounded-[10px] overflow-hidden bg-[#f5f7f9] flex items-center justify-center";
+            const empty = document.createElement("div");
+            empty.className = "text-[11px] text-black/35";
+            empty.textContent = "No image";
+            frame.append(empty);
+          },
+          { once: true }
+        );
+        frame.append(img);
+      } else {
+        const empty = document.createElement("div");
+        empty.className = "text-[11px] text-black/35";
+        empty.textContent = "No image";
+        frame.append(empty);
+      }
+
+      const label = document.createElement("div");
+      label.className = "mt-2 text-[11px] text-black/50 text-center";
+      label.textContent = item.label;
+
+      wrap.append(frame, label);
+      container.append(wrap);
+    });
+  }
+
+  function paintGarageSections(garage) {
+    profileGarageCache = garage || null;
+    const g = garage || {};
+
+    const gate = document.getElementById("gateCodeInput");
+    const pets = document.getElementById("petsInput");
+    const notes = document.getElementById("notesInput");
+    const parking = document.getElementById("parkingInstructionsInput");
+    const spots = document.getElementById("garageSpotCount");
+
+    if (gate) {
+      gate.value = g.home_gate_code || "";
+      gate.style.border = "1px solid rgba(0,0,0,0.2)";
+    }
+    if (pets) {
+      if (g.any_pets === true || g.any_pets === "true" || g.any_pets === 1) {
+        pets.value = "true";
+      } else if (
+        g.any_pets === false ||
+        g.any_pets === "false" ||
+        g.any_pets === 0
+      ) {
+        pets.value = "false";
+      } else {
+        pets.value = "";
+      }
+    }
+    if (notes) notes.value = g.beware_of || "";
+    if (parking) parking.value = g.parking_instructions || "";
+    if (spots) {
+      var n = null;
+      if (g.spots_available != null) n = g.spots_available;
+      else if (g.total_parking_spots != null) n = g.total_parking_spots;
+      else n = g.spots;
+      spots.textContent = n != null && n !== "" ? String(n) : "—";
+      spots.style.border = "1px solid rgba(0,0,0,0.2)";
+      spots.style.boxSizing = "border-box";
+    }
+
+    
+    if (!pendingHomeImageFile && !isLocalMediaUrl(frontHouseDisplayUrl)) {
+      const apiFront = frontHouseUrlFromGarage(g);
+      const cachedFront = cachedFrontHouseUrl();
+      // Prefer API URL so other browsers see the same photo
+      frontHouseDisplayUrl =
+        apiFront || frontHouseDisplayUrl || cachedFront || "";
+      if (apiFront) frontHouseRemoteUrl = apiFront;
+    }
+    syncGarageImageDisplayUrls(g);
+
+    paintGarageImageSlots(g);
+    paintFrontHouse(
+      g,
+      frontHouseDisplayUrl ||
+        (pendingHomeImageFile
+          ? URL.createObjectURL(pendingHomeImageFile)
+          : null)
+    );
+    paintAddress(profileOwnerCache, g);
+    paintSecondaryContact(profileOwnerCache, g);
+  }
+
+  function paintNoGarageState() {
+    const spots = document.getElementById("garageSpotCount");
+    if (spots) {
+      spots.textContent = "—";
+      spots.style.border = "1px solid rgba(0,0,0,0.2)";
+      spots.style.boxSizing = "border-box";
+    }
+    paintStadiumVenue("");
+    paintAddress(profileOwnerCache, null);
+    paintSecondaryContact(profileOwnerCache, null);
+    pendingGarageImageFiles = {};
+    garageImageDisplayUrls = {};
+    frontHouseDisplayUrl = "";
+    
+    paintGarageImageSlots(null);
+    paintFrontHouse(null, null);
+    const gate = document.getElementById("gateCodeInput");
+    const pets = document.getElementById("petsInput");
+    const notes = document.getElementById("notesInput");
+    const parking = document.getElementById("parkingInstructionsInput");
+    if (gate) gate.value = "";
+    if (pets) pets.value = "";
+    if (notes) notes.value = "";
+    if (parking) parking.value = "";
+  }
+
+  function paintVerificationFromOwner(owner) {
+    const o = owner || profileOwnerCache || {};
+    const savedUrl = pickPersistentImageUrl(verificationUrlFromOwner(o));
+    if (savedUrl) verificationRemoteUrl = savedUrl;
+    else if (!pendingVerificationFile) {
+      verificationRemoteUrl = "";
+    }
+
+    if (!pendingVerificationFile) {
+      if (isLocalMediaUrl(verificationDisplayUrl)) {
+        
+      } else if (savedUrl) {
+        verificationDisplayUrl =
+          savedUrl || cachedMediaUrl("verification") || "";
+      } else {
+        verificationDisplayUrl = "";
+      }
+    }
+
+    const typeEl = document.getElementById("verificationTypeInput");
+    const cacheType = String(readMediaCache().verification_type || "");
+    const docType = pickText(
+      o.verification_type,
+      verificationTypeFromName(
+        savedUrl || verificationRemoteUrl,
+        o.verification_name ||
+          o.verification_filename ||
+          readMediaCache().verification_name
+      ),
+      cacheType
+    );
+    if (typeEl && docType && VERIFICATION_TYPES[docType] && !pendingVerificationFile) {
+      typeEl.value = docType;
+    }
+
+    if (!pendingVerificationFile) {
+      paintVerification(verificationDisplayUrl || savedUrl || null, {
+        fileName:
+          pickText(
+            o.verification_filename,
+            o.verification_name,
+            readMediaCache().verification_name
+          ) || "",
+      });
+      paintVerificationUrl(savedUrl || verificationRemoteUrl || "");
+    }
+  }
+
+  function paintOwnerProfile(owner) {
+    const apiImage = pickPersistentImageUrl(
+      (owner && owner.profile_image),
+      (owner && owner.Profile_image)
+    );
+    const prevPersistent = pickPersistentImageUrl(
+      (profileOwnerCache && profileOwnerCache.profile_image),
+      (profileOwnerCache && profileOwnerCache.Profile_image)
+    );
+    const sessionLocal = isLocalMediaUrl(profileImageDisplayUrl)
+      ? profileImageDisplayUrl
+      : "";
+    const cachedLocal = cachedMediaUrl("profile_image");
+
+    profileOwnerCache = owner
+      ? egpMerge(((profileOwnerCache || {})), (owner))
+      : profileOwnerCache;
+
+    // Session blob first, then API — localStorage cache last (per-browser only)
+    const nextImage =
+      sessionLocal ||
+      apiImage ||
+      prevPersistent ||
+      (!apiImage ? cachedLocal : "") ||
+      "";
+    if (profileOwnerCache && nextImage) {
+      profileOwnerCache.profile_image = nextImage;
+      if (!isLocalMediaUrl(profileImageDisplayUrl) || !profileImageDisplayUrl) {
+        profileImageDisplayUrl = nextImage;
+      }
+    }
+    if (apiImage) profileImageRemoteUrl = apiImage;
+
+    const sessionVerification = isLocalMediaUrl(verificationDisplayUrl)
+      ? verificationDisplayUrl
+      : "";
+    const apiVerification = pickPersistentImageUrl(
+      verificationUrlFromOwner(profileOwnerCache)
+    );
+    const cachedVerification = apiVerification
+      ? cachedMediaUrl("verification")
+      : "";
+    const nextVerification =
+      sessionVerification ||
+      apiVerification ||
+      cachedVerification ||
+      "";
+    if (apiVerification) {
+      verificationRemoteUrl = apiVerification;
+      verificationDisplayUrl = nextVerification;
+      if (profileOwnerCache) {
+        profileOwnerCache.verification = apiVerification;
+      }
+    } else if (sessionVerification) {
+      verificationDisplayUrl = sessionVerification;
+    } else {
+      verificationDisplayUrl = "";
+      verificationRemoteUrl = "";
+    }
+
+    setProfileImage(profileImageDisplayUrl || nextImage || undefined);
+    paintDisplayName(profileOwnerCache);
+    paintAddress(profileOwnerCache, profileGarageCache);
+    paintSecondaryContact(profileOwnerCache, profileGarageCache);
+    paintVerificationFromOwner(profileOwnerCache);
+
+    const about = document.getElementById("aboutInput");
+    if (about) about.value = (profileOwnerCache && profileOwnerCache.about_me) || "";
+  }
+
+  let profileImageStatusTimer = null;
+
+  function setProfileImageStatus(message, isError) {
+    const el = document.getElementById("profileImageStatus");
+    if (!el) return;
+    if (profileImageStatusTimer) {
+      clearTimeout(profileImageStatusTimer);
+      profileImageStatusTimer = null;
+    }
+    el.textContent = message || "";
+    el.className = isError
+      ? "text-[11px] text-red-600 mt-1"
+      : "text-[11px] text-black/45 mt-1";
+    
+    if (message && !isError) {
+      profileImageStatusTimer = setTimeout(() => {
+        el.textContent = "";
+        profileImageStatusTimer = null;
+      }, 2500);
+    }
+  }
+
+  async function uploadProfileImage(file) {
+    let token = localStorage.getItem("pmr_token") || "";
+    if (!token) {
+      setProfileImageStatus("Please sign in to change your profile photo.", true);
+      alert("Please sign in to change your profile photo.");
+      return;
+    }
+
+    try {
+      if (typeof EGP !== "undefined" && EGP.ensureFreshAccessToken) {
+        token = (await EGP.ensureFreshAccessToken()) || token;
+      }
+    } catch (err) {
+      console.warn("[EGP Profile] token refresh before photo upload failed:", err);
+    }
+
+    let hostId = resolveWritableHostId(token);
+    if (!hostId) {
+      
+      try {
+        const owner = await fetchHomeOwner(getAuthHeaders().headers, null);
+        if (owner) {
+          paintOwnerProfile(owner);
+          hostId = ownerIdOf(owner);
+          if (hostId) localStorage.setItem("pmr_home_owner_id", hostId);
+        }
+      } catch (resolveErr) {
+        console.warn("[EGP Profile] host id resolve failed:", resolveErr);
+      }
+    }
+    if (!hostId) {
+      setProfileImageStatus("Missing homeowner id. Please sign in again.", true);
+      alert("Missing homeowner id. Please sign in again.");
+      return;
+    }
+
+    const previousUrl = pickImageUrl(
+      (profileOwnerCache && profileOwnerCache.profile_image),
+      (profileOwnerCache && profileOwnerCache.Profile_image),
+      cachedMediaUrl("profile_image")
+    );
+    const localPreview = URL.createObjectURL(file);
+
+    // Always show the new photo immediately (even if API later 403s)
+    profileImageDisplayUrl = localPreview;
+    setProfileImage(localPreview);
+    setProfileImageStatus("Uploading…");
+    try {
+      const dataUrl = await fileToDataUrl(file);
+      if (dataUrl) {
+        writeMediaCache({ profile_image: dataUrl });
+        profileImageDisplayUrl = dataUrl;
+        setProfileImage(dataUrl);
+        profileOwnerCache = egpMerge(profileOwnerCache || {}, {
+          profile_image: dataUrl,
+        });
+      }
+    } catch (e) {
+      
+    }
+
+    // Still attempt API even if a prior 403 was cached — backend may have been fixed
+    if (isOwnerPatchBlocked()) {
+      clearOwnerPatchBlocked();
+    }
+
+    const uploadFile = await fileToUploadFile(file, "profile-image.jpg");
+
+    const changeBtn = document.getElementById("changeProfilePhotoBtn");
+    if (changeBtn) {
+      changeBtn.textContent = "Uploading…";
+      changeBtn.style.pointerEvents = "none";
+    }
+
+    try {
+      const authHeaders = authOnlyHeaders(token);
+
+      async function patchPhoto(id) {
+        const form = new FormData();
+        form.append(
+          "profile_image",
+          uploadFile,
+          (uploadFile && uploadFile.name) || "profile-image.jpg"
+        );
+        const res = await fetchWithTimeout(`${OWNERS_API}${id}/`, {
+          method: "PATCH",
+          headers: authHeaders,
+          body: form,
+          timeoutMs: UPLOAD_TIMEOUT_MS,
+        });
+        const raw = await res.text().catch(() => "");
+        let data = null;
+        try {
+          data = raw ? JSON.parse(raw) : null;
+        } catch (e) {
+          data = null;
+        }
+        console.log("[EGP Profile] profile image PATCH", {
+          hostId: id,
+          url: `${OWNERS_API}${id}/`,
+          status: res.status,
+          ok: res.ok,
+          body: raw.slice(0, 500),
+        });
+        return { res, raw, data };
+      }
+
+      let { res, raw, data } = await patchPhoto(hostId);
+
+      
+      if (res.status === 404) {
+        console.warn(
+          "[EGP Profile] photo PATCH 404 for id",
+          hostId,
+          "— re-resolving host id"
+        );
+        localStorage.removeItem("pmr_home_owner_id");
+        const owner = await fetchHomeOwner(authHeaders, null);
+        const retryId = ownerIdOf(owner);
+        if (retryId && String(retryId) !== String(hostId)) {
+          if (owner) paintOwnerProfile(owner);
+          localStorage.setItem("pmr_home_owner_id", String(retryId));
+          hostId = String(retryId);
+          
+          const retryForm = new FormData();
+          retryForm.append(
+            "profile_image",
+            file,
+            file.name || "profile-image.jpg"
+          );
+          const retryRes = await fetchWithTimeout(`${OWNERS_API}${hostId}/`, {
+            method: "PATCH",
+            headers: authHeaders,
+            body: retryForm,
+            timeoutMs: UPLOAD_TIMEOUT_MS,
+          });
+          raw = await retryRes.text().catch(() => "");
+          try {
+            data = raw ? JSON.parse(raw) : null;
+          } catch (e) {
+            data = null;
+          }
+          res = retryRes;
+          console.log("[EGP Profile] profile image PATCH retry", {
+            hostId,
+            status: res.status,
+            ok: res.ok,
+            body: raw.slice(0, 500),
+          });
+        }
+      }
+
+      if (!res.ok) {
+        throw new Error(formatApiError(res.status, raw));
+      }
+
+      const updated = unwrapRecord(data) || {};
+      const remoteUrl = pickPersistentImageUrl(
+        updated.profile_image,
+        updated.Profile_image
+      );
+      const cachedLocal = cachedMediaUrl("profile_image") || localPreview;
+      
+      const workingRemote = remoteUrl
+        ? await resolveWorkingMediaUrl(remoteUrl, "")
+        : "";
+      const storedRemote = workingRemote
+        ? withCacheBust(workingRemote)
+        : "";
+
+      console.log("[EGP Profile] profile image saved", {
+        hostId,
+        remoteUrl,
+        storedRemote,
+        usingLocalFallback: !storedRemote,
+      });
+
+      // Keep local blob/data for display — do not swap in backend profile_image URL
+      profileImageDisplayUrl = cachedLocal || localPreview || "";
+      if (remoteUrl) profileImageRemoteUrl = remoteUrl;
+      profileOwnerCache = egpMerge(profileOwnerCache || {}, updated, {
+        host_id: updated.host_id != null ? updated.host_id : hostId,
+        profile_image: profileImageDisplayUrl || "",
+      });
+
+      setProfileImage(profileImageDisplayUrl);
+      profilePhotoSavedRecently = true;
+      setProfileImageStatus(
+        remoteUrl || storedRemote
+          ? "Profile photo saved. It will stay until you change it."
+          : "Profile photo saved on this device."
+      );
+
+      try {
+        const prev = JSON.parse(localStorage.getItem("user") || "{}");
+        localStorage.setItem(
+          "user",
+          JSON.stringify(egpMerge((prev), (profileOwnerCache), { profile_image:
+              storedRemote ||
+              pickPersistentImageUrl(prev.profile_image, prev.Profile_image) ||
+              "" }))
+        );
+      } catch (e) {
+        
+      }
+    } catch (err) {
+      console.error("PROFILE IMAGE UPLOAD ERROR:", err);
+      const forbidden = isOwnerForbiddenError(err);
+      if (forbidden) {
+        markOwnerPatchBlocked();
+        // Keep the new local preview instead of reverting
+        profileOwnerCache = egpMerge(profileOwnerCache || {}, {
+          profile_image: profileImageDisplayUrl || previousUrl || "",
+        });
+        setProfileImage(profileImageDisplayUrl || previousUrl || undefined);
+        setProfileImageStatus(
+          "Photo kept on this device. Server blocked homeowner update (403).",
+          true
+        );
+      } else {
+        profileOwnerCache = egpMerge(profileOwnerCache || {}, {
+          profile_image: previousUrl || (profileOwnerCache && profileOwnerCache.profile_image) || "",
+        });
+        setProfileImage(previousUrl || undefined);
+        const msg = (err && err.message) || "Could not upload profile photo.";
+        setProfileImageStatus(msg, true);
+        alert(msg);
+      }
+    } finally {
+      if (changeBtn) {
+        changeBtn.textContent = "Change profile photo";
+        changeBtn.style.pointerEvents = "";
+      }
+    }
+  }
+
+  function bindProfileImageUpload() {
+    const input = document.getElementById("profileImageUpload");
+    const avatar = document.getElementById("profileImage");
+    if (!input || input.dataset.egpBound === "1") return;
+    input.dataset.egpBound = "1";
+
+    if (avatar) {
+      avatar.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        input.click();
+      });
+    }
+
+    input.addEventListener("change", async () => {
+      const file = input.files && input.files[0];
+      input.value = "";
+      if (!file) return;
+      if (!String(file.type || "").startsWith("image/")) {
+        setProfileImageStatus("Please choose an image file.", true);
+        alert("Please choose an image file.");
+        return;
+      }
+      await uploadProfileImage(file);
+    });
+  }
+
+  function bindFileDropZone(zoneId, inputId, onFile) {
+    const zone = document.getElementById(zoneId);
+    const input = document.getElementById(inputId);
+    if (!zone || !input || zone.dataset.egpBound === "1") return;
+    zone.dataset.egpBound = "1";
+
+    zone.addEventListener("click", (e) => {
+      if (e.target === input) return;
+      // Verification should always open the picker so the host can replace the file.
+      if (
+        zoneId !== "verificationUpload" &&
+        (zone.classList.contains("has-preview") ||
+          zone.classList.contains("has-image")) &&
+        e.target.closest(
+          ".verification-pdf-shell, embed, iframe, a, img, #verificationPreview, #frontHousePreview"
+        )
+      ) {
+        return;
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      input.click();
+    });
+    zone.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        input.click();
+      }
+    });
+    if (!zone.hasAttribute("tabindex")) zone.setAttribute("tabindex", "0");
+
+    input.addEventListener("change", () => {
+      const file = input.files && input.files[0];
+      input.value = "";
+      if (!file) return;
+      onFile(file);
+    });
+  }
+
+  
+  function sanitizeContactName(value) {
+    return String(value || "").replace(/[^A-Za-z\s]/g, "");
+  }
+
+  
+  function sanitizeContactPhone(value) {
+    return String(value || "").replace(/\D/g, "");
+  }
+
+  function bindSecondaryContactValidation() {
+    const nameEl = document.getElementById("secondaryContactNameInput");
+    const phoneEl = document.getElementById("secondaryContactPhoneInput");
+
+    if (nameEl && nameEl.dataset.egpValidateBound !== "1") {
+      nameEl.dataset.egpValidateBound = "1";
+      nameEl.addEventListener("input", () => {
+        const cleaned = sanitizeContactName(nameEl.value);
+        if (nameEl.value !== cleaned) nameEl.value = cleaned;
+      });
+      nameEl.addEventListener("paste", (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData("text");
+        const start = nameEl.selectionStart != null ? nameEl.selectionStart : nameEl.value.length;
+        const end = nameEl.selectionEnd != null ? nameEl.selectionEnd : nameEl.value.length;
+        const next =
+          nameEl.value.slice(0, start) +
+          sanitizeContactName(text) +
+          nameEl.value.slice(end);
+        nameEl.value = sanitizeContactName(next);
+      });
+    }
+
+    if (phoneEl && phoneEl.dataset.egpValidateBound !== "1") {
+      phoneEl.dataset.egpValidateBound = "1";
+      phoneEl.addEventListener("input", () => {
+        const cleaned = sanitizeContactPhone(phoneEl.value);
+        if (phoneEl.value !== cleaned) phoneEl.value = cleaned;
+      });
+      phoneEl.addEventListener("paste", (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData("text");
+        const start = phoneEl.selectionStart != null ? phoneEl.selectionStart : phoneEl.value.length;
+        const end = phoneEl.selectionEnd != null ? phoneEl.selectionEnd : phoneEl.value.length;
+        const next =
+          phoneEl.value.slice(0, start) +
+          sanitizeContactPhone(text) +
+          phoneEl.value.slice(end);
+        phoneEl.value = sanitizeContactPhone(next);
+      });
+    }
+  }
+
+  async function keepVerificationLocally(file, docType, statusMsg) {
+    pendingVerificationFile = file;
+    const localPreview = URL.createObjectURL(file);
+    verificationDisplayUrl = localPreview;
+    paintVerification(localPreview, {
+      fileName: file.name || "",
+      fileType: file.type || "",
+    });
+    try {
+      const cachePatch = {
+        verification_type: docType,
+        verification_name: file.name || "",
+      };
+      if (String(file.type || "").startsWith("image/")) {
+        const compressed = await fileToCompressedDataUrl(file, 900, 900, 0.65);
+        if (compressed) cachePatch.verification = compressed;
+      }
+      writeMediaCache(cachePatch);
+    } catch (e) {}
+    profileOwnerCache = egpMerge(profileOwnerCache || {}, {
+      verification: verificationDisplayUrl,
+      verification_type: docType,
+      verification_name: file.name || "",
+    });
+    try {
+      const prev = JSON.parse(localStorage.getItem("user") || "{}");
+      localStorage.setItem(
+        "user",
+        JSON.stringify(
+          egpMerge(prev, profileOwnerCache, {
+            verification_type: docType,
+            verification_name: file.name || "",
+          })
+        )
+      );
+    } catch (e) {
+      
+    }
+    setVerificationStatus(statusMsg, true);
+    paintVerificationUrl("");
+  }
+
+  async function uploadVerificationDocument(file) {
+    let token = localStorage.getItem("pmr_token") || "";
+    if (!token) {
+      setVerificationStatus("Please sign in to upload a verification document.", true);
+      alert("Please sign in to upload a verification document.");
+      return false;
+    }
+
+    const docType = getSelectedVerificationType();
+    if (!docType) {
+      setVerificationStatus("Select document type: Utility Bill or Mortgage.", true);
+      alert("Select document type first: Utility Bill or Mortgage.");
+      return false;
+    }
+
+    if (!isAcceptedVerificationFile(file)) {
+      setVerificationStatus(VERIFICATION_ACCEPT_LABEL, true);
+      alert(VERIFICATION_ACCEPT_LABEL);
+      return false;
+    }
+
+    try {
+      if (typeof EGP !== "undefined" && EGP.ensureFreshAccessToken) {
+        token = (await EGP.ensureFreshAccessToken()) || token;
+      }
+    } catch (err) {
+      console.warn("[EGP Profile] token refresh before verification upload failed:", err);
+    }
+
+    let hostId = resolveWritableHostId(token);
+    if (!hostId) {
+      try {
+        const owner = await fetchHomeOwner(getAuthHeaders().headers, null);
+        if (owner) {
+          paintOwnerProfile(owner);
+          hostId = ownerIdOf(owner);
+          if (hostId) localStorage.setItem("pmr_home_owner_id", hostId);
+        }
+      } catch (resolveErr) {
+        console.warn("[EGP Profile] host id resolve failed:", resolveErr);
+      }
+    }
+    if (!hostId) {
+      setVerificationStatus("Missing homeowner id. Please sign in again.", true);
+      alert("Missing homeowner id. Please sign in again.");
+      return false;
+    }
+
+    // Still attempt API even if a prior 403 was cached — backend may have been fixed
+    if (isOwnerPatchBlocked()) {
+      clearOwnerPatchBlocked();
+    }
+
+    pendingVerificationFile = file;
+    if (
+      isPdfVerificationFile(file) ||
+      isDocxVerificationFile(file) ||
+      isLegacyDocVerificationFile(file)
+    ) {
+      saveOriginalVerificationFile(file);
+    } else {
+      saveOriginalVerificationFile(null);
+    }
+    const localPreview = URL.createObjectURL(file);
+    verificationDisplayUrl = localPreview;
+    paintVerification(localPreview, {
+      fileName: file.name || "",
+      fileType: file.type || "",
+    });
+    setVerificationStatus("Uploading…");
+    paintVerificationUrl("");
+
+    try {
+      const cachePatch = {
+        verification_type: docType,
+        verification_name: file.name || "",
+        verification_kind: verificationKindOfFile(file),
+      };
+      if (String(file.type || "").startsWith("image/")) {
+        const compressed = await fileToCompressedDataUrl(file, 900, 900, 0.65);
+        if (compressed) cachePatch.verification = compressed;
+      }
+      writeMediaCache(cachePatch);
+    } catch (e) {
+      console.warn("[EGP Profile] verification cache skipped:", e);
+    }
+
+    const labeledName = labeledVerificationFileName(file, docType);
+
+    try {
+      const uploadFile = await prepareVerificationUploadFile(file, labeledName);
+      try {
+        if (uploadFile && String(uploadFile.type || "").startsWith("image/")) {
+          const compressed = await fileToCompressedDataUrl(
+            uploadFile,
+            900,
+            900,
+            0.65
+          );
+          if (compressed) {
+            writeMediaCache({
+              verification: compressed,
+              verification_type: docType,
+              verification_name: file.name || "",
+              verification_kind: isPdfVerificationFile(file)
+                ? "pdf"
+                : isDocxVerificationFile(file) ||
+                    isLegacyDocVerificationFile(file)
+                  ? "doc"
+                  : "image",
+            });
+          }
+        }
+      } catch (e) {
+        console.warn("[EGP Profile] verification cache skipped:", e);
+      }
+
+      const uploadName = String(labeledName || "verification.jpg").replace(
+        /\.(pdf|docx?)$/i,
+        ".jpg"
+      );
+
+      const updated = await patchRecordWithRetry(
+        `${OWNERS_API}${hostId}/`,
+        token,
+        function () {
+          const retryForm = new FormData();
+          retryForm.append("verification", uploadFile, uploadName);
+          return retryForm;
+        },
+        3
+      );
+      clearOwnerPatchBlocked();
+
+      let remoteUrl = pickPersistentImageUrl(
+        verificationUrlFromOwner(updated),
+        updated && updated.verification,
+        updated && updated.Verification
+      );
+
+      // PATCH sometimes omits the file field — confirm with a fresh GET
+      if (!remoteUrl) {
+        try {
+          const fresh = await fetchHomeOwner(
+            getAuthHeaders().headers,
+            hostId
+          );
+          if (fresh) {
+            remoteUrl = pickPersistentImageUrl(
+              verificationUrlFromOwner(fresh),
+              fresh.verification,
+              fresh.Verification
+            );
+            if (remoteUrl) {
+              Object.assign(updated, fresh);
+            }
+          }
+        } catch (confirmErr) {
+          console.warn(
+            "[EGP Profile] verification confirm GET failed:",
+            confirmErr
+          );
+        }
+      }
+
+      if (remoteUrl) {
+        verificationRemoteUrl = remoteUrl;
+        try {
+          writeMediaCache({
+            verification_remote: remoteUrl,
+            verification_type: docType,
+            verification_name: file.name || "",
+            verification_kind: verificationKindOfFile(file),
+          });
+        } catch (e) {}
+      }
+
+      const workingRemote = remoteUrl
+        ? await resolveWorkingMediaUrl(remoteUrl, localPreview)
+        : localPreview;
+      verificationDisplayUrl = workingRemote || localPreview;
+      profileOwnerCache = egpMerge(profileOwnerCache || {}, updated, {
+        host_id: updated.host_id != null ? updated.host_id : hostId,
+        verification: remoteUrl || verificationDisplayUrl,
+        verification_type: docType,
+        verification_name: file.name || "",
+      });
+
+      paintVerification(verificationDisplayUrl, {
+        fileName: file.name || "",
+        fileType: file.type || "",
+      });
+      paintVerificationUrl(remoteUrl || verificationRemoteUrl);
+      pendingVerificationFile = null;
+
+      const typeEl = document.getElementById("verificationTypeInput");
+      if (typeEl) typeEl.value = docType;
+
+      setVerificationStatus(
+        remoteUrl
+          ? "Verification document saved."
+          : "Document uploaded. Confirm it after you sign in again."
+      );
+
+      try {
+        const prev = JSON.parse(localStorage.getItem("user") || "{}");
+        localStorage.setItem(
+          "user",
+          JSON.stringify(
+            egpMerge(prev, profileOwnerCache, {
+              verification: remoteUrl || prev.verification || "",
+              verification_type: docType,
+              verification_name: file.name || "",
+            })
+          )
+        );
+      } catch (e) {
+        
+      }
+
+      console.log("[EGP Profile] verification uploaded", {
+        hostId,
+        remoteUrl,
+        fileName: file.name,
+      });
+      return true;
+    } catch (err) {
+      console.error("[EGP Profile] VERIFICATION UPLOAD ERROR:", err);
+      verificationDisplayUrl = localPreview;
+      paintVerification(localPreview, {
+        fileName: file.name || "",
+        fileType: file.type || "",
+      });
+      const forbidden = isOwnerForbiddenError(err);
+      if (forbidden) markOwnerPatchBlocked();
+      paintVerificationUrl(verificationRemoteUrl || "");
+      let errMsg =
+        (err && err.message) || "Could not upload verification document.";
+      if (
+        /viewer script|pdf reader|word document reader|create image from document/i.test(
+          errMsg
+        )
+      ) {
+        errMsg =
+          "Could not prepare this PDF or Word file. Try again, or upload a JPEG, PNG, PDF, or .docx.";
+      }
+      setVerificationStatus(
+        forbidden
+          ? "Document kept on this device. Server blocked homeowner update (403). Garage fields still save."
+          : errMsg,
+        true
+      );
+      // Do not alert on 403 — garage/profile page should stay usable
+      if (!forbidden) {
+        alert(errMsg);
+      }
+      return false;
+    }
+  }
+
+  async function uploadFrontHouseImage(file) {
+    let token = localStorage.getItem("pmr_token") || "";
+    if (!token) {
+      setFrontHouseStatus("Please sign in to save your front of house photo.", true);
+      return false;
+    }
+    try {
+      if (typeof EGP !== "undefined" && EGP.ensureFreshAccessToken) {
+        token = (await EGP.ensureFreshAccessToken()) || token;
+      }
+    } catch (err) {
+      console.warn("[EGP Profile] token refresh before front-house upload failed:", err);
+    }
+
+    const garageId = garageIdOf(profileGarageCache);
+    if (!garageId) {
+      // Keep pending for Save all changes if garage is not loaded yet
+      setFrontHouseStatus("Photo ready — click Save all changes to store it.", true);
+      return false;
+    }
+
+    setFrontHouseStatus("Saving…");
+    try {
+      const uploadFile = await fileToUploadFile(file, "front-of-house.jpg");
+      let updated = await patchRecordWithRetry(
+        `${GARAGES_API}${garageId}/`,
+        token,
+        function () {
+          const form = new FormData();
+          form.append(
+            "home_image",
+            uploadFile,
+            (uploadFile && uploadFile.name) || "front-of-house.jpg"
+          );
+          return form;
+        },
+        3
+      );
+
+      let savedHomeImage = pickPersistentImageUrl(
+        updated.home_image,
+        updated.Home_image,
+        frontHouseUrlFromGarage(updated)
+      );
+
+      // Private/slow browsers sometimes return a 200 without the media URL — confirm via GET
+      if (!savedHomeImage) {
+        try {
+          const hostId =
+            resolveWritableHostId(token) ||
+            localStorage.getItem("pmr_home_owner_id") ||
+            "";
+          const fresh = await fetchHostGarage(
+            getAuthHeaders().headers,
+            hostId
+          );
+          if (fresh) {
+            profileGarageCache = egpMerge(profileGarageCache || {}, fresh);
+            savedHomeImage = frontHouseUrlFromGarage(fresh);
+            updated = egpMerge(updated, fresh);
+          }
+        } catch (confirmErr) {
+          console.warn(
+            "[EGP Profile] front-house confirm GET failed:",
+            confirmErr
+          );
+        }
+      }
+
+      if (savedHomeImage) frontHouseRemoteUrl = savedHomeImage;
+
+      // Store remote path first (small), then a compressed local preview for re-login
+      try {
+        if (savedHomeImage) {
+          writeMediaCache({ home_image_remote: savedHomeImage });
+        }
+        const compressed =
+          (await fileToCompressedDataUrl(file, 1200, 800, 0.72)) ||
+          (await fileToDataUrl(file));
+        if (compressed) {
+          writeMediaCache({ home_image: compressed });
+          frontHouseDisplayUrl = compressed;
+        }
+      } catch (err) {
+        console.warn("[EGP Profile] home_image cache failed:", err);
+      }
+
+      if (!frontHouseDisplayUrl) {
+        frontHouseDisplayUrl =
+          cachedFrontHouseUrl() || savedHomeImage || "";
+      }
+
+      profileGarageCache = egpMerge(profileGarageCache || {}, updated, {
+        home_image: savedHomeImage || frontHouseDisplayUrl || "",
+      });
+
+      if (!savedHomeImage) {
+        // Keep pending so Save all changes can retry — don't pretend server saved it
+        setFrontHouseStatus(
+          "Photo is on this device, but the server did not confirm it. Click Save all changes.",
+          true
+        );
+        paintFrontHouse(profileGarageCache, frontHouseDisplayUrl || null);
+        return false;
+      }
+
+      pendingHomeImageFile = null;
+      garageMediaDirty = false;
+      paintFrontHouse(profileGarageCache, frontHouseDisplayUrl || null);
+      setFrontHouseStatus("Front of house photo saved.");
+      return true;
+    } catch (err) {
+      console.error("[EGP Profile] FRONT HOUSE UPLOAD ERROR:", err);
+      setFrontHouseStatus(
+        (err && err.message) ||
+          "Could not save front of house photo. Try Save all changes.",
+        true
+      );
+      return false;
+    }
+  }
+
+  function bindMediaUploads() {
+    bindFileDropZone("frontHouseUpload", "frontHouseInput", async (file) => {
+      const name = String(file.name || "").toLowerCase();
+      const type = String(file.type || "").toLowerCase();
+      const ok =
+        type === "image/jpeg" ||
+        type === "image/png" ||
+        /\.(jpe?g|png)$/i.test(name);
+      if (!ok) {
+        setFrontHouseStatus("Accepted file types: JPEG or PNG", true);
+        alert("Accepted file types: JPEG or PNG");
+        return;
+      }
+
+      pendingHomeImageFile = file;
+      frontHouseDisplayUrl = URL.createObjectURL(file);
+      garageMediaDirty = true;
+      paintFrontHouse(profileGarageCache, frontHouseDisplayUrl);
+      setFrontHouseStatus("");
+      try {
+        const compressed =
+          (await fileToCompressedDataUrl(file, 1200, 800, 0.72)) ||
+          (await fileToDataUrl(file));
+        if (compressed) {
+          writeMediaCache({ home_image: compressed });
+          frontHouseDisplayUrl = compressed;
+          paintFrontHouse(profileGarageCache, frontHouseDisplayUrl);
+        }
+      } catch (err) {
+        console.warn("[EGP Profile] front-of-house cache failed:", err);
+      }
+      // Persist to API immediately so other browsers / logins see it
+      await uploadFrontHouseImage(file);
+    });
+
+    bindFileDropZone("verificationUpload", "verificationInput", async (file) => {
+      await uploadVerificationDocument(file);
+    });
+    const verificationZone = document.getElementById("verificationUpload");
+    const verificationInput = document.getElementById("verificationInput");
+    if (verificationZone && verificationZone.dataset.egpTypeGuard !== "1") {
+      verificationZone.dataset.egpTypeGuard = "1";
+      function blockVerificationWithoutType(e) {
+        if (getSelectedVerificationType()) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        setVerificationStatus(
+          "Select document type first: Utility Bill or Mortgage.",
+          true
+        );
+        alert("Select document type first: Utility Bill or Mortgage.");
+      }
+      verificationZone.addEventListener("click", blockVerificationWithoutType, true);
+      if (verificationInput) {
+        verificationInput.addEventListener("click", blockVerificationWithoutType, true);
+      }
+    }
+  }
+
+  function paintSignedOutProfileUi() {
+    
+    profileOwnerCache = null;
+    profileGarageCache = null;
+    resetSessionMediaState();
+    setProfileImage();
+    const textEl = document.getElementById("displayNameText");
+    const inputEl = document.getElementById("displayNameInput");
+    const about = document.getElementById("aboutInput");
+    if (textEl) textEl.textContent = "";
+    if (inputEl) inputEl.value = "";
+    if (about) about.value = "";
+    paintStadiumVenue("");
+    paintAddress(null, null);
+    paintSecondaryContact(null, null);
+    paintNoGarageState();
+    pendingVerificationFile = null;
+    const typeEl = document.getElementById("verificationTypeInput");
+    if (typeEl) typeEl.value = "";
+    paintVerification(null);
+    setVerificationStatus("");
+    paintVerificationUrl("");
+    if (typeof EGP !== "undefined" && EGP.clearHeaderUserName) {
+      EGP.clearHeaderUserName();
+    }
+  }
+
+  async function loadProfilePage() {
+    const { token, headers } = getAuthHeaders();
+    if (!token) {
+      paintSignedOutProfileUi();
+      return;
+    }
+
+    // Never show another account's locally cached photos / profile
+    ensureMediaCacheForCurrentUser();
+    try {
+      // Free quota so new uploads can cache small previews
+      const cache = readMediaCache();
+      const pruned = pruneMediaCacheDataUrls(cache);
+      localStorage.setItem(MEDIA_CACHE_KEY, JSON.stringify(pruned));
+    } catch (e) {}
+    try {
+      const cachedUser = JSON.parse(localStorage.getItem("user") || "{}");
+      const cachedId = String(
+        (cachedUser && (cachedUser.host_id || cachedUser.home_owner_id || cachedUser.id)) ||
+          ""
+      );
+      const sessionId = String(localStorage.getItem("pmr_home_owner_id") || "");
+      const cachedEmail = String((cachedUser && cachedUser.email) || "")
+        .toLowerCase()
+        .trim();
+      const sessionEmail = String(localStorage.getItem("pmr_login_email") || "")
+        .toLowerCase()
+        .trim();
+      const idMismatch =
+        cachedId && sessionId && String(cachedId) !== String(sessionId);
+      const emailMismatch =
+        cachedEmail && sessionEmail && cachedEmail !== sessionEmail;
+      if (idMismatch || emailMismatch) {
+        localStorage.removeItem("user");
+        clearMediaCache();
+        resetSessionMediaState();
+      }
+    } catch (e) {
+      
+    }
+
+    const textEl = document.getElementById("displayNameText");
+    if (textEl && !textEl.textContent.trim()) {
+      textEl.textContent = "Loading...";
+    }
+
+    let hostId = getHomeOwnerId(token);
+
+    try {
+      let garage = null;
+      try {
+        garage = await fetchHostGarage(headers, hostId);
+      } catch (garageErr) {
+        console.warn("[EGP Profile] garage load failed:", garageErr);
+      }
+      profileGarageCache = garage;
+      if (!hostId && (garage && garage.host_id) != null) {
+        hostId = String(garage.host_id);
+        localStorage.setItem("pmr_home_owner_id", hostId);
+      }
+
+      const owner = await fetchHomeOwner(headers, hostId);
+      if (!owner) throw new Error("Homeowner profile returned empty.");
+
+      const resolvedId = ownerIdOf(owner);
+      if (resolvedId) {
+        localStorage.setItem("pmr_home_owner_id", resolvedId);
+      }
+      await loadOriginalVerificationFile();
+
+      
+      let cachedUser = {};
+      try {
+        cachedUser = JSON.parse(localStorage.getItem("user") || "{}");
+      } catch (e) {
+        cachedUser = {};
+      }
+
+      // Prefer server media so Chrome / Firefox / private windows stay in sync.
+      // localStorage is per-browser and must not override the API.
+      const remoteImage = pickPersistentImageUrl(
+        owner.profile_image,
+        owner.Profile_image
+      );
+      if (remoteImage) profileImageRemoteUrl = remoteImage;
+      const localProfile = cachedMediaUrl("profile_image");
+      const workingProfile = remoteImage
+        ? await resolveWorkingMediaUrl(remoteImage, "")
+        : "";
+      if (workingProfile || remoteImage) {
+        const next = workingProfile || remoteImage;
+        owner.profile_image = next;
+        profileImageDisplayUrl = next;
+      } else if (localProfile) {
+        owner.profile_image = localProfile;
+        profileImageDisplayUrl = localProfile;
+      }
+
+      const remoteVerification = pickPersistentImageUrl(
+        owner.verification,
+        owner.Verification
+      );
+      if (remoteVerification) verificationRemoteUrl = remoteVerification;
+      else verificationRemoteUrl = "";
+      const localVerification = remoteVerification
+        ? cachedMediaUrl("verification")
+        : "";
+      const workingVerification = remoteVerification
+        ? await resolveWorkingMediaUrl(remoteVerification, localVerification)
+        : "";
+      if (workingVerification || remoteVerification) {
+        const next = workingVerification || localVerification || remoteVerification;
+        owner.verification = remoteVerification;
+        verificationDisplayUrl = next;
+      } else {
+        owner.verification = "";
+        verificationDisplayUrl = "";
+      }
+      owner.verification_type =
+        owner.verification_type ||
+        verificationTypeFromName(
+          remoteVerification,
+          owner.verification_name ||
+            cachedUser.verification_name ||
+            readMediaCache().verification_name
+        ) ||
+        cachedUser.verification_type ||
+        readMediaCache().verification_type ||
+        "";
+
+      try {
+        // Persist API owner record — do not re-inject another browser's local image URLs
+        const merged = egpMerge((cachedUser), (owner), {
+          profile_image:
+            pickPersistentImageUrl(owner.profile_image) ||
+            owner.profile_image ||
+            "",
+          verification:
+            pickPersistentImageUrl(verificationUrlFromOwner(owner)) ||
+            owner.verification ||
+            "",
+        });
+        localStorage.setItem("user", JSON.stringify(merged));
+      } catch (e) {
+        localStorage.setItem("user", JSON.stringify(owner || {}));
+      }
+
+      
+      if (garage) {
+        await hydrateWorkingGarageMedia(garage);
+      } else {
+        const localFront = cachedFrontHouseUrl();
+        if (localFront) frontHouseDisplayUrl = localFront;
+      }
+
+      paintOwnerProfile(owner);
+      setProfileImage(profileImageDisplayUrl || owner.profile_image);
+
+      if (garage) {
+        paintGarageSections(garage);
+        await paintStadiumVenueFromGarage(garage, headers);
+      } else {
+        paintNoGarageState();
+      }
+      
+      setProfileImage(profileImageDisplayUrl || owner.profile_image);
+      paintFrontHouse(
+        garage || profileGarageCache,
+        frontHouseDisplayUrl ||
+          frontHouseUrlFromGarage(garage || profileGarageCache) ||
+          null
+      );
+      paintGarageImageSlots(garage);
+      paintVerification(verificationDisplayUrl || null, {
+        fileName:
+          owner.verification_name ||
+          readMediaCache().verification_name ||
+          "",
+      });
+    } catch (err) {
+      console.error("[EGP Profile] LOAD ERROR:", err);
+      const msg = String((err && err.message) || "");
+      if (/session expired/i.test(msg)) {
+        
+        return;
+      }
+      const textEl = document.getElementById("displayNameText");
+      if (textEl) textEl.textContent = "Could not load";
+      alert((err && err.message) || "Failed to load profile.");
+    }
+  }
+
+  function textChanged(current, previous) {
+    return String(current != null ? current : "").trim() !== String(previous != null ? previous : "").trim();
+  }
+
+  function petsChanged(current, previous) {
+    const cur =
+      current === "true" ? true : current === "false" ? false : null;
+    const prev =
+      previous === true || previous === "true" || previous === 1
+        ? true
+        : previous === false || previous === "false" || previous === 0
+          ? false
+          : null;
+    if (cur === null) return false;
+    return cur !== prev;
+  }
+
+  async function saveProfile() {
+    const { token } = getAuthHeaders();
+    if (!token) {
+      alert("Please sign in to save your profile.");
+      return;
+    }
+
+    const hostId = resolveWritableHostId(token);
+    const garageId = garageIdOf(profileGarageCache);
+    const saveBtn = document.getElementById("saveProfileBtn");
+    const originalLabel = (saveBtn && saveBtn.textContent) || "Save all changes";
+
+    if (pendingVerificationFile && !getSelectedVerificationType()) {
+      alert("Select document type: Utility Bill or Mortgage.");
+      return;
+    }
+
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Saving…";
+    }
+
+    const notesOut = [];
+    let ownerSaved = false;
+    let garageSaved = false;
+
+    try {
+      if (!hostId) {
+        throw new Error("Missing homeowner id. Please sign in again.");
+      }
+
+      const aboutMe =
+        (function(){ var __o=document.getElementById("aboutInput"); return (__o && __o.value); })().trim() || "";
+      const nameInput = document.getElementById("secondaryContactNameInput");
+      const phoneInput = document.getElementById("secondaryContactPhoneInput");
+      if (nameInput) nameInput.value = sanitizeContactName(nameInput.value);
+      if (phoneInput) phoneInput.value = sanitizeContactPhone(phoneInput.value);
+      const secondaryName = (nameInput && nameInput.value).trim() || "";
+      const secondaryPhone = (phoneInput && phoneInput.value).trim() || "";
+
+      if (secondaryName && !/^[A-Za-z\s]+$/.test(secondaryName)) {
+        alert(
+          "Secondary Contact Name: letters and spaces only — no numbers or special characters."
+        );
+        return;
+      }
+      if (secondaryPhone && !/^\d+$/.test(secondaryPhone)) {
+        alert(
+          "Secondary Contact Phone: numbers only — no letters or special characters."
+        );
+        return;
+      }
+
+      // Homeowner tokens often get 403 on /api/home-owners/{id}/.
+      // Skip that call once blocked so Save still works via garage API.
+      try {
+        let updatedOwner = {};
+        const ownerPayload = {
+          about_me: aboutMe,
+          secondary_contact_name: secondaryName,
+          secondary_contact_phone: secondaryPhone,
+        };
+
+        let savedVerificationType = "";
+        const hasPendingDoc = !!pendingVerificationFile;
+
+        // Always try document upload on the API — even if a prior text PATCH got 403.
+        // Only skip empty JSON text patches when the owner endpoint is blocked.
+        if (isOwnerPatchBlocked() && !hasPendingDoc) {
+          profileOwnerCache = egpMerge(profileOwnerCache || {}, {
+            host_id: hostId,
+            about_me: aboutMe,
+            secondary_contact_name: secondaryName,
+            secondary_contact_phone: secondaryPhone,
+          });
+          try {
+            const prev = JSON.parse(localStorage.getItem("user") || "{}");
+            localStorage.setItem(
+              "user",
+              JSON.stringify(egpMerge(prev, profileOwnerCache))
+            );
+          } catch (e) {
+            
+          }
+          // Soft success for About Me (local); garage API still saves contacts
+          ownerSaved = true;
+          throw new Error("__skip_owner_patch__");
+        }
+
+        if (hasPendingDoc) {
+          const ownerForm = new FormData();
+          Object.keys(ownerPayload).forEach((key) => {
+            ownerForm.append(key, ownerPayload[key]);
+          });
+          const docType = getSelectedVerificationType();
+          if (!docType) {
+            throw new Error(
+              "Select document type: Utility Bill or Mortgage."
+            );
+          }
+          savedVerificationType = docType;
+          
+          const labeledName = labeledVerificationFileName(
+            pendingVerificationFile,
+            docType
+          );
+          const uploadFile = await prepareVerificationUploadFile(
+            pendingVerificationFile,
+            labeledName
+          );
+          const uploadName = String(labeledName || "verification.jpg").replace(
+            /\.(pdf|docx?)$/i,
+            ".jpg"
+          );
+          ownerForm.append("verification", uploadFile, uploadName);
+          updatedOwner = await patchRecordWithRetry(
+            `${OWNERS_API}${hostId}/`,
+            token,
+            function () {
+              const retryForm = new FormData();
+              Object.keys(ownerPayload).forEach((key) => {
+                retryForm.append(key, ownerPayload[key]);
+              });
+              retryForm.append("verification", uploadFile, uploadName);
+              return retryForm;
+            },
+            3
+          );
+        } else {
+          updatedOwner = await patchOwnerJson(hostId, token, ownerPayload);
+        }
+        clearOwnerPatchBlocked();
+
+        const keptProfileImage = pickImageUrl(
+          profileImageDisplayUrl,
+          (profileOwnerCache && profileOwnerCache.profile_image),
+          (updatedOwner && updatedOwner.profile_image),
+          (updatedOwner && updatedOwner.Profile_image)
+        );
+        const savedVerificationUrl = pickPersistentImageUrl(
+          verificationUrlFromOwner(updatedOwner),
+          (updatedOwner && updatedOwner.verification),
+          (updatedOwner && updatedOwner.Verification)
+        );
+        if (savedVerificationUrl) {
+          verificationRemoteUrl = savedVerificationUrl;
+        }
+        const savedFileName =
+          (pendingVerificationFile && pendingVerificationFile.name) ||
+          readMediaCache().verification_name ||
+          "";
+        if (pendingVerificationFile) {
+          try {
+            const dataUrl = await fileToDataUrl(pendingVerificationFile);
+            if (dataUrl) {
+              writeMediaCache({
+                verification: dataUrl,
+                verification_type: savedVerificationType,
+                verification_name: pendingVerificationFile.name || "",
+              });
+              verificationDisplayUrl = dataUrl;
+            }
+          } catch (err) {
+            console.warn("[EGP Profile] verification cache failed:", err);
+          }
+        }
+        const localVerificationPreview =
+          verificationDisplayUrl ||
+          cachedMediaUrl("verification") ||
+          "";
+        const workingVerification = savedVerificationUrl
+          ? await resolveWorkingMediaUrl(
+              savedVerificationUrl,
+              localVerificationPreview
+            )
+          : localVerificationPreview;
+
+        profileOwnerCache = egpMerge(((profileOwnerCache || {})), (updatedOwner), { about_me: aboutMe, secondary_contact_name: secondaryName, secondary_contact_phone: secondaryPhone, profile_image:
+            pickImageUrl(
+              isLocalMediaUrl(keptProfileImage) ? keptProfileImage : "",
+              cachedMediaUrl("profile_image"),
+              (updatedOwner && updatedOwner.profile_image),
+              (updatedOwner && updatedOwner.Profile_image),
+              keptProfileImage
+            ) || keptProfileImage, verification:
+            savedVerificationUrl ||
+            workingVerification ||
+            localVerificationPreview ||
+            (profileOwnerCache && profileOwnerCache.verification) ||
+            "" });
+        if (savedVerificationType) {
+          profileOwnerCache.verification_type = savedVerificationType;
+        }
+        if (savedFileName) {
+          profileOwnerCache.verification_name = savedFileName;
+        }
+        verificationDisplayUrl =
+          workingVerification ||
+          localVerificationPreview ||
+          verificationDisplayUrl ||
+          "";
+        pendingVerificationFile = null;
+        const typeEl = document.getElementById("verificationTypeInput");
+        if (typeEl && savedVerificationType) {
+          typeEl.value = savedVerificationType;
+        }
+        paintVerification(verificationDisplayUrl || null, {
+          fileName:
+            savedFileName ||
+            (savedVerificationType
+              ? VERIFICATION_TYPES[savedVerificationType] || "Verification"
+              : ""),
+        });
+        paintVerificationUrl(
+          savedVerificationUrl || verificationRemoteUrl || verificationDisplayUrl
+        );
+        if (savedVerificationType || savedVerificationUrl) {
+          setVerificationStatus(
+            savedVerificationUrl
+              ? "Verification document saved."
+              : "Document saved on server and this device."
+          );
+        }
+        ownerSaved = true;
+
+        try {
+          const prev = JSON.parse(localStorage.getItem("user") || "{}");
+          const persistImage =
+            pickPersistentImageUrl(
+              profileOwnerCache.profile_image,
+              prev.profile_image
+            ) || "";
+          const persistVerification =
+            pickPersistentImageUrl(
+              savedVerificationUrl,
+              profileOwnerCache.verification,
+              profileOwnerCache.verification_image,
+              prev.verification,
+              prev.verification_image
+            ) || "";
+          localStorage.setItem(
+            "user",
+            JSON.stringify(egpMerge((prev), (profileOwnerCache), { profile_image: persistImage || prev.profile_image || "", verification:
+                persistVerification || prev.verification || "" }))
+          );
+        } catch (e) {
+          
+        }
+      } catch (ownerErr) {
+        const msg = String((ownerErr && ownerErr.message) || "");
+        if (msg === "__skip_owner_patch__") {
+          // Owner API skipped on purpose; garage save continues
+        } else {
+          console.error("[EGP Profile] OWNER SAVE ERROR:", ownerErr);
+          const blocked = isOwnerForbiddenError(msg);
+          if (blocked) markOwnerPatchBlocked();
+
+          profileOwnerCache = egpMerge(profileOwnerCache || {}, {
+            host_id: hostId,
+            about_me: aboutMe,
+            secondary_contact_name: secondaryName,
+            secondary_contact_phone: secondaryPhone,
+          });
+          try {
+            const prev = JSON.parse(localStorage.getItem("user") || "{}");
+            localStorage.setItem(
+              "user",
+              JSON.stringify(egpMerge(prev, profileOwnerCache))
+            );
+          } catch (e) {
+            
+          }
+          // Always keep document/profile preview on this device when API fails
+          if (pendingVerificationFile) {
+            const docType =
+              getSelectedVerificationType() ||
+              readMediaCache().verification_type ||
+              "";
+            try {
+              await keepVerificationLocally(
+                pendingVerificationFile,
+                docType,
+                blocked
+                  ? "Document saved on this device. Server blocked homeowner update (403)."
+                  : "Document saved on this device. Server upload failed — try Save again."
+              );
+            } catch (localErr) {
+              setVerificationStatus(
+                blocked
+                  ? "Document kept on this device. Server blocked homeowner update (403)."
+                  : "Verification upload failed. " + msg,
+                true
+              );
+            }
+          } else if (!blocked) {
+            notesOut.push("Profile fields: " + (msg || "could not save"));
+          } else {
+            ownerSaved = true;
+          }
+        }
+      }
+
+      const gateEl = document.getElementById("gateCodeInput");
+      const petsEl = document.getElementById("petsInput");
+      const notesEl = document.getElementById("notesInput");
+      const parkingEl = document.getElementById("parkingInstructionsInput");
+      const gate = String((gateEl && gateEl.value) || "").trim();
+      const pets = String((petsEl && petsEl.value) || "");
+      const notes = String((notesEl && notesEl.value) || "").trim();
+      const parkingInstructions = String(
+        (parkingEl && parkingEl.value) || ""
+      ).trim();
+
+      const hasPendingFrontHouse = !!pendingHomeImageFile;
+
+      if (garageId) {
+        try {
+          const garagePayload = {
+            home_gate_code: gate,
+            home_gated: Boolean(gate),
+            beware_of: notes,
+            parking_instructions: parkingInstructions,
+            secondary_contact_name: secondaryName,
+            secondary_contact_phone: secondaryPhone,
+          };
+          if (pets === "true" || pets === "false") {
+            garagePayload.any_pets = pets === "true";
+          }
+
+          let updatedGarage = {};
+          if (hasPendingFrontHouse) {
+            const uploadFile = await fileToUploadFile(
+              pendingHomeImageFile,
+              "front-of-house.jpg"
+            );
+            updatedGarage = await patchRecordWithRetry(
+              `${GARAGES_API}${garageId}/`,
+              token,
+              function () {
+                const garageForm = new FormData();
+                Object.keys(garagePayload).forEach((key) => {
+                  const val = garagePayload[key];
+                  garageForm.append(
+                    key,
+                    typeof val === "boolean" ? (val ? "true" : "false") : val
+                  );
+                });
+                garageForm.append(
+                  "home_image",
+                  uploadFile,
+                  (uploadFile && uploadFile.name) || "front-of-house.jpg"
+                );
+                return garageForm;
+              },
+              3
+            );
+          } else {
+            updatedGarage = await patchGarageJson(
+              garageId,
+              token,
+              garagePayload
+            );
+          }
+
+          const savedHomeImage = pickPersistentImageUrl(
+            updatedGarage.home_image,
+            updatedGarage.Home_image,
+            frontHouseUrlFromGarage(updatedGarage)
+          );
+
+          if (pendingHomeImageFile) {
+            try {
+              if (savedHomeImage) {
+                writeMediaCache({ home_image_remote: savedHomeImage });
+              }
+              const compressed =
+                (await fileToCompressedDataUrl(
+                  pendingHomeImageFile,
+                  1200,
+                  800,
+                  0.72
+                )) || (await fileToDataUrl(pendingHomeImageFile));
+              if (compressed) {
+                writeMediaCache({ home_image: compressed });
+                frontHouseDisplayUrl = compressed;
+              }
+            } catch (err) {
+              console.warn("[EGP Profile] home_image cache failed:", err);
+            }
+          }
+
+          const localFrontFallback =
+            frontHouseDisplayUrl ||
+            cachedFrontHouseUrl() ||
+            "";
+          const workingFront = savedHomeImage
+            ? await resolveWorkingMediaUrl(savedHomeImage, localFrontFallback)
+            : localFrontFallback;
+          frontHouseDisplayUrl =
+            workingFront ||
+            localFrontFallback ||
+            savedHomeImage ||
+            frontHouseDisplayUrl ||
+            "";
+          if (savedHomeImage) {
+            frontHouseRemoteUrl = savedHomeImage;
+            try {
+              writeMediaCache({ home_image_remote: savedHomeImage });
+            } catch (e) {}
+          }
+
+          // Garage spot images are read-only — refresh display URLs from API
+          GARAGE_IMAGE_FIELDS.forEach((item) => {
+            const key = item.key;
+            const savedSpot = pickPersistentImageUrl(
+              updatedGarage[key],
+              garageSpotImageUrl(updatedGarage, key)
+            );
+            garageImageDisplayUrls[key] =
+              savedSpot ||
+              garageImageDisplayUrls[key] ||
+              cachedMediaUrl(key) ||
+              garageSpotImageUrl(profileGarageCache, key) ||
+              "";
+          });
+
+          profileGarageCache = egpMerge(((profileGarageCache || {})), (updatedGarage), ((pets === "true" || pets === "false"
+              ? { any_pets: pets === "true" }
+              : {})), { home_gate_code: gate, home_gated: Boolean(gate), beware_of: notes, parking_instructions: parkingInstructions, home_image:
+              frontHouseDisplayUrl ||
+              pickImageUrl(
+                updatedGarage.home_image,
+                (profileGarageCache && profileGarageCache.home_image)
+              ) });
+          
+          GARAGE_IMAGE_FIELDS.forEach((item) => {
+            const url = garageImageDisplayUrls[item.key];
+            if (url) profileGarageCache[item.key] = url;
+          });
+          pendingHomeImageFile = null;
+          pendingGarageImageFiles = {};
+          garageMediaDirty = false;
+          garageSaved = true;
+          if (hasPendingFrontHouse) {
+            if (savedHomeImage) frontHouseRemoteUrl = savedHomeImage;
+            setFrontHouseStatus("Front of house photo saved.");
+          }
+        } catch (garageErr) {
+          console.error("[EGP Profile] GARAGE SAVE ERROR:", garageErr);
+          notesOut.push(
+            "Safety / Parking / Front of House: " +
+              ((garageErr && garageErr.message) || "could not save")
+          );
+          if (hasPendingFrontHouse) {
+            setFrontHouseStatus(
+              (garageErr && garageErr.message) ||
+                "Could not save front of house photo.",
+              true
+            );
+          }
+        }
+      } else if (hasPendingFrontHouse || garageMediaDirty) {
+        notesOut.push(
+          "No garage listing found, so Front of House was not updated."
+        );
+      }
+
+      
+      if (ownerSaved || garageSaved) {
+        try {
+          const headers = getAuthHeaders().headers;
+          const freshOwner = await fetchHomeOwner(headers, hostId);
+          if (freshOwner) {
+            const remoteImage = pickPersistentImageUrl(
+              freshOwner.profile_image,
+              freshOwner.Profile_image
+            );
+            const remoteVerification = pickPersistentImageUrl(
+              verificationUrlFromOwner(freshOwner)
+            );
+            const workingImage = remoteImage
+              ? await resolveWorkingMediaUrl(
+                  remoteImage,
+                  profileImageDisplayUrl ||
+                    cachedMediaUrl("profile_image")
+                )
+              : "";
+            const workingVerification = remoteVerification
+              ? await resolveWorkingMediaUrl(
+                  remoteVerification,
+                  verificationDisplayUrl ||
+                    cachedMediaUrl("verification")
+                )
+              : "";
+            profileOwnerCache = egpMerge(((profileOwnerCache || {})), (freshOwner), { about_me: aboutMe, secondary_contact_name: secondaryName, secondary_contact_phone: secondaryPhone, profile_image:
+                workingImage ||
+                profileImageDisplayUrl ||
+                cachedMediaUrl("profile_image") ||
+                (profileOwnerCache && profileOwnerCache.profile_image) ||
+                "", verification:
+                remoteVerification ||
+                workingVerification ||
+                "" });
+            if (workingImage) {
+              profileImageDisplayUrl = workingImage;
+              if (remoteImage) profileImageRemoteUrl = remoteImage;
+            } else if (!isLocalMediaUrl(profileImageDisplayUrl)) {
+              profileImageDisplayUrl =
+                cachedMediaUrl("profile_image") ||
+                profileImageDisplayUrl ||
+                "";
+            }
+            if (workingVerification || remoteVerification) {
+              verificationDisplayUrl =
+                workingVerification ||
+                cachedMediaUrl("verification") ||
+                remoteVerification;
+              if (remoteVerification) verificationRemoteUrl = remoteVerification;
+            } else if (!isLocalMediaUrl(verificationDisplayUrl)) {
+              verificationDisplayUrl = "";
+              verificationRemoteUrl = "";
+            }
+          }
+          if (garageId) {
+            const freshGarage = await fetchHostGarage(headers, hostId);
+            if (freshGarage) {
+              await hydrateWorkingGarageMedia(freshGarage);
+              profileGarageCache = egpMerge(((profileGarageCache || {})), (freshGarage), ((pets === "true" || pets === "false"
+                  ? { any_pets: pets === "true" }
+                  : {})), { home_gate_code: gate, home_gated: Boolean(gate), beware_of: notes, parking_instructions: parkingInstructions, home_image:
+                  frontHouseDisplayUrl ||
+                  (profileGarageCache && profileGarageCache.home_image) ||
+                  "" });
+              GARAGE_IMAGE_FIELDS.forEach((item) => {
+                const url = garageImageDisplayUrls[item.key];
+                if (url) profileGarageCache[item.key] = url;
+              });
+            }
+          }
+          try {
+            const prev = JSON.parse(localStorage.getItem("user") || "{}");
+            localStorage.setItem(
+              "user",
+              JSON.stringify(egpMerge((prev), (profileOwnerCache), { profile_image:
+                  pickPersistentImageUrl(
+                    (profileOwnerCache && profileOwnerCache.profile_image),
+                    prev.profile_image
+                  ) ||
+                  prev.profile_image ||
+                  "", verification:
+                  pickPersistentImageUrl(
+                    (profileOwnerCache && profileOwnerCache.verification),
+                    prev.verification
+                  ) ||
+                  prev.verification ||
+                  "" }))
+            );
+          } catch (e) {
+            
+          }
+        } catch (refetchErr) {
+          console.warn(
+            "[EGP Profile] post-save refetch failed:",
+            refetchErr
+          );
+        }
+      }
+
+      paintOwnerProfile(profileOwnerCache);
+      paintGarageSections(profileGarageCache);
+      setProfileImage(
+        profileImageDisplayUrl || (profileOwnerCache && profileOwnerCache.profile_image)
+      );
+      paintFrontHouse(profileGarageCache, frontHouseDisplayUrl || null);
+      paintGarageImageSlots(profileGarageCache);
+      paintVerification(verificationDisplayUrl || null);
+      await paintStadiumVenueFromGarage(
+        profileGarageCache,
+        getAuthHeaders().headers
+      );
+
+      profilePhotoSavedRecently = false;
+
+      
+      if (notesOut.length && !(garageSaved && notesOut.every((n) => /403|forbidden/i.test(n)))) {
+        alert(notesOut.join("\n\n"));
+      } else if (ownerSaved || garageSaved) {
+        if (saveBtn) {
+          saveBtn.textContent = "Saved";
+          setTimeout(() => {
+            if (saveBtn.textContent === "Saved") {
+              saveBtn.textContent = originalLabel;
+            }
+          }, 1500);
+        }
+      }
+
+      setProfileImage(
+        profileImageDisplayUrl || (profileOwnerCache && profileOwnerCache.profile_image)
+      );
+      paintFrontHouse(profileGarageCache, frontHouseDisplayUrl || null);
+      paintGarageImageSlots(profileGarageCache);
+      paintVerification(verificationDisplayUrl || null);
+    } catch (err) {
+      console.error("[EGP Profile] SAVE ERROR:", err);
+      alert((err && err.message) || "Could not save profile.");
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        if (saveBtn.textContent === "Saving…") {
+          saveBtn.textContent = originalLabel;
+        }
+      }
+    }
+  }
+
+  async function initProfilePage() {
+    // Bind file pickers first so uploads work even if auth/load hangs
+    bindProfileImageUpload();
+    bindMediaUploads();
+    bindSecondaryContactValidation();
+    // Paint clean empty upload UIs immediately (markup starts empty)
+    paintFrontHouse(null, null);
+    paintVerification(null);
 
     const saveBtn = document.getElementById("saveProfileBtn");
-    if (saveBtn) {
+    if (saveBtn && !saveBtn.dataset.egpBound) {
+      saveBtn.dataset.egpBound = "1";
       saveBtn.addEventListener("click", saveProfile);
     }
-  });
 
+    if (!localStorage.getItem("pmr_token")) {
+      paintSignedOutProfileUi();
+    }
+
+    // Retry owner photo PATCH each session (prior 403 may have been temporary)
+    clearOwnerPatchBlocked();
+
+    if (window.EGP && typeof EGP.initPortalPage === "function") {
+      try {
+        await EGP.initPortalPage();
+      } catch (err) {
+        console.warn("[EGP Profile] initPortalPage failed:", err);
+      }
+    }
+
+    await loadProfilePage();
+  }
+
+  function bootProfilePage() {
+    initProfilePage().catch((err) => {
+      console.error("[EGP Profile] boot failed:", err);
+      // Ensure pickers still work after a boot error
+      try {
+        bindProfileImageUpload();
+        bindMediaUploads();
+      } catch (bindErr) {
+        console.error("[EGP Profile] bind after boot error failed:", bindErr);
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootProfilePage);
+  } else {
+    bootProfilePage();
+  }
+})();
 </script>
   <script src="https://js-na2.hsforms.net/forms/embed/245773740.js" defer></script>
 </body>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- EGP DARK MODE -->
+<script>
+(function () {
+  try {
+    if (localStorage.getItem("egp-dark-mode") === "1") {
+      document.documentElement.classList.add("egp-dark");
+    }
+  } catch (e) {}
+})();
+</script>
+<style>
+  html.egp-dark { color-scheme: dark; }
+  html.egp-dark body { background: #0b1220 !important; color: #e5e7eb; }
+  html.egp-dark #egp-page-loader { background: #0b1220 !important; }
+  html.egp-dark main,
+  html.egp-dark .bg-\[#f5f7fb\] { background: #0b1220 !important; }
+  html.egp-dark #sidebar,
+  html.egp-dark .bg-\[#f8f9ff\] {
+    background: #111827 !important;
+    border-color: #1f2937 !important;
+  }
+  html.egp-dark .bg-white { background-color: #1e293b !important; }
+  html.egp-dark .text-black,
+  html.egp-dark .text-black\/80,
+  html.egp-dark .text-\[#222\],
+  html.egp-dark .text-\[#333\] { color: #f3f4f6 !important; }
+  html.egp-dark .text-black\/50,
+  html.egp-dark .text-gray-500,
+  html.egp-dark .text-gray-600 { color: #94a3b8 !important; }
+  html.egp-dark .border,
+  html.egp-dark .border-\[#e6e6e6\],
+  html.egp-dark .border-\[#e5e5e5\] { border-color: #334155 !important; }
+  html.egp-dark .bg-\[#f1f1f1\] { background-color: #334155 !important; }
+  html.egp-dark .hover\:bg-\[#f9f9f9\]:hover,
+  html.egp-dark .hover\:bg-gray-50:hover { background-color: #334155 !important; }
+</style>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Event Garage Parking - Settings Training</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body data-training-module="setting" class="m-0 p-0 bg-white overflow-x-hidden font-[Arial,sans-serif] flex flex-col min-h-screen">
+<div id="egp-page-loader" role="status" aria-live="polite" aria-label="Loading">
+  <div class="egp-loader-box">
+    <div class="egp-loader-badge">EGP</div>
+    <span class="egp-loader-ring" aria-hidden="true"></span>
+  </div>
+</div>
+<style>
+  #egp-page-loader { position: fixed; inset: 0; z-index: 999999; display: flex; align-items: center; justify-content: center; background: #ffffff; transition: opacity 0.4s ease, visibility 0.4s ease; }
+  #egp-page-loader.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .egp-loader-box { position: relative; width: 118px; height: 118px; display: flex; align-items: center; justify-content: center; }
+  .egp-loader-badge { width: 72px; height: 72px; border-radius: 12px; background: #007DB5; color: #ffffff; font-family: Arial, sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+  .egp-loader-ring { position: absolute; inset: 0; border: 4px solid #e6eef3; border-top-color: #007DB5; border-radius: 50%; animation: egp-spin 0.8s linear infinite; }
+  @keyframes egp-spin { to { transform: rotate(360deg); } }
+</style>
+<script>
+(function () {
+  var loader = document.getElementById("egp-page-loader");
+  if (!loader) return;
+  var shownAt = Date.now();
+  function hide() {
+    if (!loader || loader.classList.contains("is-hidden")) return;
+    var wait = Math.max(0, 700 - (Date.now() - shownAt));
+    setTimeout(function () {
+      if (!loader || loader.classList.contains("is-hidden")) return;
+      loader.classList.add("is-hidden");
+      setTimeout(function () { if (loader && loader.parentNode) loader.parentNode.removeChild(loader); }, 400);
+    }, wait);
+  }
+  if (document.readyState === "complete") hide();
+  else window.addEventListener("load", hide);
+  setTimeout(hide, 8000);
+})();
+</script>
+
+<div class="w-full px-5 sm:px-6 md:px-8 lg:px-24 xl:px-32 py-10 md:py-12 lg:py-8 flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-6 relative bg-[#007DB5]">
+  <div class="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full gap-4">
+    <div class="flex justify-start">
+      <a href="https://eventgarageparking.net/" class="w-[52px] h-[52px] lg:w-[58px] lg:h-[58px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] lg:text-[18px] hover:bg-white/10 transition">EGP</a>
+    </div>
+    <div class="flex justify-center">
+      <div class="text-white font-bold tracking-[1px] text-[18px] md:text-[20px] lg:text-[28px] leading-tight text-center whitespace-nowrap">Event Garage Parking</div>
+    </div>
+    <div class="flex justify-end items-center gap-1 text-[9px] lg:text-[11px] text-white/75 whitespace-nowrap md:ml-3">
+      <a href="https://eventgarageparking.com/homeowner-faq/" target="_blank" rel="noopener noreferrer" class="cursor-pointer hover:text-white transition">Help</a>
+      <span id="desktopUserDivider" class="opacity-40 hidden">|</span>
+      <span id="loggedInUserDesktop" class="text-white/75 hidden"></span>
+      <span class="opacity-40">|</span>
+      <a href="https://eventgarageparking.net/" class="cursor-pointer hover:text-white transition">Homeowner Portal</a>
+    </div>
+  </div>
+  <div class="flex md:hidden flex-col items-center justify-center gap-4 text-center">
+    <a href="https://eventgarageparking.net/" class="w-[52px] h-[52px] border-2 border-white/90 rounded-[10px] flex items-center justify-center text-white font-bold text-[16px] hover:bg-white/10 transition">EGP</a>
+    <div class="text-white font-bold tracking-[1px] text-[22px] leading-tight">Event Garage Parking</div>
+    <div class="flex flex-wrap justify-center gap-1 text-[10px] text-white/75">
+      <a href="https://eventgarageparking.com/homeowner-faq/" target="_blank" rel="noopener noreferrer" class="cursor-pointer hover:text-white transition">Help</a>
+      <span id="mobileUserDivider" class="opacity-40 hidden">|</span>
+      <span id="loggedInUserMobile" class="text-white/75 hidden"></span>
+      <span>|</span>
+      <a href="https://eventgarageparking.net/">Homeowner Portal</a>
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-1 min-w-0 overflow-x-hidden">
+  <div id="sidebarOverlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
+  <aside id="sidebar" class="fixed md:static top-0 left-0 w-[260px] sm:w-[280px] md:w-[240px] min-h-screen md:min-h-full bg-[#f8f9ff] border-r border-[#e6e6e6] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 p-5 md:p-[20px_12px] overflow-y-auto">
+    <div class="flex items-center justify-end mb-8 md:hidden">
+      <button id="closeSidebar" class="text-[34px] leading-none text-[#333]"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="flex flex-col gap-2">
+      <a href="https://eventgarageparking.net/home-owner-listing-page/" class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-house fa-fw"></i> Listing</a>
+      <a href="https://eventgarageparking.net/home-owner-availability-page/" class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-calendar fa-fw"></i> Availability</a>
+      <a href="https://eventgarageparking.net/home-owner-booking-page/" class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-car fa-fw"></i> Booking</a>
+      <a href="https://eventgarageparking.net/home-owner-earning-page/" class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-piggy-bank fa-fw"></i> Earnings</a>
+      <a href="https://eventgarageparking.net/home-owner-profile-page/" class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-user fa-fw"></i> Profile</a>
+      <a href="https://eventgarageparking.net/home-owner-payment-page/" class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-dollar-sign fa-fw"></i> Payment</a>
+      <a href="https://eventgarageparking.net/egp-training-center/" class="flex items-center gap-2 p-[10px] text-[#007DB5] font-bold text-[13px] bg-[rgba(0,125,181,0.08)] rounded-[6px]"><i class="fa-solid fa-graduation-cap fa-fw"></i> Training</a>
+      <a href="https://eventgarageparking.net/egp-setting/" class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-gear fa-fw"></i> Settings</a>
+      <a href="https://eventgarageparking.net/contact-us/" class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-envelope fa-fw"></i> Contact</a>
+      <a href="https://eventgarageparking.net/report-a-bug/" class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-bug fa-fw"></i> Report a Bug</a>
+<a href="https://eventgarageparking.net/register/" id="egpLogoutBtn" class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-arrow-right-from-bracket fa-fw"></i> Logout</a>
+    </div>
+  </aside>
+
+  <main class="flex-1 min-h-screen min-w-0 overflow-x-hidden p-4 sm:p-5 md:p-6 lg:p-8">
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <a href="https://eventgarageparking.net/egp-training-center/" class="text-[12px] text-[#007DB5] hover:underline inline-flex items-center gap-1 mb-2"><i class="fa-solid fa-arrow-left"></i> Back to Training Center</a>
+        <div class="text-[22px] font-bold text-[#007DB5]">Settings Training</div>
+      </div>
+      <button id="openSidebar" class="md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] flex items-center justify-center shadow-md" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <div class="border border-[#e6e6e6] rounded-[12px] p-5 sm:p-6 bg-white shadow-sm mb-5">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-[10px] bg-[rgba(0,125,181,0.1)] text-[#007DB5] flex items-center justify-center"><i class="fa-solid fa-gear"></i></div>
+        <div class="text-[16px] font-bold text-[#222]">Manual</div>
+      </div>
+      <p class="text-[13px] text-gray-600 mb-4">Read the step-by-step PDF guide for the Settings module.</p>
+      <div class="border border-dashed border-[#c5d6e0] rounded-[10px] bg-[#f8fafc] p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div class="flex items-center gap-3 text-[13px] text-gray-600">
+          <i class="fa-solid fa-file-pdf text-[22px] text-[#dc3545]"></i>
+          <div>
+            <div class="font-semibold text-[#333]">Settings Training Manual</div>
+            <div class="text-[12px] text-gray-500">PDF manual</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <a href="https://docs.google.com/document/d/1rosqT0T6M09MGKy759-rC7PPuY2uoG9LS27JUvuKc84/preview"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="inline-flex items-center justify-center px-4 py-2 min-w-[110px] rounded-[8px] bg-[#007DB5] text-white text-[13px] font-semibold hover:bg-[#006899] transition">View</a>
+          <a href="https://docs.google.com/document/d/1rosqT0T6M09MGKy759-rC7PPuY2uoG9LS27JUvuKc84/export?format=pdf"
+             target="_blank"
+             rel="noopener noreferrer"
+             download="setting-training.pdf"
+             class="inline-flex items-center justify-center px-4 py-2 min-w-[110px] rounded-[8px] bg-[#007DB5] text-white text-[13px] font-semibold hover:bg-[#006899] transition">Download PDF</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="border border-[#e6e6e6] rounded-[12px] p-5 sm:p-6 bg-white shadow-sm">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-[10px] bg-[rgba(0,125,181,0.1)] text-[#007DB5] flex items-center justify-center"><i class="fa-solid fa-video"></i></div>
+        <div class="text-[16px] font-bold text-[#222]">Video Tutorial</div>
+      </div>
+      <p class="text-[13px] text-gray-600 mb-4">Watch a short walkthrough of the Settings module.</p>
+      <div class="relative w-full aspect-video rounded-[12px] bg-[#0f172a] flex flex-col items-center justify-center text-white overflow-hidden">
+        <i class="fa-solid fa-circle-play text-[48px] text-white/80 mb-3"></i>
+        <div class="text-[14px] font-semibold">Video tutorial coming soon</div>
+        <div class="text-[12px] text-white/60 mt-1">Settings module</div>
+      </div>
+    </div>
+</main>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer w-full bg-[#007DB5] text-white text-sm mt-10">
+
+  <!-- MAIN -->
+  <div class="w-full px-10 py-10">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center lg:text-left">
+
+      <!-- BRAND -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Event Garage Parking</h2>
+        <p class="text-xs text-gray-100 max-w-xs leading-5">
+          Find and book parking spots at residential homes safe, convenient, and secure.
+        </p>
+      </div>
+
+      <!-- LINKS -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Get to Know Us</h2>
+        <ul class="space-y-2 text-xs">
+          <li><a href="https://eventgarageparking.com/about-us" class="hover:text-gray-200">About Us</a></li>
+          <li><a href="https://eventgarageparking.com/how-it-works/" class="hover:text-gray-200">How It Works</a></li>
+          <li><a href="https://eventgarageparking.net/contact-us/" class="hover:text-gray-200">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="flex flex-col items-center lg:items-start">
+        <h2 class="text-xl font-semibold mb-3">Quick Links</h2>
+        <ul class="space-y-2 text-xs">
+          <li><a href="https://eventgarageparking.com/homeowner-faq/" class="hover:text-white">Help</a></li>
+          <li><a href="https://42bs8c.share-na2.hsforms.com/2h9ic7f91RPiKzrbRzkwrmg" class="hover:text-gray-200">Become A Host</a></li>
+          <li><a href="https://eventgarageparking.net/homeowner-agreement/" class="hover:text-gray-200">Host Agreement</a></li>
+          <li><a href="https://eventgarageparking.com/privacy-policy/" class="hover:text-gray-200">Privacy Policy</a></li>
+          <li><a href="https://eventgarageparking.com/terms-of-service/" class="hover:text-gray-200">Tern of Service</a></li>
+        </ul>
+      </div>
+
+      <!-- STAY UPDATED (FIXED LAYOUT) -->
+      <div class="flex flex-col items-center lg:items-start">
+
+        <h2 class="text-xl font-semibold mb-1">
+          Stay Updated
+        </h2>
+
+       <p class="text-xs text-gray-100 mb-3 max-w-xs">
+          Get latest parking updates and offers.
+        </p>
+
+        <!-- EMAIL -->
+        <form class="flex w-full max-w-[220px] overflow-hidden rounded-md mb-4">
+
+          <div class="flex items-center bg-white w-full px-2">
+
+            <i class="fa-solid fa-envelope text-gray-500 text-xs mr-2"></i>
+
+            <input
+              type="email"
+              placeholder="Your Email"
+              class="w-full py-1.5 text-xs text-black outline-none"
+            />
+
+          </div>
+
+          <a
+            href="mailto:eventgarageparking@gmail.com?subject=Subscribe"
+            class="inline-block bg-blue-700 hover:bg-blue-800 px-3 py-2 text-xs text-white rounded"
+          >
+            Subscribe
+          </a>
+
+        </form>
+        
+
+        <!-- SOCIAL -->
+       <div class="flex gap-4 text-base justify-center lg:justify-start mt-3">
+            <a href="https://x.com/ParkMyRide_" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+            <a href="https://www.facebook.com/EventGarageParking" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+
+            <a href="https://www.instagram.com/park_my_ride/" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="mailto:eventgarageparkiing@gmail.com">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="border-t border-white/20 px-5 py-6">
+
+    <div class="flex justify-center mb-4">
+
+      <div class="flex items-center bg-white rounded-sm overflow-hidden scale-90 origin-center">
+
+        <a href="https://www.paypal.com" class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="max-h-5" alt="PayPal">
+        </a>
+
+        <a href="https://www.visa.com" class="w-12 h-8 flex items-center justify-center border-r border-gray-200">
+          <svg viewBox="0 0 780 250" class="h-5 w-auto">
+            <path fill="#1A1F71" d="M293.7 25.4L221.5 224.6H175L139.5 87.2c-2.1-8.5-3.9-11.6-10.5-15.2-10.7-5.8-28.4-11.2-44-14l1-4.6h74.8c9.5 0 18.1 6.3 20.3 17.2l18.7 99.4 46.2-116.6h47.7zm184.5 134.2c.2-52.6-72.8-55.5-72.3-79 0-7.2 7-14.8 22-16.7 7.4-.9 27.9-1.7 51.1 9l9.1-42.4c-12.5-4.5-28.5-8.9-48.4-8.9-51.2 0-87.2 27.2-87.5 66.2-.3 28.8 25.7 44.8 45.3 54.4 20.2 9.8 27 16.1 26.9 24.9-.1 13.5-16.2 19.5-31.2 19.7-26.2.4-41.4-7.1-53.5-12.8l-9.4 43.8c12.2 5.6 34.7 10.5 58.1 10.7 54.4 0 89.9-26.9 90-68.9z"/>
+          </svg>
+        </a>
+
+        <a href="https://www.mastercard.com" class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="max-h-5">
+        </a>
+
+        <a href="https://www.americanexpress.com" class="w-10 h-8 flex items-center justify-center border-r border-gray-200">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" class="max-h-5">
+        </a>
+
+        <a href="https://www.discover.com" class="w-10 h-8 flex items-center justify-center">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Discover_Card_logo.svg" class="max-h-5">
+        </a>
+
+      </div>
+
+    </div>
+
+    <p class="text-center text-xs text-gray-200">
+      Powered by Park My Ride LLC
+    </p>
+
+  </div>
+
+</footer>
+
+<script>
+(function () {
+  function toDisplayUsername(...candidates) {
+    for (const raw of candidates) {
+      if (raw == null) continue;
+      const name = String(raw).trim();
+      if (!name || name.includes("@") || /\s/.test(name)) continue;
+      return name;
+    }
+    return "";
+  }
+  function clearHeaderUserName() {
+    ["loggedInUserDesktop", "loggedInUserMobile", "desktopUserDivider", "mobileUserDivider"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (id.indexOf("User") >= 0) el.textContent = "";
+      el.classList.add("hidden");
+    });
+  }
+  function updateUserName(name) {
+    if (!localStorage.getItem("pmr_token")) { clearHeaderUserName(); return; }
+    name = toDisplayUsername(name);
+    if (!name) return;
+    const desktopUser = document.getElementById("loggedInUserDesktop");
+    const mobileUser = document.getElementById("loggedInUserMobile");
+    const desktopDivider = document.getElementById("desktopUserDivider");
+    const mobileDivider = document.getElementById("mobileUserDivider");
+    if (desktopUser) { desktopUser.textContent = name; desktopUser.classList.remove("hidden"); }
+    if (mobileUser) { mobileUser.textContent = name; mobileUser.classList.remove("hidden"); }
+    if (desktopDivider) desktopDivider.classList.remove("hidden");
+    if (mobileDivider) mobileDivider.classList.remove("hidden");
+  }
+  function clearAuthStorage() {
+    ["pmr_token", "pmr_refresh", "pmr_home_owner_id", "pmr_login_email", "loggedInUser", "user"].forEach((key) => {
+      try { localStorage.removeItem(key); } catch (e) {}
+    });
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    const token = localStorage.getItem("pmr_token");
+    if (token) {
+      let username = "";
+      try {
+        const stored = JSON.parse(localStorage.getItem("user") || "{}");
+        username = toDisplayUsername(stored.username, stored.Username);
+      } catch (e) {}
+      if (!username) username = toDisplayUsername(localStorage.getItem("loggedInUser"));
+      if (username) updateUserName(username);
+      else clearHeaderUserName();
+    } else {
+      clearHeaderUserName();
+    }
+
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const openBtn = document.getElementById("openSidebar");
+    const closeBtn = document.getElementById("closeSidebar");
+    if (openBtn && sidebar && overlay) {
+      openBtn.addEventListener("click", () => {
+        sidebar.classList.remove("-translate-x-full");
+        overlay.classList.remove("hidden");
+      });
+    }
+    if (closeBtn && sidebar && overlay) {
+      closeBtn.addEventListener("click", () => {
+        sidebar.classList.add("-translate-x-full");
+        overlay.classList.add("hidden");
+      });
+    }
+    if (overlay && sidebar) {
+      overlay.addEventListener("click", () => {
+        sidebar.classList.add("-translate-x-full");
+        overlay.classList.add("hidden");
+      });
+    }
+
+    const logoutBtn = document.getElementById("egpLogoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        clearAuthStorage();
+        clearHeaderUserName();
+        window.location.href = "https://eventgarageparking.net/register/";
+      });
+    }
+  });
+})();
+</script>
+<script src="https://js-na2.hsforms.net/forms/embed/245773740.js" defer></script>
+
+</body>
+</html>

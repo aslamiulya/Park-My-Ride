@@ -1,14 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- EGP DARK MODE -->
+<script>
+(function () {
+  try {
+    if (localStorage.getItem("egp-dark-mode") === "1") {
+      document.documentElement.classList.add("egp-dark");
+    }
+  } catch (e) {}
+})();
+</script>
+<style>
+  html.egp-dark { color-scheme: dark; }
+  html.egp-dark body { background: #0b1220 !important; color: #e5e7eb; }
+  html.egp-dark #egp-page-loader { background: #0b1220 !important; }
+  html.egp-dark main,
+  html.egp-dark .bg-\[#f5f7fb\] { background: #0b1220 !important; }
+  html.egp-dark #sidebar,
+  html.egp-dark .bg-\[#f8f9ff\] {
+    background: #111827 !important;
+    border-color: #1f2937 !important;
+  }
+  html.egp-dark .bg-white { background-color: #1e293b !important; }
+  html.egp-dark .text-black,
+  html.egp-dark .text-black\/80,
+  html.egp-dark .text-\[#222\],
+  html.egp-dark .text-\[#333\] { color: #f3f4f6 !important; }
+  html.egp-dark .text-black\/50,
+  html.egp-dark .text-gray-500,
+  html.egp-dark .text-gray-600 { color: #94a3b8 !important; }
+  html.egp-dark .border,
+  html.egp-dark .border-\[#e6e6e6\],
+  html.egp-dark .border-\[#e5e5e5\] { border-color: #334155 !important; }
+  html.egp-dark .bg-\[#f1f1f1\] { background-color: #334155 !important; }
+  html.egp-dark .hover\:bg-\[#f9f9f9\]:hover,
+  html.egp-dark .hover\:bg-gray-50:hover { background-color: #334155 !important; }
+</style>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Garage Parking - ReportBug</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      textarea { resize: none; }
+    </style>
 </head>
 
 <body class="bg-white m-0 p-0 overflow-x-hidden">
+<!-- EGP PAGE LOADER -->
+<div id="egp-page-loader" role="status" aria-live="polite" aria-label="Loading">
+  <div class="egp-loader-box">
+    <div class="egp-loader-badge">EGP</div>
+    <span class="egp-loader-ring" aria-hidden="true"></span>
+  </div>
+</div>
+<style>
+  #egp-page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  #egp-page-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .egp-loader-box {
+    position: relative;
+    width: 118px;
+    height: 118px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .egp-loader-badge {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    background: #007DB5;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  .egp-loader-ring {
+    position: absolute;
+    inset: 0;
+    border: 4px solid #e6eef3;
+    border-top-color: #007DB5;
+    border-radius: 50%;
+    animation: egp-spin 0.8s linear infinite;
+  }
+  @keyframes egp-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+<script>
+  (function () {
+    var loader = document.getElementById("egp-page-loader");
+    if (!loader) return;
+    var shownAt = Date.now();
+    function hide() {
+      if (!loader || loader.classList.contains("is-hidden")) return;
+      var wait = Math.max(0, 700 - (Date.now() - shownAt));
+      setTimeout(function () {
+        if (!loader || loader.classList.contains("is-hidden")) return;
+        loader.classList.add("is-hidden");
+        setTimeout(function () {
+          if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 400);
+      }, wait);
+    }
+    if (document.readyState === "complete") hide();
+    else window.addEventListener("load", hide);
+    setTimeout(hide, 8000);
+  })();
+</script>
+
 
  <!-- Header -->
 <div class="w-full
@@ -145,7 +267,7 @@
         <!-- MOBILE CLOSE -->
         <div class="flex items-center justify-end mb-8 md:hidden">
             <button id="closeSidebar" class="text-[34px] leading-none text-[#333]">
-                ×
+                <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
 
@@ -154,40 +276,52 @@
 
             <a href="https://eventgarageparking.net/home-owner-listing-page/"
                 class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                <i class="fa-solid fa-house"></i> Listing
+                <i class="fa-solid fa-house fa-fw"></i> Listing
             </a>
 
             <a href="https://eventgarageparking.net/home-owner-availability-page/"
                 class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                <i class="fa-solid fa-calendar"></i> Availability
+                <i class="fa-solid fa-calendar fa-fw"></i> Availability
             </a>
 
             <a href="https://eventgarageparking.net/home-owner-booking-page/"
                 class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                <i class="fa-solid fa-car"></i> Booking
+                <i class="fa-solid fa-car fa-fw"></i> Booking
             </a>
 
             <a href="https://eventgarageparking.net/home-owner-earning-page/"
                 class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                <i class="fa-solid fa-piggy-bank"></i> Earnings
+                <i class="fa-solid fa-piggy-bank fa-fw"></i> Earnings
             </a>
 
             <a href="https://eventgarageparking.net/home-owner-profile-page/"
                 class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                <i class="fa-solid fa-user"></i> Profile
+                <i class="fa-solid fa-user fa-fw"></i> Profile
             </a>
 
             <a href="https://eventgarageparking.net/home-owner-payment-page/"
                 class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                $ Payment
+                <i class="fa-solid fa-dollar-sign fa-fw"></i> Payment
             </a>
 
-            <a href="https://eventgarageparking.net/egp-setting/"
-                class="flex items-center gap-2 p-[10px] text-[#007DB5] font-bold text-[13px] bg-[rgba(0,125,181,0.08)] rounded-[6px]">
-                ⚙️ Settings
+            <a href="https://eventgarageparking.net/egp-training-center/"
+                class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                <i class="fa-solid fa-graduation-cap fa-fw"></i> Training
             </a>
-              <a href="http://127.0.0.1:5500/home-page/loginPage.html"
-                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+            <a href="https://eventgarageparking.net/egp-setting/" class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                <i class="fa-solid fa-gear fa-fw"></i> Settings
+            </a>
+
+                <a href="https://eventgarageparking.net/contact-us/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-envelope fa-fw"></i> Contact
+                </a>
+                <a href="https://eventgarageparking.net/report-a-bug/" class="flex items-center gap-2 p-[10px] text-[#007DB5] font-bold text-[13px] bg-[rgba(0,125,181,0.08)] rounded-[6px]">
+                    <i class="fa-solid fa-bug fa-fw"></i> Report a Bug
+                </a>
+<a href="https://eventgarageparking.net/register/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg" id="egpLogoutBtn"><i class="fa-solid fa-arrow-right-from-bracket fa-fw"></i>
                         Logout
                     </a>
 
@@ -214,14 +348,15 @@
 
         <!-- MOBILE TOGGLE -->
         <button id="openSidebar"
-            class="md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] flex items-center justify-center shadow-md">
-            ☰
+            class="md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] flex items-center justify-center shadow-md"
+            aria-label="Open menu">
+            <i class="fa-solid fa-bars"></i>
         </button>
 
     </div>
 
     <!-- BACK -->
-    <a href="http://127.0.0.1:5500/home-page/setting.html"
+    <a href="https://eventgarageparking.net/egp-setting/"
         class="inline-flex items-center gap-2 text-black text-sm font-medium mb-6">
         <i class="fa-solid fa-arrow-left"></i>
         Back to Settings
@@ -268,7 +403,7 @@
                 name="describe_the_issue"
                 rows="5"
                 placeholder="Describe the issue"
-                class="w-full min-h-[140px] bg-[#f8f9ff] border border-[#e6e6e6] rounded-lg p-4 text-[#222] text-sm outline-none focus:border-[#007DB5] resize-y"
+                class="w-full min-h-[140px] bg-[#f8f9ff] border border-[#e6e6e6] rounded-lg p-4 text-[#222] text-sm outline-none focus:border-[#007DB5] resize-none"
                 required></textarea>
         </div>
 
@@ -340,10 +475,328 @@
 </main>
 </div>
 
-<script src="js/common.js"></script>
+<script>
+/**
+ * Event Garage Parking — shared portal scripts
+ * Header username + mobile sidebar
+ */
+(function (window) {
+  const EGP = window.EGP || {};
+
+  function toDisplayUsername(...candidates) {
+    // Exact username handle only — never email or full name
+    for (const raw of candidates) {
+      if (raw == null) continue;
+      const name = String(raw).trim();
+      if (!name || name.includes("@") || /\s/.test(name)) continue;
+      return name;
+    }
+    return "";
+  }
+
+  function clearHeaderUserName() {
+    const desktopUser = document.getElementById("loggedInUserDesktop");
+    const mobileUser = document.getElementById("loggedInUserMobile");
+    const desktopDivider = document.getElementById("desktopUserDivider");
+    const mobileDivider = document.getElementById("mobileUserDivider");
+
+    if (desktopUser) {
+      desktopUser.textContent = "";
+      desktopUser.classList.add("hidden");
+    }
+    if (mobileUser) {
+      mobileUser.textContent = "";
+      mobileUser.classList.add("hidden");
+    }
+    if (desktopDivider) desktopDivider.classList.add("hidden");
+    if (mobileDivider) mobileDivider.classList.add("hidden");
+  }
+
+  function updateUserName(name) {
+    // Never paint a name unless the user is actually logged in
+    if (!localStorage.getItem("pmr_token")) {
+      clearHeaderUserName();
+      return;
+    }
+
+    name = toDisplayUsername(name);
+    if (!name) return;
+
+    const desktopUser = document.getElementById("loggedInUserDesktop");
+    const mobileUser = document.getElementById("loggedInUserMobile");
+    const desktopDivider = document.getElementById("desktopUserDivider");
+    const mobileDivider = document.getElementById("mobileUserDivider");
+
+    if (desktopUser) {
+      desktopUser.textContent = name;
+      desktopUser.classList.remove("hidden");
+    }
+    if (mobileUser) {
+      mobileUser.textContent = name;
+      mobileUser.classList.remove("hidden");
+    }
+    if (desktopDivider) desktopDivider.classList.remove("hidden");
+    if (mobileDivider) mobileDivider.classList.remove("hidden");
+
+    localStorage.setItem("loggedInUser", name);
+  }
+
+  function claimsFromJwt(jwt) {
+    try {
+      const part = String(jwt).split(".")[1];
+      if (!part) return null;
+      const json = atob(part.replace(/-/g, "+").replace(/_/g, "/"));
+      return JSON.parse(json);
+    } catch {
+      return null;
+    }
+  }
+
+  function unwrapOwner(payload) {
+    if (!payload || typeof payload !== "object") return null;
+    if (
+      payload.username != null ||
+      payload.host_id != null ||
+      payload.email != null
+    ) {
+      return payload;
+    }
+    if (payload.data && typeof payload.data === "object") {
+      return unwrapOwner(payload.data);
+    }
+    if (Array.isArray(payload.results) && payload.results[0]) {
+      return unwrapOwner(payload.results[0]);
+    }
+    return payload;
+  }
+
+  function displayNameFromOwner(owner) {
+    owner = unwrapOwner(owner);
+    if (!owner) return "";
+    // ONLY HomeOwner.username — never first/last name or email
+    return toDisplayUsername(owner.username, owner.Username);
+  }
+
+  function hostIdFromOwner(owner) {
+    owner = unwrapOwner(owner);
+    if (!owner) return null;
+    return (
+      owner.host_id ||
+      owner.home_owner_id ||
+      owner.homeowner_id ||
+      owner.id ||
+      null
+    );
+  }
+
+  function getHomeOwnerId() {
+    const savedId = localStorage.getItem("pmr_home_owner_id");
+    if (savedId) return savedId;
+
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const id = hostIdFromOwner(user);
+      if (id != null) return String(id);
+    } catch {
+      /* ignore */
+    }
+    return null;
+  }
+
+  function getSavedLoginEmail() {
+    const fromKey = localStorage.getItem("pmr_login_email");
+    if (fromKey) return String(fromKey).trim();
+    try {
+      return String(
+        JSON.parse(localStorage.getItem("user") || "{}")?.email || ""
+      ).trim();
+    } catch {
+      return "";
+    }
+  }
+
+  function clearAuthStorage() {
+    [
+      "pmr_token",
+      "pmr_refresh",
+      "pmr_home_owner_id",
+      "pmr_login_email",
+      "loggedInUser",
+      "user"
+    ].forEach((key) => {
+      try {
+        localStorage.removeItem(key);
+      } catch {
+        /* ignore */
+      }
+    });
+  }
+
+  async function initHeaderUser() {
+    const token = localStorage.getItem("pmr_token");
+
+    // WordPress keeps localStorage across visits — hide name unless logged in
+    if (!token) {
+      clearHeaderUserName();
+      return "";
+    }
+
+    let username = "";
+
+    try {
+      const stored = JSON.parse(localStorage.getItem("user") || "{}");
+      username = displayNameFromOwner(stored);
+    } catch {
+      /* ignore */
+    }
+
+    if (!username) {
+      username = toDisplayUsername(localStorage.getItem("loggedInUser"));
+    }
+
+    if (!username) {
+      try {
+        const claims = claimsFromJwt(token) || {};
+        // Never use claims.name (full name) or email-as-username
+        username = toDisplayUsername(
+          claims.username,
+          claims.preferred_username,
+          claims.user_name
+        );
+        const hostId =
+          claims.host_id ||
+          claims.home_owner_id ||
+          claims.homeowner_id ||
+          null;
+        if (hostId != null) {
+          localStorage.setItem("pmr_home_owner_id", String(hostId));
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+
+    // Drop polluted cache (email / full name left by older login code)
+    if (!username) {
+      try {
+        localStorage.removeItem("loggedInUser");
+      } catch {
+        /* ignore */
+      }
+      clearHeaderUserName();
+      return "";
+    }
+
+    updateUserName(username);
+    return username;
+  }
+
+  function getOverlayElement(overlayId) {
+    if (overlayId) {
+      return document.getElementById(overlayId);
+    }
+    return (
+      document.getElementById("sidebarOverlay") ||
+      document.getElementById("overlay")
+    );
+  }
+
+  function initSidebar(options = {}) {
+    const {
+      mobileOnly = false,
+      lockBodyScroll = false,
+      overlayId = null
+    } = options;
+
+    const sidebar = document.getElementById("sidebar");
+    const overlay = getOverlayElement(overlayId);
+    const openBtn = document.getElementById("openSidebar");
+    const closeBtn = document.getElementById("closeSidebar");
+
+    if (!sidebar) return;
+
+    function isMobile() {
+      return window.innerWidth < 768;
+    }
+
+    function openSidebarMenu() {
+      if (mobileOnly && !isMobile()) return;
+
+      sidebar.classList.remove("-translate-x-full");
+      if (overlay) overlay.classList.remove("hidden");
+      if (lockBodyScroll) {
+        document.body.classList.add("overflow-hidden");
+      }
+    }
+
+    function closeSidebarMenu() {
+      if (mobileOnly && !isMobile()) return;
+
+      sidebar.classList.add("-translate-x-full");
+      if (overlay) overlay.classList.add("hidden");
+      if (lockBodyScroll) {
+        document.body.classList.remove("overflow-hidden");
+      }
+    }
+
+    if (openBtn) {
+      openBtn.addEventListener("click", openSidebarMenu);
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeSidebarMenu);
+    }
+
+    if (overlay) {
+      overlay.addEventListener("click", closeSidebarMenu);
+    }
+
+    if (mobileOnly) {
+      window.addEventListener("resize", () => {
+        if (!isMobile()) {
+          sidebar.classList.remove("-translate-x-full");
+          if (overlay) overlay.classList.add("hidden");
+          document.body.classList.remove("overflow-hidden");
+        } else {
+          sidebar.classList.add("-translate-x-full");
+        }
+      });
+    }
+  }
+
+  async function initPortalPage(options = {}) {
+    await initHeaderUser();
+    initSidebar(options);
+  }
+
+  EGP.toDisplayUsername = toDisplayUsername;
+  EGP.updateUserName = updateUserName;
+  EGP.clearHeaderUserName = clearHeaderUserName;
+  EGP.clearAuthStorage = clearAuthStorage;
+  EGP.getSavedLoginEmail = getSavedLoginEmail;
+  EGP.getHomeOwnerId = getHomeOwnerId;
+  EGP.initHeaderUser = initHeaderUser;
+  EGP.initSidebar = initSidebar;
+  EGP.initPortalPage = initPortalPage;
+
+  window.EGP = EGP;
+
+  // Logout must clear localStorage — otherwise WordPress still shows the old name
+  document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("egpLogoutBtn");
+    if (!logoutBtn) return;
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      clearAuthStorage();
+      clearHeaderUserName();
+      window.location.href = "https://eventgarageparking.net/register/";
+    });
+  });
+})(window);
+
+</script>
 <script>
 const SUPPORT_API = "https://eventgarageparking.online/api/support/";
-const HOME_OWNERS_API = "https://eventgarageparking.online/api/home-owners/";
 
 function getAuthHeaders() {
   const token = localStorage.getItem("pmr_token") || "";
@@ -380,84 +833,6 @@ function getHomeOwnerId() {
   }
 }
 
-function getCachedOwnerName() {
-  try {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    const full = [user.first_name, user.last_name].filter(Boolean).join(" ").trim();
-    if (full) return full;
-    if (user.username) return String(user.username).trim();
-    if (user.email) return String(user.email).split("@")[0];
-  } catch {
-    /* ignore */
-  }
-  return (localStorage.getItem("loggedInUser") || "").trim();
-}
-
-function setHeaderUserName(name) {
-  if (!name) return;
-  if (typeof EGP !== "undefined" && EGP.updateUserName) {
-    EGP.updateUserName(name);
-    return;
-  }
-  const desktop = document.getElementById("loggedInUserDesktop");
-  const mobile = document.getElementById("loggedInUserMobile");
-  const desktopDivider = document.getElementById("desktopUserDivider");
-  const mobileDivider = document.getElementById("mobileUserDivider");
-  if (desktop) {
-    desktop.textContent = name;
-    desktop.classList.remove("hidden");
-  }
-  if (mobile) {
-    mobile.textContent = name;
-    mobile.classList.remove("hidden");
-  }
-  if (desktopDivider) desktopDivider.classList.remove("hidden");
-  if (mobileDivider) mobileDivider.classList.remove("hidden");
-}
-
-async function loadHeaderUserName() {
-  const cached = getCachedOwnerName();
-  if (cached) setHeaderUserName(cached);
-
-  const { token, headers } = getAuthHeaders();
-  const hostId = getHomeOwnerId();
-  if (!token || !hostId) return;
-
-  try {
-    const res = await fetch(`${HOME_OWNERS_API}${hostId}/`, {
-      method: "GET",
-      headers,
-    });
-    if (!res.ok) return;
-    const owner = await res.json();
-    const full = [owner.first_name, owner.last_name].filter(Boolean).join(" ").trim();
-    const name =
-      full ||
-      String(owner.username || "").trim() ||
-      String(owner.email || "").split("@")[0] ||
-      cached;
-    if (!name) return;
-
-    let prev = {};
-    try {
-      prev = JSON.parse(localStorage.getItem("user") || "{}") || {};
-    } catch {
-      prev = {};
-    }
-    localStorage.setItem("user", JSON.stringify({ ...prev, ...owner }));
-    localStorage.setItem("loggedInUser", name);
-    if (owner.host_id != null || owner.id != null) {
-      localStorage.setItem(
-        "pmr_home_owner_id",
-        String(owner.host_id || owner.id)
-      );
-    }
-    setHeaderUserName(name);
-  } catch (err) {
-    console.error("Header user load error:", err);
-  }
-}
-
 function showStatus(message, ok) {
   const el = document.getElementById("bugStatus");
   el.textContent = message;
@@ -469,7 +844,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.EGP && typeof EGP.initPortalPage === "function") {
     EGP.initPortalPage().catch((err) => console.error(err));
   }
-  loadHeaderUserName();
 
   // Today's date (display only — API sets date on create)
   const today = new Date();
@@ -783,7 +1157,7 @@ document.addEventListener("DOMContentLoaded", () => {
               rel="noopener noreferrer"
               class="hover:text-gray-200"
             >
-              Tern of Service
+              Term of Services
             </a></li>
           </li>
         </ul>

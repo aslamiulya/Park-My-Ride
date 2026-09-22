@@ -2,6 +2,43 @@
 <html lang="en">
 
 <head>
+<!-- EGP DARK MODE -->
+<script>
+(function () {
+  try {
+    if (localStorage.getItem("egp-dark-mode") === "1") {
+      document.documentElement.classList.add("egp-dark");
+    }
+  } catch (e) {}
+})();
+</script>
+<style>
+  html.egp-dark { color-scheme: dark; }
+  html.egp-dark body { background: #0b1220 !important; color: #e5e7eb; }
+  html.egp-dark #egp-page-loader { background: #0b1220 !important; }
+  html.egp-dark main,
+  html.egp-dark .bg-\[#f5f7fb\] { background: #0b1220 !important; }
+  html.egp-dark #sidebar,
+  html.egp-dark .bg-\[#f8f9ff\] {
+    background: #111827 !important;
+    border-color: #1f2937 !important;
+  }
+  html.egp-dark .bg-white { background-color: #1e293b !important; }
+  html.egp-dark .text-black,
+  html.egp-dark .text-black\/80,
+  html.egp-dark .text-\[#222\],
+  html.egp-dark .text-\[#333\] { color: #f3f4f6 !important; }
+  html.egp-dark .text-black\/50,
+  html.egp-dark .text-gray-500,
+  html.egp-dark .text-gray-600 { color: #94a3b8 !important; }
+  html.egp-dark .border,
+  html.egp-dark .border-\[#e6e6e6\],
+  html.egp-dark .border-\[#e5e5e5\] { border-color: #334155 !important; }
+  html.egp-dark .bg-\[#f1f1f1\] { background-color: #334155 !important; }
+  html.egp-dark .hover\:bg-\[#f9f9f9\]:hover,
+  html.egp-dark .hover\:bg-gray-50:hover { background-color: #334155 !important; }
+</style>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Event Garage Parking - Listings</title>
@@ -11,6 +48,88 @@
 </head>
 
 <body class="m-0 p-0 bg-white overflow-x-hidden font-[Arial,sans-serif] flex flex-col min-h-screen">
+<!-- EGP PAGE LOADER -->
+<div id="egp-page-loader" role="status" aria-live="polite" aria-label="Loading">
+  <div class="egp-loader-box">
+    <div class="egp-loader-badge">EGP</div>
+    <span class="egp-loader-ring" aria-hidden="true"></span>
+  </div>
+</div>
+<style>
+  #egp-page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  #egp-page-loader.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .egp-loader-box {
+    position: relative;
+    width: 118px;
+    height: 118px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .egp-loader-badge {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    background: #007DB5;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  .egp-loader-ring {
+    position: absolute;
+    inset: 0;
+    border: 4px solid #e6eef3;
+    border-top-color: #007DB5;
+    border-radius: 50%;
+    animation: egp-spin 0.8s linear infinite;
+  }
+  @keyframes egp-spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+<script>
+  (function () {
+    var loader = document.getElementById("egp-page-loader");
+    if (!loader) return;
+    var shownAt = Date.now();
+    function hide() {
+      if (!loader || loader.classList.contains("is-hidden")) return;
+      var wait = Math.max(0, 700 - (Date.now() - shownAt));
+      setTimeout(function () {
+        if (!loader || loader.classList.contains("is-hidden")) return;
+        loader.classList.add("is-hidden");
+        setTimeout(function () {
+          if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 400);
+      }, wait);
+    }
+    if (document.readyState === "complete") hide();
+    else window.addEventListener("load", hide);
+    setTimeout(hide, 8000);
+  })();
+</script>
+
 
  <!-- Header -->
 <div class="w-full
@@ -118,57 +237,75 @@
 <!-- MAIN -->
 <div class="flex flex-1 min-w-0 overflow-x-hidden">
 
+      <div id="sidebarOverlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
+
       <!-- SIDEBAR -->
         <aside id="sidebar"
             class="fixed md:static top-0 left-0 w-[260px] sm:w-[280px] md:w-[240px] h-screen md:h-auto bg-[#f8f9ff] border-r border-[#e6e6e6] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 p-5 md:p-[20px_12px] overflow-y-auto">
 
             <!-- CLOSE BUTTON (MOBILE ONLY) -->
             <div class="flex items-center justify-end mb-8 md:hidden">
-                <button id="closeSidebar" class="text-[34px] leading-none text-[#333]">×</button>
+                <button id="closeSidebar" class="text-[34px] leading-none text-[#333]" aria-label="Close menu">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
 
             <div class="flex flex-col gap-2">
 
                 <a href="https://eventgarageparking.net/home-owner-listing-page/"
                      class="flex items-center gap-2 p-[10px] text-[#007DB5] font-bold text-[13px] bg-[rgba(0,125,181,0.08)] rounded-[6px]">
-                    <i class="fa-solid fa-house"></i> Listing
+                    <i class="fa-solid fa-house fa-fw"></i> Listing
                 </a>
 
                 <a href="https://eventgarageparking.net/home-owner-availability-page/"
                  class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-
-                   <i class="fa-solid fa-calendar"></i>Availability
+                   <i class="fa-solid fa-calendar fa-fw"></i> Availability
                 </a>
 
                 <a href="https://eventgarageparking.net/home-owner-booking-page/"
                     class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                    <i class="fa-solid fa-car"></i> Booking
+                    <i class="fa-solid fa-car fa-fw"></i> Booking
                 </a>
 
                 <a href="https://eventgarageparking.net/home-owner-earning-page/"
                     class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                    <i class="fa-solid fa-piggy-bank"></i>Earnings
+                    <i class="fa-solid fa-piggy-bank fa-fw"></i> Earnings
                 </a>
 
                 <a href="https://eventgarageparking.net/home-owner-profile-page/"
                     class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                    <i class="fa-solid fa-user"></i> Profile
+                    <i class="fa-solid fa-user fa-fw"></i> Profile
                 </a>
 
                 <a href="https://eventgarageparking.net/home-owner-payment-page/"
                     class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                    $ Payment
+                    <i class="fa-solid fa-dollar-sign fa-fw"></i> Payment
+                </a>
+
+                <a href="https://eventgarageparking.net/egp-training-center/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-graduation-cap fa-fw"></i> Training
                 </a>
 
                 <a href="https://eventgarageparking.net/egp-setting/"
                     class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
-                    ⚙️ Settings
+                    <i class="fa-solid fa-gear fa-fw"></i> Settings
                 </a>
-                  <a href="http://127.0.0.1:5500/home-page/loginPage.html"
-                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg"><i class="fa-solid fa-arrow-right-from-bracket"></i>
-                        Logout
-                    </a>
- 
+
+                <a href="https://eventgarageparking.net/contact-us/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-envelope fa-fw"></i> Contact
+                </a>
+                <a href="https://eventgarageparking.net/report-a-bug/"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-bug fa-fw"></i> Report a Bug
+                </a>
+<a href="https://eventgarageparking.net/register/"
+                    id="egpLogoutBtn"
+                    class="flex items-center gap-2 p-[10px] text-[#6B97AB] text-[13px] rounded-lg">
+                    <i class="fa-solid fa-arrow-right-from-bracket fa-fw"></i> Logout
+                </a>
+
             </div>
 
         </aside>
@@ -186,8 +323,9 @@
 
         <!-- MOBILE TOGGLE -->
         <button id="openSidebar"
-            class="flex md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] items-center justify-center shadow-md">
-            ☰
+            class="flex md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] items-center justify-center shadow-md"
+            aria-label="Open menu">
+            <i class="fa-solid fa-bars"></i>
         </button>
 
     </div>
@@ -199,7 +337,7 @@
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
 
                 <div class="flex items-center gap-2 text-[13px] min-w-0">
-                    📍
+                    <i class="fa-solid fa-location-dot text-[#007DB5]"></i>
                     <span class="truncate">845 J St, Apt 3B, Sacramento, CA 95814</span>
                 </div>
 
@@ -227,7 +365,7 @@
 
                 <div class="flex-1">
                     <div class="text-[11px] text-gray-500">Active</div>
-                    <div class="text-[14px] font-medium">2</div>
+                    <div class="text-[14px] font-medium">Yes</div>
                 </div>
 
                 <div class="flex-1">
@@ -249,7 +387,7 @@
         <div class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white">
 
             <div class="font-bold text-[16px]">
-                <i class="fa-solid fa-calendar"></i> Padres Vs Dodgers
+                <i class="fa-solid fa-calendar fa-fw"></i> Padres Vs Dodgers
             </div>
 
             <div class="text-[12px] text-gray-500 mt-1">Saturday, Mar 21 • 6:40 PM</div>
@@ -268,9 +406,83 @@
         </div>
     </div>
 
+    <!-- COMPLETED -->
+    <div class="mt-8 text-[18px] font-bold text-[#007DB5] mb-3">
+        Completed Events
+    </div>
+
+    <div id="completedEventsList" class="space-y-4">
+        <div class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white">
+            <p class="text-[13px] text-gray-500">No completed events yet.</p>
+        </div>
+    </div>
+
+    <!-- CANCELED -->
+    <div class="mt-8 text-[18px] font-bold text-[#007DB5] mb-3">
+        Canceled Events
+    </div>
+
+    <div id="canceledEventsList" class="space-y-4">
+        <div class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white">
+            <p class="text-[13px] text-gray-500">No canceled events.</p>
+        </div>
+    </div>
+
 </main>
 
 </div>
+
+<!--
+  ============================================================================
+  LISTING_ACTIVE_TOGGLE — Deactivate confirm popup (search: LISTING_ACTIVE_TOGGLE)
+  Green Active switch on Your Listings → turning OFF opens this modal.
+  Checkbox + "Mark Inactive" required before toggle turns off.
+  ============================================================================
+-->
+<div
+  id="listingActiveConfirmModal"
+  class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4"
+  aria-hidden="true">
+  <div class="absolute inset-0 bg-black/50" data-listing-active-dismiss></div>
+  <div
+    class="relative z-10 w-full max-w-[420px] bg-white rounded-[16px] shadow-xl p-6 sm:p-7"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="listingActiveConfirmTitle">
+    <h3 id="listingActiveConfirmTitle" class="text-[18px] font-bold text-gray-900">
+      Mark listing inactive?
+    </h3>
+    <p class="mt-3 text-[14px] text-gray-600 leading-relaxed">
+      Are you sure you want to mark your listing as NOT ACTIVE? This will make your listing not appear to customers, and will suspend all future earnings.
+    </p>
+    <label class="mt-5 flex items-start gap-3 cursor-pointer select-none">
+      <input
+        id="listingActiveConfirmCheck"
+        type="checkbox"
+        class="mt-1 accent-[#007db5] w-4 h-4 flex-shrink-0" />
+      <span class="text-[13px] text-gray-700 leading-snug">
+        I understand my listing will be hidden from customers and future earnings will be suspended.
+      </span>
+    </label>
+    <p id="listingActiveConfirmError" class="hidden mt-3 text-[13px] text-red-600"></p>
+    <div class="mt-6 flex flex-col-reverse sm:flex-row sm:justify-end gap-2 sm:gap-3">
+      <button
+        type="button"
+        id="listingActiveConfirmCancel"
+        class="w-full sm:w-auto px-4 py-2.5 rounded-[10px] border border-gray-300 text-gray-700 text-[14px] font-medium hover:bg-gray-50">
+        Cancel
+      </button>
+      <button
+        type="button"
+        id="listingActiveConfirmBtn"
+        disabled
+        class="w-full sm:w-auto px-4 py-2.5 rounded-[10px] bg-[#dc3545] text-white text-[14px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#c82333]">
+        Mark Inactive
+      </button>
+    </div>
+  </div>
+</div>
+
 <footer class="w-full bg-[#007DB5] text-white text-sm">
 
   <!-- MAIN -->
@@ -304,7 +516,7 @@
           <li><a href="https://42bs8c.share-na2.hsforms.com/2h9ic7f91RPiKzrbRzkwrmg" class="hover:text-gray-200">Become A Host</a></li>
           <li><a href="https://eventgarageparking.net/homeowner-agreement/" class="hover:text-gray-200">Host Agreement</a></li>
           <li><a href="https://eventgarageparking.com/privacy-policy/" class="hover:text-gray-200">Privacy Policy</a></li>
-          <li><a href="https://eventgarageparking.com/terms-of-service/" class="hover:text-gray-200">Tern of Service</a></li>
+          <li><a href="https://eventgarageparking.com/terms-of-service/" class="hover:text-gray-200">Term of Services</a></li>
         </ul>
       </div>
 
@@ -379,9 +591,9 @@
           <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="max-h-5" alt="PayPal">
         </a>
 
-        <a href="https://www.visa.com" class="w-12 h-8 flex items-center justify-center border-r border-gray-200">
-          <svg viewBox="0 0 780 250" class="h-5 w-auto">
-            <path fill="#1A1F71" d="M293.7 25.4L221.5 224.6H175L139.5 87.2c-2.1-8.5-3.9-11.6-10.5-15.2-10.7-5.8-28.4-11.2-44-14l1-4.6h74.8c9.5 0 18.1 6.3 20.3 17.2l18.7 99.4 46.2-116.6h47.7zm184.5 134.2c.2-52.6-72.8-55.5-72.3-79 0-7.2 7-14.8 22-16.7 7.4-.9 27.9-1.7 51.1 9l9.1-42.4c-12.5-4.5-28.5-8.9-48.4-8.9-51.2 0-87.2 27.2-87.5 66.2-.3 28.8 25.7 44.8 45.3 54.4 20.2 9.8 27 16.1 26.9 24.9-.1 13.5-16.2 19.5-31.2 19.7-26.2.4-41.4-7.1-53.5-12.8l-9.4 43.8c12.2 5.6 34.7 10.5 58.1 10.7 54.4 0 89.9-26.9 90-68.9z"/>
+        <a href="https://www.visa.com" class="w-12 h-8 flex items-center justify-center border-r border-gray-200" aria-label="Visa">
+          <svg viewBox="0 0 780 250" class="h-5 w-auto" aria-hidden="true">
+            <path fill="#1A1F71" d="M293.7 25.4L221.5 224.6H175L139.5 87.2c-2.1-8.5-3.9-11.6-10.5-15.2-10.7-5.8-28.4-11.2-44-14l1-4.6h74.8c9.5 0 18.1 6.3 20.3 17.2l18.7 99.4 46.2-116.6h47.7zm184.5 134.2c.2-52.6-72.8-55.5-72.3-79 0-7.2 7-14.8 22-16.7 7.4-.9 27.9-1.7 51.1 9l9.1-42.4c-12.5-4.5-28.5-8.9-48.4-8.9-51.2 0-87.2 27.2-87.5 66.2-.3 28.8 25.7 44.8 45.3 54.4 20.2 9.8 27 16.1 26.9 24.9-.1 13.5-16.2 19.5-31.2 19.7-26.2.4-41.4-7.1-53.5-12.8l-9.4 43.8c12.2 5.6 34.7 10.5 58.1 10.7 54.4 0 89.9-26.9 90-68.9zM454.7 224.6h-41.9l26.2-199.2h41.9l-26.2 199.2zm216.5-194.6c-8.3-3.1-21.3-6.5-37.5-6.5-41.4 0-70.5 22.1-70.7 53.7-.2 23.4 20.9 36.4 36.8 44.2 16.4 8 21.9 13.1 21.8 20.2-.1 10.9-13.1 15.9-25.3 16-16.9.3-26.6-4.6-40.9-15.5l-7.1 33.1c12.1 5.6 34.5 10.5 57.7 10.7 43.2 0 71.3-21.8 71.5-55.6.1-18.6-11.1-32.7-35.5-44.3-14.8-7.5-23.9-12.5-23.8-20.1.1-6.7 7.6-13.9 24-14.2 13.7-.2 23.6 2.9 31.3 6.2l7.5-34.9zm96.1 194.6h36.8l-32.1-199.2h-33.9c-8.5 0-14.8 2.5-18.5 11.5l-65.3 187.7h45.7l9.1-25.1h55.9l5.3 25.1zm-48.4-65.6l22.9-63.3 13.2 63.3h-36.1zM554.3 25.4l-35.9 199.2h-43.6l35.9-199.2h43.6z"/>
           </svg>
         </a>
 
@@ -408,18 +620,343 @@
   </div>
 
 </footer>
-<script src="js/common.js"></script>
+<script>
+/**
+ * Event Garage Parking — shared portal scripts
+ * Header username + mobile sidebar
+ */
+(function (window) {
+  const EGP = window.EGP || {};
+
+  function toDisplayUsername(...candidates) {
+    // Exact username handle only — never email or full name
+    for (const raw of candidates) {
+      if (raw == null) continue;
+      const name = String(raw).trim();
+      if (!name || name.includes("@") || /\s/.test(name)) continue;
+      return name;
+    }
+    return "";
+  }
+
+  function clearHeaderUserName() {
+    const desktopUser = document.getElementById("loggedInUserDesktop");
+    const mobileUser = document.getElementById("loggedInUserMobile");
+    const desktopDivider = document.getElementById("desktopUserDivider");
+    const mobileDivider = document.getElementById("mobileUserDivider");
+
+    if (desktopUser) {
+      desktopUser.textContent = "";
+      desktopUser.classList.add("hidden");
+    }
+    if (mobileUser) {
+      mobileUser.textContent = "";
+      mobileUser.classList.add("hidden");
+    }
+    if (desktopDivider) desktopDivider.classList.add("hidden");
+    if (mobileDivider) mobileDivider.classList.add("hidden");
+  }
+
+  function updateUserName(name) {
+    // Never paint a name unless the user is actually logged in
+    if (!localStorage.getItem("pmr_token")) {
+      clearHeaderUserName();
+      return;
+    }
+
+    name = toDisplayUsername(name);
+    if (!name) return;
+
+    const desktopUser = document.getElementById("loggedInUserDesktop");
+    const mobileUser = document.getElementById("loggedInUserMobile");
+    const desktopDivider = document.getElementById("desktopUserDivider");
+    const mobileDivider = document.getElementById("mobileUserDivider");
+
+    if (desktopUser) {
+      desktopUser.textContent = name;
+      desktopUser.classList.remove("hidden");
+    }
+    if (mobileUser) {
+      mobileUser.textContent = name;
+      mobileUser.classList.remove("hidden");
+    }
+    if (desktopDivider) desktopDivider.classList.remove("hidden");
+    if (mobileDivider) mobileDivider.classList.remove("hidden");
+
+    localStorage.setItem("loggedInUser", name);
+  }
+
+  function claimsFromJwt(jwt) {
+    try {
+      const part = String(jwt).split(".")[1];
+      if (!part) return null;
+      const json = atob(part.replace(/-/g, "+").replace(/_/g, "/"));
+      return JSON.parse(json);
+    } catch {
+      return null;
+    }
+  }
+
+  function unwrapOwner(payload) {
+    if (!payload || typeof payload !== "object") return null;
+    if (
+      payload.username != null ||
+      payload.host_id != null ||
+      payload.email != null
+    ) {
+      return payload;
+    }
+    if (payload.data && typeof payload.data === "object") {
+      return unwrapOwner(payload.data);
+    }
+    if (Array.isArray(payload.results) && payload.results[0]) {
+      return unwrapOwner(payload.results[0]);
+    }
+    return payload;
+  }
+
+  function displayNameFromOwner(owner) {
+    owner = unwrapOwner(owner);
+    if (!owner) return "";
+    // ONLY HomeOwner.username — never first/last name or email
+    return toDisplayUsername(owner.username, owner.Username);
+  }
+
+  function hostIdFromOwner(owner) {
+    owner = unwrapOwner(owner);
+    if (!owner) return null;
+    return (
+      owner.host_id ||
+      owner.home_owner_id ||
+      owner.homeowner_id ||
+      null
+    );
+  }
+
+  function getHomeOwnerId() {
+    const savedId = localStorage.getItem("pmr_home_owner_id");
+    if (savedId) return savedId;
+
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const id = hostIdFromOwner(user);
+      if (id != null) return String(id);
+    } catch {
+      /* ignore */
+    }
+    return null;
+  }
+
+  function getSavedLoginEmail() {
+    const fromKey = localStorage.getItem("pmr_login_email");
+    if (fromKey) return String(fromKey).trim();
+    try {
+      return String(
+        JSON.parse(localStorage.getItem("user") || "{}")?.email || ""
+      ).trim();
+    } catch {
+      return "";
+    }
+  }
+
+  function clearAuthStorage() {
+    // Keep pmr_profile_media_v1 across logout so the same user still sees
+    // their photos after signing back in (cleared on SignIn only if account differs).
+    [
+      "pmr_token",
+      "pmr_refresh",
+      "pmr_home_owner_id",
+      "pmr_login_email",
+      "loggedInUser",
+      "user",
+      "pmr_owner_patch_blocked"
+    ].forEach((key) => {
+      try {
+        localStorage.removeItem(key);
+      } catch {
+        /* ignore */
+      }
+    });
+  }
+
+  async function initHeaderUser() {
+    const token = localStorage.getItem("pmr_token");
+
+    // WordPress keeps localStorage across visits — hide name unless logged in
+    if (!token) {
+      clearHeaderUserName();
+      return "";
+    }
+
+    let username = "";
+
+    try {
+      const stored = JSON.parse(localStorage.getItem("user") || "{}");
+      username = displayNameFromOwner(stored);
+    } catch {
+      /* ignore */
+    }
+
+    if (!username) {
+      username = toDisplayUsername(localStorage.getItem("loggedInUser"));
+    }
+
+    if (!username) {
+      try {
+        const claims = claimsFromJwt(token) || {};
+        // Never use claims.name (full name) or email-as-username
+        username = toDisplayUsername(
+          claims.username,
+          claims.preferred_username,
+          claims.user_name
+        );
+        const hostId =
+          claims.host_id ||
+          claims.home_owner_id ||
+          claims.homeowner_id ||
+          null;
+        if (hostId != null) {
+          localStorage.setItem("pmr_home_owner_id", String(hostId));
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+
+    // Drop polluted cache (email / full name left by older login code)
+    if (!username) {
+      try {
+        localStorage.removeItem("loggedInUser");
+      } catch {
+        /* ignore */
+      }
+      clearHeaderUserName();
+      return "";
+    }
+
+    updateUserName(username);
+    return username;
+  }
+
+  function getOverlayElement(overlayId) {
+    if (overlayId) {
+      return document.getElementById(overlayId);
+    }
+    return (
+      document.getElementById("sidebarOverlay") ||
+      document.getElementById("overlay")
+    );
+  }
+
+  function initSidebar(options = {}) {
+    const {
+      mobileOnly = false,
+      lockBodyScroll = false,
+      overlayId = null
+    } = options;
+
+    const sidebar = document.getElementById("sidebar");
+    const overlay = getOverlayElement(overlayId);
+    const openBtn = document.getElementById("openSidebar");
+    const closeBtn = document.getElementById("closeSidebar");
+
+    if (!sidebar) return;
+
+    function isMobile() {
+      return window.innerWidth < 768;
+    }
+
+    function openSidebarMenu() {
+      if (mobileOnly && !isMobile()) return;
+
+      sidebar.classList.remove("-translate-x-full");
+      if (overlay) overlay.classList.remove("hidden");
+      if (lockBodyScroll) {
+        document.body.classList.add("overflow-hidden");
+      }
+    }
+
+    function closeSidebarMenu() {
+      if (mobileOnly && !isMobile()) return;
+
+      sidebar.classList.add("-translate-x-full");
+      if (overlay) overlay.classList.add("hidden");
+      if (lockBodyScroll) {
+        document.body.classList.remove("overflow-hidden");
+      }
+    }
+
+    if (openBtn) {
+      openBtn.addEventListener("click", openSidebarMenu);
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeSidebarMenu);
+    }
+
+    if (overlay) {
+      overlay.addEventListener("click", closeSidebarMenu);
+    }
+
+    if (mobileOnly) {
+      window.addEventListener("resize", () => {
+        if (!isMobile()) {
+          sidebar.classList.remove("-translate-x-full");
+          if (overlay) overlay.classList.add("hidden");
+          document.body.classList.remove("overflow-hidden");
+        } else {
+          sidebar.classList.add("-translate-x-full");
+        }
+      });
+    }
+  }
+
+  async function initPortalPage(options = {}) {
+    await initHeaderUser();
+    initSidebar(options);
+  }
+
+  EGP.toDisplayUsername = toDisplayUsername;
+  EGP.updateUserName = updateUserName;
+  EGP.clearHeaderUserName = clearHeaderUserName;
+  EGP.clearAuthStorage = clearAuthStorage;
+  EGP.getSavedLoginEmail = getSavedLoginEmail;
+  EGP.getHomeOwnerId = getHomeOwnerId;
+  EGP.initHeaderUser = initHeaderUser;
+  EGP.initSidebar = initSidebar;
+  EGP.initPortalPage = initPortalPage;
+
+  window.EGP = EGP;
+
+  // Logout must clear localStorage — otherwise WordPress still shows the old name
+  document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("egpLogoutBtn");
+    if (!logoutBtn) return;
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      clearAuthStorage();
+      clearHeaderUserName();
+      window.location.href = "https://eventgarageparking.net/register/";
+    });
+  });
+})(window);
+
+</script>
 <script>
 const EVENTS_API = "https://eventgarageparking.online/api/events/";
 const GARAGES_API = "https://eventgarageparking.online/api/home-garages/";
+const OWNERS_API = "https://eventgarageparking.online/api/home-owners/";
 const RESERVATIONS_API = "https://eventgarageparking.online/api/reservations/";
-const HOME_OWNERS_API = "https://eventgarageparking.online/api/home-owners/";
-const FETCH_TIMEOUT_MS = 8000;
+const FETCH_TIMEOUT_MS = 25000;
 
 function getAuthHeaders() {
   const token = localStorage.getItem("pmr_token") || "";
   const headers = { Accept: "application/json" };
-  if (token) headers["X-Auth-Token"] = token;
+  // Same auth style as Booking / Earnings — some hosts need both headers
+  if (token) {
+    headers["X-Auth-Token"] = token;
+    headers["Authorization"] = "Bearer " + token;
+  }
   return { token, headers };
 }
 
@@ -427,34 +964,262 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.EGP && typeof EGP.initPortalPage === "function") {
     EGP.initPortalPage().catch((err) => console.error("Portal init error:", err));
   }
+  initListingActiveConfirmModal(); // LISTING_ACTIVE_TOGGLE
   loadListingPage();
 });
 
+function sameId(a, b) {
+  if (a == null || b == null || a === "" || b === "") return false;
+  return String(a).trim() === String(b).trim();
+}
+
+/** Pull a PK from a scalar or nested { host_id } / { garage_id } / { event_id } object. */
+function nestedRecordId(value, keys) {
+  if (value == null || value === "") return null;
+  if (typeof value === "object") {
+    for (const key of keys) {
+      if (value[key] != null && String(value[key]).trim() !== "") {
+        return String(value[key]).trim();
+      }
+    }
+    return null;
+  }
+  const s = String(value).trim();
+  return s === "" ? null : s;
+}
+
+/** Event PKs are positive integers — 0 / empty means "not linked". */
+function isUsableEventPk(value) {
+  if (value == null || value === "") return false;
+  const s = String(value).trim();
+  if (!/^\d+$/.test(s)) return false;
+  return Number(s) > 0;
+}
+
+function reservationHostId(row) {
+  if (!row || typeof row !== "object") return null;
+  if (typeof row.host === "number" && Number.isFinite(row.host) && row.host > 0) {
+    return String(row.host);
+  }
+  return (
+    hostIdOf(row) ||
+    nestedRecordId(row.host, ["host_id", "home_owner_id", "homeowner_id", "id"]) ||
+    nestedRecordId(row.home_owner, ["host_id", "home_owner_id", "id"]) ||
+    null
+  );
+}
+
+function reservationGarageId(row) {
+  if (!row || typeof row !== "object") return null;
+  if (typeof row.garage === "number" && Number.isFinite(row.garage) && row.garage > 0) {
+    return String(row.garage);
+  }
+  if (typeof row.garage_id === "number" && Number.isFinite(row.garage_id) && row.garage_id > 0) {
+    return String(row.garage_id);
+  }
+  return (
+    nestedRecordId(row.garage_id, ["garage_id", "id"]) ||
+    nestedRecordId(row.home_garage_id, ["garage_id", "id"]) ||
+    nestedRecordId(row.garage, ["garage_id", "home_garage_id", "id"]) ||
+    nestedRecordId(row.home_garage, ["garage_id", "id"]) ||
+    null
+  );
+}
+
+function reservationEventId(row) {
+  if (!row || typeof row !== "object") return null;
+  const candidates = [];
+  const fromField = nestedRecordId(row.event_id, ["event_id", "id"]);
+  if (fromField) candidates.push(fromField);
+  if (typeof row.event === "number" && Number.isFinite(row.event)) {
+    candidates.push(String(row.event));
+  }
+  if (typeof row.event === "string") {
+    const raw = row.event.trim();
+    if (raw) candidates.push(raw);
+    const fromUrl = raw.match(/\/events\/(\d+)\/?/);
+    if (fromUrl) candidates.push(fromUrl[1]);
+  }
+  const nested = nestedRecordId(row.event, ["event_id", "id"]);
+  if (nested) candidates.push(nested);
+  for (const c of candidates) {
+    if (isUsableEventPk(c)) return String(c).trim();
+  }
+  return null;
+}
+
+function catalogEventName(ev) {
+  if (!ev || typeof ev !== "object") return "";
+  return String(
+    ev.name ||
+      ev.event_name ||
+      ev.title ||
+      ev.event_title ||
+      ev.display_name ||
+      ev.label ||
+      ""
+  ).trim();
+}
+
+function reservationEventName(row) {
+  if (!row || typeof row !== "object") return "";
+  const nested = row.event && typeof row.event === "object" ? row.event : null;
+  const fromNested = catalogEventName(nested);
+  if (fromNested) return fromNested;
+  const fromRow = String(
+    row.event_name ||
+      row.event_title ||
+      row.event_label ||
+      row.Event ||
+      ""
+  ).trim();
+  if (fromRow && !/^\d+$/.test(fromRow) && !/\/events\//.test(fromRow)) {
+    return fromRow;
+  }
+  if (typeof row.event === "string") {
+    const raw = row.event.trim();
+    if (raw && !/^\d+$/.test(raw) && !/\/events\//.test(raw)) return raw;
+  }
+  return "";
+}
+
+function reservationEventVenue(row) {
+  if (!row || typeof row !== "object") return "";
+  const nested = row.event && typeof row.event === "object" ? row.event : null;
+  return String(
+    nested?.venue_name ||
+      nested?.venue ||
+      row.event_venue ||
+      row.venue_name ||
+      row.venue ||
+      ""
+  ).trim();
+}
+
+function garageTimeZone(garage) {
+  const direct = String(garage?.time_zone || garage?.timezone || "").trim();
+  if (direct) return direct;
+  const state = String(garage?.state || "").trim().toUpperCase();
+  if (["CA", "CALIFORNIA"].includes(state)) return "America/Los_Angeles";
+  if (["TX", "TEXAS"].includes(state)) return "America/Chicago";
+  if (["VA", "VIRGINIA"].includes(state)) return "America/New_York";
+  return "";
+}
+
+function garageForReservation(garages, r) {
+  const gid = reservationGarageId(r);
+  if (gid != null) {
+    const match = (garages || []).find((g) => String(garageIdOf(g)) === String(gid));
+    if (match) return match;
+  }
+  return (garages || []).length === 1 ? garages[0] : null;
+}
+
+/** Card payload from reservation/event API fields only — no placeholder titles. */
+function eventFromReservation(r, garage) {
+  if (!r || typeof r !== "object") return null;
+  const nested = r.event && typeof r.event === "object" ? r.event : null;
+  const key = reservationEventKey(r);
+  if (key == null) return null;
+  const name = reservationEventName(r);
+  const venue = reservationEventVenue(r);
+  const tz =
+    String(
+      nested?.time_zone ||
+        nested?.timezone ||
+        r.time_zone ||
+        r.timezone ||
+        garageTimeZone(garage) ||
+        ""
+    ).trim();
+  const date =
+    nested?.date ||
+    r.event_date ||
+    r.event_start ||
+    r.event_datetime ||
+    r.starts_at ||
+    "";
+  if (!name && !venue && !date && !nested?.event_start_local_date) return null;
+  const rec = {
+    ...(nested || {}),
+    event_id: key,
+    reservation_id: r.reservation_id != null ? r.reservation_id : r.id,
+    venue_name: venue || nested?.venue_name || "",
+    event_start_local_date:
+      nested?.event_start_local_date || r.event_start_local_date || "",
+    event_start_local_time:
+      nested?.event_start_local_time || r.event_start_local_time || "",
+    event_start_local_at:
+      nested?.event_start_local_at || r.event_start_local_at || "",
+    date,
+    time_zone: tz,
+    stadium_id: nested?.stadium_id ?? r.stadium_id,
+    venue_id: nested?.venue_id ?? r.venue_id,
+    is_active: nested?.is_active !== false,
+  };
+  if (name) rec.name = name;
+  else if (catalogEventName(rec)) rec.name = catalogEventName(rec);
+  else delete rec.name;
+  return rec;
+}
+
+/** Event PK, or res-{reservation_id} so garage bookings still group without a catalog id. */
+function reservationEventKey(row) {
+  const eid = reservationEventId(row);
+  if (eid) return String(eid);
+  const rid = row?.reservation_id != null ? row.reservation_id : row?.id;
+  if (rid != null && /^\d+$/.test(String(rid)) && Number(rid) > 0) {
+    return `res-${String(rid).trim()}`;
+  }
+  return null;
+}
+
+/** HomeOwner PK is host_id — never fall back to generic `.id` (Django user id). */
+function hostIdOf(obj) {
+  if (!obj || typeof obj !== "object") return null;
+  const nestedHost =
+    obj.host && typeof obj.host === "object"
+      ? obj.host.host_id ?? obj.host.id
+      : null;
+  const id =
+    obj.host_id ??
+    obj.home_owner_id ??
+    obj.homeowner_id ??
+    nestedHost ??
+    null;
+  if (id == null || String(id).trim() === "") return null;
+  return String(id).trim();
+}
+
 function getHomeOwnerId(token) {
-  const saved = localStorage.getItem("pmr_home_owner_id");
-  if (saved) return String(saved);
   try {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    const id =
-      user?.host_id ||
-      user?.home_owner_id ||
-      user?.homeowner_id ||
-      user?.id ||
-      null;
-    if (id != null) return String(id);
+    const part = String(token || "").split(".")[1];
+    if (part) {
+      const claims = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/")));
+      const fromClaims = hostIdOf(claims);
+      if (fromClaims) return fromClaims;
+    }
   } catch {
     /* ignore */
   }
+  const saved = localStorage.getItem("pmr_home_owner_id");
+  if (saved && String(saved).trim() !== "") return String(saved).trim();
   try {
-    const part = String(token || "").split(".")[1];
-    if (!part) return null;
-    const claims = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/")));
-    const id =
-      claims.host_id || claims.home_owner_id || claims.homeowner_id || null;
-    return id != null ? String(id) : null;
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const id = hostIdOf(user);
+    if (id) return id;
   } catch {
-    return null;
+    /* ignore */
   }
+  return null;
+}
+
+function unwrapRecord(payload) {
+  if (!payload || typeof payload !== "object") return null;
+  if (payload.data && typeof payload.data === "object" && !Array.isArray(payload.data)) {
+    return unwrapRecord(payload.data);
+  }
+  return payload;
 }
 
 function listFromResponse(data) {
@@ -474,6 +1239,37 @@ async function fetchWithTimeout(url, options = {}) {
   }
 }
 
+/** Try both portal auth header styles so reservation GETs don't silently 403. */
+async function authGet(url, headers) {
+  const token = localStorage.getItem("pmr_token") || "";
+  const attempts = [];
+  const add = (h) => {
+    if (!h) return;
+    const key = JSON.stringify(h);
+    if (!attempts.some((x) => JSON.stringify(x) === key)) attempts.push(h);
+  };
+  add(headers);
+  if (token) {
+    add({
+      Accept: "application/json",
+      "X-Auth-Token": token,
+      Authorization: "Bearer " + token,
+    });
+    add({ Accept: "application/json", "X-Auth-Token": token });
+    add({ Accept: "application/json", Authorization: "Bearer " + token });
+  }
+  for (const h of attempts) {
+    try {
+      const res = await fetchWithTimeout(url, { method: "GET", headers: h });
+      if (res.status === 401 || res.status === 403) continue;
+      return res;
+    } catch {
+      /* try next auth style */
+    }
+  }
+  return null;
+}
+
 function formatMoney(value) {
   const num = Number(value);
   if (!Number.isFinite(num)) return "$0.00";
@@ -488,263 +1284,851 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;");
 }
 
-function eventStartDate(ev) {
-  const raw =
-    ev?.event_start_local_at ||
-    ev?.date ||
-    (ev?.event_start_local_date
-      ? `${ev.event_start_local_date}T${ev.event_start_local_time || "00:00:00"}`
-      : null);
-  if (!raw) return null;
-  const d = new Date(raw);
-  return Number.isNaN(d.getTime()) ? null : d;
+function normalizeLocalTime(time) {
+  const raw = String(time || "").trim();
+  if (!raw) return "00:00:00";
+  const ampm = raw.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i);
+  if (ampm) {
+    let h = parseInt(ampm[1], 10);
+    const mer = ampm[4].toUpperCase();
+    if (mer === "PM" && h < 12) h += 12;
+    if (mer === "AM" && h === 12) h = 0;
+    return `${String(h).padStart(2, "0")}:${ampm[2]}:${ampm[3] || "00"}`;
+  }
+  if (/^\d{1,2}:\d{2}:\d{2}/.test(raw)) {
+    const p = raw.split(":");
+    return `${String(p[0]).padStart(2, "0")}:${p[1]}:${p[2].slice(0, 2)}`;
+  }
+  if (/^\d{1,2}:\d{2}$/.test(raw)) {
+    const p = raw.split(":");
+    return `${String(p[0]).padStart(2, "0")}:${p[1]}:00`;
+  }
+  return "00:00:00";
 }
 
-function formatEventWhen(ev) {
-  const d = eventStartDate(ev);
-  if (!d) {
-    if (ev?.event_start_local_date) {
-      return `${ev.event_start_local_date}${
-        ev.event_start_local_time ? ` • ${ev.event_start_local_time}` : ""
-      }`;
-    }
-    return "Date TBD";
+/** Parse YYYY-MM-DD[ T]HH:MM[:SS] as wall-clock (ignore a trailing Z). */
+function parseWallClockMs(iso) {
+  if (iso == null) return NaN;
+  const raw = String(iso).trim();
+  if (!raw) return NaN;
+  const m = raw.match(
+    /^(\d{4})-(\d{2})-(\d{2})(?:[T\s](\d{1,2}):(\d{2})(?::(\d{2}))?)?/
+  );
+  if (m) {
+    return new Date(
+      +m[1],
+      +m[2] - 1,
+      +m[3],
+      +(m[4] || 0),
+      +(m[5] || 0),
+      +(m[6] || 0)
+    ).getTime();
   }
-  const datePart = d.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
-  });
-  const timePart = d.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  });
-  return `${datePart} • ${timePart}`;
+  const d = new Date(raw);
+  return d.getTime();
+}
+
+function eventLocalDateParts(ev) {
+  if (!ev || typeof ev !== "object") return null;
+  const localDate = String(ev.event_start_local_date || "").trim();
+  const dateMatch = localDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!dateMatch) return null;
+  const hasTime = String(ev.event_start_local_time || "").trim() !== "";
+  const t = normalizeLocalTime(ev.event_start_local_time);
+  const tp = t.split(":").map(Number);
+  return {
+    year: +dateMatch[1],
+    month: +dateMatch[2],
+    day: +dateMatch[3],
+    hour: tp[0] || 0,
+    minute: tp[1] || 0,
+    second: tp[2] || 0,
+    hasTime,
+    timeStr: t,
+    dateStr: `${dateMatch[1]}-${dateMatch[2]}-${dateMatch[3]}`,
+  };
+}
+
+function parseEventLocalMs(ev) {
+  const parts = eventLocalDateParts(ev);
+  if (parts) {
+    return new Date(
+      parts.year,
+      parts.month - 1,
+      parts.day,
+      parts.hour,
+      parts.minute,
+      parts.second
+    ).getTime();
+  }
+  const fromLocalAt = parseWallClockMs(
+    ev?.event_start_local_at || ev?.event_start_time || ""
+  );
+  if (Number.isFinite(fromLocalAt) && fromLocalAt > 0) return fromLocalAt;
+  return NaN;
+}
+
+/**
+ * Convert Ticketmaster wall-clock + IANA zone to a UTC instant.
+ * event_start_local_at is naive (often serialized with a fake Z) — do not trust it.
+ */
+function zonedWallClockToUtcMs(dateStr, timeStr, timeZone) {
+  if (!dateStr || !timeZone) return NaN;
+  const t = normalizeLocalTime(timeStr);
+  const [y, mo, d] = String(dateStr).split("-").map(Number);
+  const [hh, mm, ss] = t.split(":").map(Number);
+  if (![y, mo, d].every((n) => Number.isFinite(n))) return NaN;
+  const utcGuess = Date.UTC(y, mo - 1, d, hh || 0, mm || 0, ss || 0);
+  try {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hourCycle: "h23",
+    }).formatToParts(new Date(utcGuess));
+    const get = (type) => Number(parts.find((p) => p.type === type)?.value);
+    let hour = get("hour");
+    if (hour === 24) hour = 0;
+    const asUTC = Date.UTC(
+      get("year"),
+      get("month") - 1,
+      get("day"),
+      hour,
+      get("minute"),
+      get("second")
+    );
+    if (![asUTC, utcGuess].every((n) => Number.isFinite(n))) return NaN;
+    return utcGuess + (utcGuess - asUTC);
+  } catch {
+    return NaN;
+  }
+}
+
+function eventTimeZone(ev) {
+  return String(ev?.time_zone || ev?.timezone || "").trim();
+}
+
+/** True start instant for upcoming/completed — local Ticketmaster start, not UTC `date`. */
+function eventStartDate(ev) {
+  const parts = eventLocalDateParts(ev);
+  if (parts) {
+    const tz = eventTimeZone(ev);
+    if (tz) {
+      const zoned = zonedWallClockToUtcMs(parts.dateStr, parts.timeStr, tz);
+      if (Number.isFinite(zoned) && zoned > 0) return new Date(zoned);
+    }
+    const localMs = parseEventLocalMs(ev);
+    if (Number.isFinite(localMs) && localMs > 0) return new Date(localMs);
+  }
+  if (ev?.date) {
+    const utc = new Date(ev.date);
+    if (!Number.isNaN(utc.getTime())) return utc;
+  }
+  const localMs = parseEventLocalMs(ev);
+  if (Number.isFinite(localMs) && localMs > 0) return new Date(localMs);
+  return null;
+}
+
+/** Display Event Start from local date/time fields — never shift with UTC `date`. */
+function formatEventWhen(ev) {
+  const parts = eventLocalDateParts(ev);
+  if (parts) {
+    const datePart = new Date(parts.year, parts.month - 1, parts.day).toLocaleDateString(
+      "en-US",
+      {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }
+    );
+    if (!parts.hasTime) return datePart;
+    const timePart = new Date(
+      2000,
+      0,
+      1,
+      parts.hour,
+      parts.minute
+    ).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+    return `${datePart} • ${timePart}`;
+  }
+
+  const fromLocalAt = parseWallClockMs(
+    ev?.event_start_local_at || ev?.event_start_time || ""
+  );
+  if (Number.isFinite(fromLocalAt) && fromLocalAt > 0) {
+    const d = new Date(fromLocalAt);
+    return (
+      d.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }) +
+      " • " +
+      d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })
+    );
+  }
+
+  if (ev?.date) {
+    const d = new Date(ev.date);
+    if (!Number.isNaN(d.getTime())) {
+      const tz = eventTimeZone(ev);
+      const opts = {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      };
+      if (tz) opts.timeZone = tz;
+      return d.toLocaleString("en-US", opts);
+    }
+  }
+
+  return "";
 }
 
 function garageListFromResponse(data) {
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.home_garages)) return data.home_garages;
-  if (Array.isArray(data?.garages)) return data.garages;
-  if (Array.isArray(data?.results)) return data.results;
+  if (Array.isArray(data)) return data.filter(Boolean);
+  if (Array.isArray(data?.home_garages)) return data.home_garages.filter(Boolean);
+  if (Array.isArray(data?.garages)) return data.garages.filter(Boolean);
+  if (Array.isArray(data?.results)) return data.results.filter(Boolean);
+  if (data && typeof data === "object") {
+    const one = unwrapRecord(data);
+    if (one && one.garage_id != null) return [one];
+  }
   return [];
 }
 
-async function fetchHostGarages(headers) {
-  const res = await fetchWithTimeout(GARAGES_API, {
-    method: "GET",
-    headers,
-  });
-  if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    throw new Error(
-      `Garages failed (${res.status})${body ? ": " + body.slice(0, 120) : ""}`
-    );
-  }
-  return garageListFromResponse(await res.json());
+function garageIdOf(g) {
+  if (!g || typeof g !== "object") return null;
+  const id = g.garage_id ?? g.home_garage_id ?? null;
+  return id != null && String(id).trim() !== "" ? String(id).trim() : null;
 }
 
-async function pullEventPages(baseUrl, collected, seen) {
-  let page = 1;
-  let guard = 0;
-  while (guard < 5) {
-    guard += 1;
-    const url = `${baseUrl}${baseUrl.includes("?") ? "&" : "?"}page=${page}&page_size=50`;
-    const res = await fetchWithTimeout(url, {
-      method: "GET",
-      headers: { Accept: "application/json" },
-    });
-    if (!res.ok) break;
-    const data = await res.json();
-    const batch = listFromResponse(data);
-    for (const ev of batch) {
-      const id = ev?.event_id;
-      if (id == null || seen.has(id)) continue;
-      seen.add(id);
-      collected.push(ev);
-    }
-    if (!data?.next || !batch.length) break;
-    page += 1;
+function dedupeGaragesById(garages) {
+  const seen = new Set();
+  const out = [];
+  for (const g of garages || []) {
+    if (!g || typeof g !== "object") continue;
+    const id = garageIdOf(g);
+    const key = id || `row-${out.length}-${JSON.stringify(g).slice(0, 80)}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(g);
   }
+  return out;
 }
 
-async function fetchEventsForHost(garages, reservations) {
-  const stadiumIds = new Set(
-    garages.map((g) => g.stadium_id).filter((id) => id != null && id !== "")
+function filterOwnedGarages(garages, hostId) {
+  if (!hostId) return [];
+  return dedupeGaragesById(
+    (garages || []).filter(
+      (g) => g && sameId(hostIdOf(g), hostId) && garageIdOf(g)
+    )
   );
-  const venueIds = new Set(
-    garages.map((g) => g.venue_id).filter((id) => id != null && id !== "")
-  );
-  const cities = [
-    ...new Set(
-      garages.map((g) => String(g.city || "").trim()).filter(Boolean)
-    ),
-  ];
-  const states = [
-    ...new Set(
-      garages
-        .map((g) => String(g.state || "").trim().toUpperCase())
-        .filter((s) => s.length >= 2)
-    ),
-  ];
+}
 
+async function fetchJsonList(url, headers) {
   const collected = [];
   const seen = new Set();
-
-  if (states.length) {
-    for (const state of states) {
-      const code = state.length === 2 ? state : state.slice(0, 2);
-      await pullEventPages(
-        `${EVENTS_API}?stateCode=${encodeURIComponent(code)}`,
-        collected,
-        seen
+  let next = url;
+  let pages = 0;
+  while (next && pages < 15) {
+    pages += 1;
+    const res = await authGet(next, headers);
+    if (!res || !res.ok) {
+      const body = res ? await res.text().catch(() => "") : "";
+      throw new Error(
+        `Request failed (${res ? res.status : 0})${body ? ": " + body.slice(0, 120) : ""}`
       );
     }
-  }
-  if (cities.length) {
-    for (const city of cities) {
-      await pullEventPages(
-        `${EVENTS_API}?city=${encodeURIComponent(city)}`,
-        collected,
-        seen
-      );
+    const data = await res.json();
+    const rows = garageListFromResponse(data);
+    for (const row of rows) {
+      const key = garageIdOf(row) || JSON.stringify(row);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      collected.push(row);
     }
+    next =
+      data && typeof data === "object" && typeof data.next === "string"
+        ? data.next
+        : "";
+    if (Array.isArray(data) || !next) break;
   }
-  if (!collected.length) {
-    await pullEventPages(EVENTS_API, collected, seen);
-  }
-
-  // Pull events already tied via this host's reservations
-  const reservedEventIds = [
-    ...new Set(
-      (reservations || [])
-        .map((r) => r?.event_id)
-        .filter((id) => id != null && id !== "")
-    ),
-  ];
-  for (const eid of reservedEventIds.slice(0, 20)) {
-    if (seen.has(eid)) continue;
-    try {
-      const res = await fetchWithTimeout(`${EVENTS_API}${eid}/`, {
-        method: "GET",
-        headers: { Accept: "application/json" },
-      });
-      if (!res.ok) continue;
-      const ev = await res.json();
-      if (ev?.event_id != null) {
-        seen.add(ev.event_id);
-        collected.push(ev);
-      }
-    } catch {
-      /* ignore */
-    }
-  }
-
-  const hasStadiumOrVenue = stadiumIds.size > 0 || venueIds.size > 0;
-
-  return collected.filter((ev) => {
-    const sid = ev?.stadium_id;
-    const vid = ev?.venue_id;
-    if (sid != null && stadiumIds.has(sid)) return true;
-    if (vid != null && venueIds.has(vid)) return true;
-    if (reservedEventIds.some((id) => String(id) === String(ev?.event_id))) {
-      return true;
-    }
-    // If garage has no stadium/venue link, associate by city keyword in venue_name
-    if (!hasStadiumOrVenue && cities.length) {
-      const hay = `${ev?.venue_name || ""} ${ev?.name || ""}`.toLowerCase();
-      return cities.some((c) => hay.includes(String(c).toLowerCase()));
-    }
-    return false;
-  });
+  return collected;
 }
 
-async function fetchOwnerName(headers, hostId) {
-  // local cache first
-  let name = getOwnerDisplayName();
-  if (name && name !== "Homeowner") {
-    // still refresh from API when possible
+/**
+ * GET /api/home-garages/ without stadium/venue params returns this
+ * authenticated homeowner's garages (or all garages for DJ admin).
+ * Always filter + dedupe by host_id so leaked/admin rows never render.
+ */
+async function fetchHostGarages(headers, hostId) {
+  if (!hostId) return [];
+
+  let rows = [];
+  try {
+    rows = await fetchJsonList(GARAGES_API, headers);
+  } catch (err) {
+    console.warn("GET /api/home-garages/ failed:", err);
   }
 
-  if (!hostId) return name || "";
+  let mine = filterOwnedGarages(rows, hostId);
 
-  try {
-    const res = await fetchWithTimeout(`${HOME_OWNERS_API}${hostId}/`, {
+  if (!mine.length) {
+    try {
+      const filtered = await fetchJsonList(
+        `${GARAGES_API}?host_id=${encodeURIComponent(hostId)}`,
+        headers
+      );
+      mine = filterOwnedGarages(filtered, hostId);
+    } catch (err) {
+      console.warn("GET /api/home-garages/?host_id= failed:", err);
+    }
+  }
+
+  return mine;
+}
+
+async function resolveLoggedInOwner(headers, token) {
+  let hostId = getHomeOwnerId(token);
+  let owner = null;
+
+  function loginEmail() {
+    try {
+      return String(
+        localStorage.getItem("pmr_login_email") ||
+          JSON.parse(localStorage.getItem("user") || "{}")?.email ||
+          ""
+      )
+        .toLowerCase()
+        .trim();
+    } catch {
+      return "";
+    }
+  }
+
+  function ownerMatchesLogin(record) {
+    if (!record) return false;
+    const email = loginEmail();
+    if (!email) return true;
+    const ownerEmail = String(record.email || "").toLowerCase().trim();
+    if (!ownerEmail) return true;
+    return ownerEmail === email;
+  }
+
+  async function loadOwner(id) {
+    if (!id) return null;
+    const res = await fetchWithTimeout(`${OWNERS_API}${id}/`, {
       method: "GET",
       headers,
     });
-    if (!res.ok) return name || "";
-    const owner = await res.json();
-    const full = [owner.first_name, owner.last_name]
-      .filter(Boolean)
-      .join(" ")
-      .trim();
-    const resolved =
-      full ||
-      String(owner.username || "").trim() ||
-      String(owner.email || "").split("@")[0] ||
-      name ||
-      "";
-    if (resolved) {
-      let prev = {};
-      try {
-        prev = JSON.parse(localStorage.getItem("user") || "{}") || {};
-      } catch {
-        prev = {};
-      }
-      localStorage.setItem("user", JSON.stringify({ ...prev, ...owner }));
-      localStorage.setItem("loggedInUser", resolved);
-    }
-    return resolved;
-  } catch {
-    return name || "";
+    if (!res.ok) return null;
+    const record = unwrapRecord(await res.json());
+    if (!ownerMatchesLogin(record)) return null;
+    return record;
   }
+
+  if (hostId) {
+    owner = await loadOwner(hostId);
+  }
+
+  if (!owner) {
+    try {
+      const listRes = await fetchWithTimeout(OWNERS_API, {
+        method: "GET",
+        headers,
+      });
+      if (listRes.ok) {
+        const listData = await listRes.json();
+        const owners = listFromResponse(listData);
+        const email = loginEmail();
+        if (email) {
+          owner =
+            owners.find(
+              (o) => String(o?.email || "").toLowerCase().trim() === email
+            ) || null;
+        }
+      }
+    } catch (err) {
+      console.warn("GET /api/home-owners/ failed:", err);
+    }
+  }
+
+  const confirmed = hostIdOf(owner) || hostId;
+  if (confirmed) {
+    localStorage.setItem("pmr_home_owner_id", String(confirmed));
+    if (owner) {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...owner, host_id: confirmed })
+      );
+      const uname = String(owner.username || owner.Username || "").trim();
+      if (uname && !uname.includes("@") && !/\s/.test(uname)) {
+        localStorage.setItem("loggedInUser", uname);
+      }
+    }
+  }
+  return { hostId: confirmed || null, owner };
+}
+
+function numericPlaceId(value) {
+  if (value == null || value === "") return null;
+  if (typeof value === "object") {
+    return numericPlaceId(value.stadium_id ?? value.venue_id ?? null);
+  }
+  const s = String(value).trim();
+  if (!/^\d+$/.test(s) || s === "0") return null;
+  return s;
+}
+
+function garagePlaceIds(g) {
+  const ids = new Set();
+  const stadiumId = numericPlaceId(g?.stadium_id ?? g?.stadium);
+  const venueId = numericPlaceId(g?.venue_id ?? g?.venue);
+  if (stadiumId) ids.add(`s:${stadiumId}`);
+  if (venueId) ids.add(`v:${venueId}`);
+  return ids;
+}
+
+function eventPlaceIds(ev) {
+  const ids = new Set();
+  const stadiumId = numericPlaceId(ev?.stadium_id ?? ev?.stadium);
+  const venueId = numericPlaceId(ev?.venue_id ?? ev?.venue);
+  if (stadiumId) ids.add(`s:${stadiumId}`);
+  if (venueId) ids.add(`v:${venueId}`);
+  return ids;
+}
+
+/** Garage ↔ event via stadium_id / venue_id only — not event-name matching. */
+function eventMatchesHostGarages(ev, garages) {
+  if (!ev || !Array.isArray(garages) || !garages.length) return false;
+  const eventIds = eventPlaceIds(ev);
+  if (!eventIds.size) return false;
+  for (const g of garages) {
+    for (const id of garagePlaceIds(g)) {
+      if (eventIds.has(id)) return true;
+    }
+  }
+  return false;
+}
+
+function normalizeEventRecord(ev) {
+  if (!ev || typeof ev !== "object") return null;
+  const id = ev.event_id != null ? ev.event_id : ev.id;
+  if (!isUsableEventPk(id)) return null;
+  const rec = ev.event_id != null ? { ...ev } : { ...ev, event_id: id };
+  const name = catalogEventName(rec);
+  if (name) rec.name = name;
+  return rec;
+}
+
+async function fetchEventFromUrl(url, headers, wantId) {
+  let res = await authGet(url, headers);
+  if (!res || !res.ok) {
+    try {
+      res = await fetchWithTimeout(url, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
+    } catch {
+      return null;
+    }
+  }
+  if (!res || !res.ok) return null;
+  try {
+    const payload = unwrapRecord(await res.json());
+    const rows = listFromResponse(payload);
+    const list = rows.length ? rows : payload ? [payload] : [];
+    for (const row of list) {
+      const rec = normalizeEventRecord(row);
+      if (!rec) continue;
+      if (wantId && String(rec.event_id) !== String(wantId)) continue;
+      return rec;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+async function fetchEventRecord(eid, headers) {
+  if (!isUsableEventPk(eid)) return null;
+  const id = String(eid).trim();
+  const urls = [
+    `${EVENTS_API}${encodeURIComponent(id)}/`,
+    `${EVENTS_API}${encodeURIComponent(id)}`,
+    `${EVENTS_API}?event_id=${encodeURIComponent(id)}`,
+    `${EVENTS_API}?id=${encodeURIComponent(id)}`,
+  ];
+  for (const url of urls) {
+    const rec = await fetchEventFromUrl(url, headers, id);
+    if (rec && catalogEventName(rec)) return rec;
+    if (rec) return rec;
+  }
+  return null;
+}
+
+async function fetchReservedEventsById(eventIds, alreadyHave, headers) {
+  const missing = (eventIds || []).filter(
+    (id) => isUsableEventPk(id) && !alreadyHave.has(String(id))
+  );
+  if (!missing.length) return [];
+
+  const extras = [];
+  const chunkSize = 20;
+  for (let i = 0; i < missing.length; i += chunkSize) {
+    const chunk = missing.slice(i, i + chunkSize);
+    const batch = await Promise.all(
+      chunk.map((eid) => fetchEventRecord(eid, headers))
+    );
+    extras.push(...batch.filter(Boolean));
+  }
+  return extras;
+}
+
+/** Prefer list-row Event ids over a detail payload that sends event_id: null. */
+function mergeReservationRecord(listRow, detail) {
+  const merged = { ...(listRow || {}), ...(detail || {}) };
+  const keepKeys = [
+    "event_id",
+    "event",
+    "event_name",
+    "event_title",
+    "base_price",
+  ];
+  for (const key of keepKeys) {
+    const fromList = listRow?.[key];
+    const fromDetail = detail?.[key];
+    const listHas =
+      fromList != null && fromList !== "" && !(key === "event_id" && !isUsableEventPk(fromList));
+    const detailHas =
+      fromDetail != null &&
+      fromDetail !== "" &&
+      !(key === "event_id" && !isUsableEventPk(fromDetail));
+    if (listHas && !detailHas) merged[key] = fromList;
+  }
+  if (!reservationEventId(merged) && reservationEventId(listRow)) {
+    merged.event_id = listRow.event_id;
+    if (listRow.event != null) merged.event = listRow.event;
+  }
+  return merged;
+}
+
+/** List payloads are often IDs-only. Detail rows include Event and base_price. */
+async function hydrateReservationsWithEventDetails(reservations, headers) {
+  const rows = (reservations || []).slice();
+  await Promise.all(
+    rows.map(async (row, i) => {
+      const rid = row.reservation_id != null ? row.reservation_id : row.id;
+      if (rid == null || !/^\d+$/.test(String(rid)) || Number(rid) <= 0) return;
+      try {
+        const res = await authGet(
+          `${RESERVATIONS_API}${encodeURIComponent(String(rid).trim())}/`,
+          headers
+        );
+        if (!res || !res.ok) return;
+        const detail = unwrapRecord(await res.json());
+        if (!detail || typeof detail !== "object") return;
+        rows[i] = mergeReservationRecord(row, detail);
+      } catch {
+        /* keep the list row */
+      }
+    })
+  );
+  return rows;
+}
+
+function dedupeEventsById(events) {
+  const byId = new Map();
+  for (const ev of events || []) {
+    if (!ev || ev.event_id == null || String(ev.event_id).trim() === "") continue;
+    const key = String(ev.event_id);
+    if (byId.has(key)) continue;
+    if (key.startsWith("res-")) {
+      byId.set(key, ev);
+      continue;
+    }
+    const rec = normalizeEventRecord(ev);
+    if (!rec) continue;
+    byId.set(String(rec.event_id), rec);
+  }
+  return [...byId.values()];
+}
+
+/**
+ * Listing events come from this homeowner's reservations — the same IDs the
+ * frontend booking flow writes (event_id + garage_id). Garage already has
+ * stadium_id, so we do not guess events by matching names to stadiums.
+ */
+async function fetchEventsForHost(garages, reservations, headers) {
+  const byId = new Map();
+  const reservedEventIds = [];
+  const seenEid = new Set();
+
+  for (const r of reservations || []) {
+    const nested =
+      r?.event && typeof r.event === "object"
+        ? normalizeEventRecord(r.event)
+        : null;
+    if (nested && catalogEventName(nested)) {
+      const key = String(nested.event_id);
+      if (!byId.has(key) || !catalogEventName(byId.get(key))) {
+        byId.set(key, nested);
+      }
+    }
+    const eid = reservationEventId(r);
+    if (!isUsableEventPk(eid)) continue;
+    const key = String(eid);
+    if (seenEid.has(key)) continue;
+    seenEid.add(key);
+    reservedEventIds.push(eid);
+  }
+
+  const extras = await fetchReservedEventsById(reservedEventIds, byId, headers);
+  for (const ev of extras) {
+    byId.set(String(ev.event_id), ev);
+  }
+
+  for (const r of reservations || []) {
+    const eid = reservationEventId(r);
+    if (eid && byId.has(String(eid))) {
+      const existing = byId.get(String(eid));
+      if (existing && !catalogEventName(existing)) {
+        const n = reservationEventName(r);
+        if (n) byId.set(String(eid), { ...existing, name: n });
+      }
+      continue;
+    }
+    const key = reservationEventKey(r);
+    if (!key || byId.has(String(key))) continue;
+    const syn = eventFromReservation(r, garageForReservation(garages, r));
+    if (!syn) continue;
+    byId.set(String(syn.event_id), syn);
+  }
+
+  return dedupeEventsById([...byId.values()]);
 }
 
 function setHeaderUserName(name) {
-  if (!name) return;
+  if (!localStorage.getItem("pmr_token")) return;
   if (typeof EGP !== "undefined" && EGP.updateUserName) {
     EGP.updateUserName(name);
     return;
   }
+  const clean = String(name || "").trim();
+  if (!clean || clean.includes("@") || /\s/.test(clean)) return;
   const desktop = document.getElementById("loggedInUserDesktop");
   const mobile = document.getElementById("loggedInUserMobile");
   const desktopDivider = document.getElementById("desktopUserDivider");
   const mobileDivider = document.getElementById("mobileUserDivider");
   if (desktop) {
-    desktop.textContent = name;
+    desktop.textContent = clean;
     desktop.classList.remove("hidden");
   }
   if (mobile) {
-    mobile.textContent = name;
+    mobile.textContent = clean;
     mobile.classList.remove("hidden");
   }
   if (desktopDivider) desktopDivider.classList.remove("hidden");
   if (mobileDivider) mobileDivider.classList.remove("hidden");
+  localStorage.setItem("loggedInUser", clean);
 }
 
-async function fetchHostReservations(headers, hostId) {
+async function fetchOwnerName(headers, hostId) {
+  if (!hostId || !headers) return "";
+
   try {
-    const res = await fetchWithTimeout(RESERVATIONS_API, {
-      method: "GET",
-      headers,
-    });
-    if (!res.ok) return [];
-    return listFromResponse(await res.json()).filter(
-      (r) => r && String(r.host_id) === String(hostId)
+    const res = await fetchWithTimeout(
+      `https://eventgarageparking.online/api/home-owners/${hostId}/`,
+      { method: "GET", headers }
     );
+    if (!res.ok) return "";
+
+    const json = await res.json();
+    const owner =
+      json?.data && typeof json.data === "object" ? json.data : json;
+
+    const username =
+      typeof EGP !== "undefined" && EGP.toDisplayUsername
+        ? EGP.toDisplayUsername(owner?.username, owner?.Username)
+        : String(owner?.username || owner?.Username || "").trim();
+
+    if (!username || username.includes("@") || /\s/.test(username)) {
+      return "";
+    }
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ ...(owner || {}), host_id: hostId })
+    );
+    localStorage.setItem("loggedInUser", username);
+    localStorage.setItem("pmr_home_owner_id", String(hostId));
+    return username;
   } catch {
-    return [];
+    return "";
   }
 }
 
+async function fetchJsonPages(startUrl, headers, maxPages = 25) {
+  const collected = [];
+  const seen = new Set();
+  let url = startUrl;
+  let pages = 0;
+  while (url && pages < maxPages) {
+    pages += 1;
+    const res = await authGet(url, headers);
+    if (!res || !res.ok) break;
+    const data = await res.json();
+    const rows = listFromResponse(data);
+    for (const row of rows) {
+      if (!row) continue;
+      const rid =
+        row.reservation_id ??
+        `row-${collected.length}-${JSON.stringify(row).slice(0, 80)}`;
+      const key = String(rid);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      collected.push(row);
+    }
+    url =
+      data && typeof data === "object" && typeof data.next === "string"
+        ? data.next
+        : "";
+    if (Array.isArray(data) && !url) break;
+  }
+  return collected;
+}
+
+/**
+ * A reservation belongs to this homeowner only when host_id matches.
+ * If host_id is missing, fall back to one of their garage ids.
+ * Never keep another host's row just because it shares a venue.
+ */
+function reservationBelongsToHost(row, hostId, ownedGarages) {
+  if (!row || !hostId) return false;
+  const owned = ownedGarages instanceof Set ? ownedGarages : new Set(ownedGarages || []);
+  const rowGarage = reservationGarageId(row);
+  if (rowGarage && owned.size && owned.has(String(rowGarage))) return true;
+  const rowHost = reservationHostId(row);
+  return !!(rowHost && sameId(rowHost, hostId));
+}
+
+/**
+ * Cross-reference this homeowner with backend reservations:
+ * garage nested list + host_id query + global list, then keep only their rows.
+ */
+async function fetchHostReservations(headers, hostId, garageIds) {
+  if (!hostId) return [];
+  const ownedGarages =
+    garageIds instanceof Set ? garageIds : new Set(garageIds || []);
+  const collected = [];
+  const seen = new Set();
+
+  function addRows(rows) {
+    for (const row of rows || []) {
+      if (!row) continue;
+      const rid = row.reservation_id ?? JSON.stringify(row);
+      if (seen.has(String(rid))) continue;
+      if (!reservationBelongsToHost(row, hostId, ownedGarages)) continue;
+      seen.add(String(rid));
+      collected.push(row);
+    }
+  }
+
+  const garageList = [...ownedGarages];
+  if (garageList.length) {
+    const batches = await Promise.all(
+      garageList.map((gid) =>
+        fetchJsonPages(
+          `${GARAGES_API}${encodeURIComponent(gid)}/reservations/`,
+          headers
+        ).catch(() => [])
+      )
+    );
+    for (const rows of batches) addRows(rows);
+  }
+
+  const extraSources = [
+    `${RESERVATIONS_API}?host_id=${encodeURIComponent(hostId)}`,
+    ...garageList.map(
+      (gid) => `${RESERVATIONS_API}?garage_id=${encodeURIComponent(gid)}`
+    ),
+    RESERVATIONS_API,
+  ];
+  for (const startUrl of extraSources) {
+    addRows(await fetchJsonPages(startUrl, headers, 40).catch(() => []));
+  }
+  return collected;
+}
+
 function pickHostGarage(garages, ev) {
+  const list = garages || [];
   return (
-    garages.find((g) => g.stadium_id != null && g.stadium_id === ev.stadium_id) ||
-    garages.find((g) => g.venue_id != null && g.venue_id === ev.venue_id) ||
-    garages[0] ||
-    null
+    list.find((g) => eventMatchesHostGarages(ev, [g])) ||
+    (list.length === 1 ? list[0] : null)
   );
+}
+
+/** Prefer reservation.garage_id from the frontend booking — that garage already has stadium_id. */
+function garageForEvent(garages, ev, reservations) {
+  const eid = ev?.event_id;
+  const list = (reservations || []).filter(
+    (r) => r && eid != null && String(reservationEventKey(r) || "") === String(eid)
+  );
+  for (const r of list) {
+    const gid = reservationGarageId(r);
+    if (gid == null) continue;
+    const match = (garages || []).find(
+      (g) => String(garageIdOf(g)) === String(gid)
+    );
+    if (match) return match;
+  }
+  return pickHostGarage(garages, ev);
+}
+
+function drivewaySpots(garage, fallbackGarages) {
+  const read = (g) => {
+    if (!g || typeof g !== "object") return 0;
+    const n = Number(
+      g.total_parking_spots ??
+        g.driveway_spots ??
+        g.total_spots ??
+        g.spots ??
+        g.capacity
+    );
+    return Number.isFinite(n) && n > 0 ? n : 0;
+  };
+
+  const direct = read(garage);
+  if (direct > 0) return direct;
+
+  for (const g of fallbackGarages || []) {
+    const n = read(g);
+    if (n > 0) return n;
+  }
+  return 0;
+}
+
+/** Active bookings per event (reserved / completed — not canceled). */
+function countReservedByEvent(reservations) {
+  const map = {};
+  for (const r of reservations || []) {
+    const eid = reservationEventKey(r);
+    if (eid == null || eid === "") continue;
+    if (!countsTowardEarnings(r)) continue;
+    const key = String(eid);
+    map[key] = (map[key] || 0) + 1;
+  }
+  return map;
 }
 
 function formatGarageAddress(g) {
@@ -754,65 +2138,203 @@ function formatGarageAddress(g) {
   return parts.length ? parts.join(", ") : "Address not set";
 }
 
-function isGarageActive(g) {
-  const avail = String(g?.general_availability || "").toLowerCase();
-  if (["inactive", "unavailable", "off", "false", "0"].includes(avail)) {
+function truthyFlag(value) {
+  if (value === true || value === 1) return true;
+  if (value === false || value === 0 || value == null) return false;
+  const s = String(value).trim().toLowerCase();
+  if (["true", "1", "yes", "on", "active", "available", "enabled"].includes(s)) {
+    return true;
+  }
+  if (["false", "0", "no", "off", "inactive", "unavailable", "disabled"].includes(s)) {
     return false;
   }
-  if (g?.is_active === false) return false;
-  return true;
+  return null;
+}
+
+function isGarageActive(g) {
+  if (!g || typeof g !== "object") return false;
+
+  const flag = truthyFlag(g.is_active);
+  if (flag === true) return true;
+  if (flag === false) return false;
+
+  for (const key of ["active", "listing_active"]) {
+    const nested = truthyFlag(g[key]);
+    if (nested === true) return true;
+    if (nested === false) return false;
+  }
+
+  return false;
+}
+
+function eventTitle(ev) {
+  const name = catalogEventName(ev);
+  if (name && !/^unknown$/i.test(name) && !/^reserved event$/i.test(name)) {
+    return name;
+  }
+  return String(ev?.venue_name || "").trim();
+}
+
+function isListingEventId(id) {
+  if (isUsableEventPk(id)) return true;
+  return /^res-\d+$/.test(String(id || "").trim());
+}
+
+function isCanceledReservation(r) {
+  const s = String(r?.status || "").toLowerCase();
+  return ["cancelled", "canceled", "refunded", "failed"].includes(s);
 }
 
 function countsTowardEarnings(r) {
-  const status = String(r?.status || "").toLowerCase();
-  return !["cancelled", "canceled", "refunded", "failed"].includes(status);
+  return !isCanceledReservation(r);
 }
 
-function totalEarningsFromReservations(reservations) {
-  return reservations.reduce((sum, r) => {
-    if (!countsTowardEarnings(r)) return sum;
-    const amount = Number(r.base_price);
-    return sum + (Number.isFinite(amount) ? amount : 0);
+/** Booking amount from Django Reservation.base_price only — not garage slot rates. */
+function reservationPrice(r) {
+  if (!r || typeof r !== "object") return 0;
+  const n = Number(r.base_price ?? r.basePrice);
+  if (Number.isFinite(n) && n > 0) return n;
+  return 0;
+}
+
+function upcomingEstimatedEarnings(
+  reservations,
+  eventId,
+  garage,
+  hostGarages,
+  reservedCount
+) {
+  return earningsForEvent(reservations, eventId, false);
+}
+function completedEventTotalPrice(
+  reservations,
+  eventId,
+  garage,
+  hostGarages,
+  reservedCount
+) {
+  return earningsForEvent(reservations, eventId, false);
+}
+
+/** Total Earnings = sum of prices on Completed Events only (not upcoming/canceled). */
+function totalEarningsFromCompletedEvents(
+  reservations,
+  completedEvents,
+  hostGarages,
+  reservedByEvent
+) {
+  if (!completedEvents || !completedEvents.length) return 0;
+
+  return (completedEvents || []).reduce((sum, ev) => {
+    const garage = garageForEvent(hostGarages, ev, reservations);
+    const reserved = reservedByEvent?.[String(ev?.event_id)] || 0;
+    return (
+      sum +
+      completedEventTotalPrice(
+        reservations,
+        ev.event_id,
+        garage,
+        hostGarages,
+        reserved
+      )
+    );
   }, 0);
 }
 
+/**
+ * Event card earnings.
+ * includeCanceled: true → sum prices on canceled/refunded bookings (canceled section).
+ */
+function earningsForEvent(reservations, eventId, includeCanceled = false) {
+  return (reservations || []).reduce((sum, r) => {
+    if (String(reservationEventKey(r) || "") !== String(eventId)) return sum;
+    if (includeCanceled) {
+      if (!isCanceledReservation(r)) return sum;
+      return sum + reservationPrice(r);
+    }
+    if (!countsTowardEarnings(r)) return sum;
+    return sum + reservationPrice(r);
+  }, 0);
+}
+
+/** Canceled bookings per event (for canceled-events cards). */
+function countCanceledByEvent(reservations) {
+  const map = {};
+  for (const r of reservations || []) {
+    const eid = reservationEventKey(r);
+    if (eid == null || eid === "") continue;
+    if (!isCanceledReservation(r)) continue;
+    const key = String(eid);
+    map[key] = (map[key] || 0) + 1;
+  }
+  return map;
+}
+
+function reservedCountForGarage(garage, reservations) {
+  const gid = garageIdOf(garage);
+  if (gid == null) return 0;
+  return (reservations || []).filter((r) => {
+    if (!countsTowardEarnings(r)) return false;
+    const rgid = reservationGarageId(r);
+    return rgid != null && String(rgid) === String(gid);
+  }).length;
+}
+
 function getOwnerDisplayName() {
+  const pick = (...candidates) => {
+    if (typeof EGP !== "undefined" && EGP.toDisplayUsername) {
+      return EGP.toDisplayUsername(...candidates);
+    }
+    for (const raw of candidates) {
+      if (raw == null) continue;
+      const name = String(raw).trim();
+      if (!name || name.includes("@") || /\s/.test(name)) continue;
+      return name;
+    }
+    return "";
+  };
+
   try {
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-    const full = [user.first_name, user.last_name].filter(Boolean).join(" ").trim();
-    if (full) return full;
-    if (user.username) return String(user.username).trim();
-    if (user.email) return String(user.email).split("@")[0];
+    const username = pick(user.username, user.Username);
+    if (username) return username;
   } catch {
     /* ignore */
   }
-  const cached = localStorage.getItem("loggedInUser");
-  return cached ? String(cached).trim() : "";
+  return pick(localStorage.getItem("loggedInUser"));
 }
 
-function listingCardHtml(g, totalEarnings, ownerName) {
+function listingCardHtml(g, totalEarnings, ownerName, reservations) {
   const active = isGarageActive(g);
-  const driveway = Number(g.total_parking_spots);
-  const activeSpots = Number(g.spots_available);
+  const driveway = drivewaySpots(g);
   const toggleBg = active ? "#28a745" : "#9ca3af";
-  const knobSide = active ? "right-[3px]" : "left-[3px]";
   const name = ownerName || "Homeowner";
+  const gid = garageIdOf(g);
 
   return `
-    <div class="border border-[#e6e6e6] rounded-[12px] p-4 bg-white shadow-sm">
+    <div class="border border-[#e6e6e6] rounded-[12px] p-4 bg-white shadow-sm" data-garage-card="${escapeHtml(String(gid ?? ""))}">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
         <div class="min-w-0">
-          <div class="text-[15px] font-bold text-[#222] truncate">${escapeHtml(name)}</div>
+          <div class="js-owner-title text-[15px] font-bold text-[#222] truncate">${escapeHtml(name)}</div>
           <div class="flex items-center gap-2 text-[13px] text-gray-600 mt-1 min-w-0">
-            📍
+            <i class="fa-solid fa-location-dot text-[#007DB5]"></i>
             <span class="truncate">${escapeHtml(formatGarageAddress(g))}</span>
           </div>
         </div>
         <div class="flex justify-end items-center gap-2">
-          <span class="text-[12px] text-gray-500">${active ? "Active" : "Inactive"}</span>
-          <div class="w-[36px] h-[18px] rounded-full relative flex-shrink-0" style="background:${toggleBg}">
-            <div class="w-[12px] h-[12px] bg-white rounded-full absolute ${knobSide} top-[3px]"></div>
-          </div>
+          <span class="js-listing-active-label text-[12px] text-gray-500">${active ? "Active" : "Inactive"}</span>
+          <!-- LISTING_ACTIVE_TOGGLE — green/gray switch on Your Listings card -->
+          <button
+            type="button"
+            class="js-listing-active-toggle relative flex-shrink-0 cursor-pointer border-0 p-0"
+            style="width:44px;height:24px;border-radius:9999px;background:${toggleBg};cursor:pointer;"
+            data-garage-id="${escapeHtml(String(gid ?? ""))}"
+            data-active="${active ? "1" : "0"}"
+            aria-pressed="${active ? "true" : "false"}"
+            aria-label="${active ? "Deactivate listing" : "Activate listing"}"
+            title="${active ? "Click to mark Inactive" : "Click to mark Active"}">
+            <span style="width:16px;height:16px;border-radius:9999px;background:#fff;position:absolute;top:4px;${active ? "right:4px;left:auto;" : "left:4px;right:auto;"};pointer-events:none;box-shadow:0 1px 2px rgba(0,0,0,0.2);"></span>
+          </button>
         </div>
       </div>
       <div class="py-3 lg:py-4">
@@ -821,11 +2343,11 @@ function listingCardHtml(g, totalEarnings, ownerName) {
       <div class="flex justify-between text-center w-full">
         <div class="flex-1">
           <div class="text-[11px] text-gray-500">Driveway</div>
-          <div class="text-[14px] font-medium">${Number.isFinite(driveway) ? driveway : "—"}</div>
+          <div class="text-[14px] font-medium">${driveway || "—"}</div>
         </div>
         <div class="flex-1">
           <div class="text-[11px] text-gray-500">Active</div>
-          <div class="text-[14px] font-medium">${Number.isFinite(activeSpots) ? activeSpots : "—"}</div>
+          <div class="js-listing-active-value text-[14px] font-medium">${active ? "Yes" : "No"}</div>
         </div>
         <div class="flex-1">
           <div class="text-[11px] text-gray-500">Total Earnings</div>
@@ -835,32 +2357,224 @@ function listingCardHtml(g, totalEarnings, ownerName) {
     </div>`;
 }
 
-function eventCardHtml(ev, garage, reservedCount) {
-  const totalSpots = Number(garage?.total_parking_spots) || 0;
-  const reserved = Math.max(0, Number(reservedCount) || 0);
-  const denom = totalSpots > 0 ? totalSpots : Math.max(reserved, 1);
-  const pct = Math.min(100, Math.round((reserved / denom) * 100));
-  const price = Number(garage?.base_price);
-  const estimated = Number.isFinite(price) ? price * reserved : 0;
-  const title = ev?.name || "Upcoming Event";
+/** Map Reservation.status → listing section. */
+function reservationStatusBucket(status) {
+  const s = String(status || "").toLowerCase().trim();
+  if (["cancelled", "canceled", "refunded", "failed"].includes(s)) {
+    return "canceled";
+  }
+  // Only truly finished — NOT "paid" (paid future bookings stay upcoming)
+  if (["complete", "completed", "finished"].includes(s)) {
+    return "completed";
+  }
+  // paid / confirmed / pending / booked / upcoming / active / etc.
+  return "upcoming";
+}
+
+function isEventPast(ev, now = Date.now()) {
+  const d = eventStartDate(ev);
+  if (!d) return false;
+  const graceMs = 6 * 60 * 60 * 1000;
+  return d.getTime() < now - graceMs;
+}
+
+/**
+ * Reserved + concert still ahead → Upcoming.
+ * Reserved + concert already played → Completed (status often stays Reserved).
+ * Status canceled/refunded → Canceled.
+ * Events this host never booked are skipped.
+ */
+function reservationListingBucket(r, ev) {
+  const statusBucket = reservationStatusBucket(r?.status);
+  if (statusBucket === "canceled") return "canceled";
+  if (statusBucket === "completed") return "completed";
+  if (ev && isEventPast(ev)) return "completed";
+  return "upcoming";
+}
+
+function groupEventsByReservationStatus(events, reservations) {
+  const byEventId = {};
+  for (const r of reservations || []) {
+    const eid = reservationEventKey(r);
+    if (eid == null || eid === "") continue;
+    const key = String(eid);
+    if (!byEventId[key]) byEventId[key] = [];
+    byEventId[key].push(r);
+  }
+
+  const upcoming = [];
+  const completed = [];
+  const canceled = [];
+  const reservedByEvent = {};
+
+  for (const ev of events || []) {
+    if (ev?.event_id == null) continue;
+    const key = String(ev.event_id);
+    const list = byEventId[key] || [];
+    if (!list.length) continue;
+
+    const upcomingRes = list.filter(
+      (r) => reservationListingBucket(r, ev) === "upcoming"
+    );
+    const completedRes = list.filter(
+      (r) => reservationListingBucket(r, ev) === "completed"
+    );
+    const canceledRes = list.filter(
+      (r) => reservationListingBucket(r, ev) === "canceled"
+    );
+
+    if (upcomingRes.length) {
+      upcoming.push(ev);
+      reservedByEvent[key] = upcomingRes.length;
+      continue;
+    }
+    if (completedRes.length) {
+      completed.push(ev);
+      reservedByEvent[key] = completedRes.length;
+      continue;
+    }
+    if (canceledRes.length) {
+      canceled.push(ev);
+      reservedByEvent[key] = canceledRes.length;
+    }
+  }
+
+  return {
+    upcoming: sortEventsByDate(upcoming, false),
+    completed: sortEventsByDate(completed, true),
+    canceled: sortEventsByDate(canceled, true),
+    reservedByEvent,
+  };
+}
+
+function sortEventsByDate(list, newestFirst) {
+  return [...list].sort((a, b) => {
+    const da = eventStartDate(a)?.getTime() ?? 0;
+    const db = eventStartDate(b)?.getTime() ?? 0;
+    return newestFirst ? db - da : da - db;
+  });
+}
+
+function renderEventSection(
+  el,
+  events,
+  hostGarages,
+  reservedByEvent,
+  ownerName,
+  emptyMsg,
+  reservations,
+  options = {}
+) {
+  const includeCanceled = !!options.includeCanceled;
+  const useCompletedTotal = !!options.useCompletedTotal;
+  if (!el) return;
+  const visible = (events || []).filter(
+    (ev) => isListingEventId(ev?.event_id) && (eventTitle(ev) || formatEventWhen(ev))
+  );
+  if (!visible.length) {
+    showMsg(el, emptyMsg);
+    return;
+  }
+  el.innerHTML = visible
+    .map((ev) => {
+      const garage = garageForEvent(hostGarages, ev, reservations);
+      const reserved = reservedByEvent[String(ev.event_id)] || 0;
+      const estimated = useCompletedTotal
+        ? completedEventTotalPrice(
+            reservations,
+            ev.event_id,
+            garage,
+            hostGarages,
+            reserved
+          )
+        : includeCanceled
+          ? earningsForEvent(reservations, ev.event_id, true)
+          : upcomingEstimatedEarnings(
+              reservations,
+              ev.event_id,
+              garage,
+              hostGarages,
+              reserved
+            );
+      return eventCardHtml(
+        ev,
+        garage,
+        reserved,
+        ownerName,
+        hostGarages,
+        estimated,
+        includeCanceled,
+        useCompletedTotal ? "Total Price" : "Estimated Earnings",
+        useCompletedTotal
+      );
+    })
+    .join("");
+}
+
+function eventCardHtml(
+  ev,
+  garage,
+  reservedCount,
+  ownerName,
+  hostGarages,
+  estimatedEarnings,
+  isCanceledSection = false,
+  earningsLabel = "Estimated Earnings",
+  isCompletedSection = false
+) {
+  const totalSpots = drivewaySpots(garage, hostGarages);
+  let reserved = Math.max(0, Math.floor(Number(reservedCount) || 0));
+  if (totalSpots > 0) reserved = Math.min(reserved, totalSpots);
+
+  // Open spots: canceled bookings free the driveway again
+  const activeSpots = totalSpots > 0 ? Math.max(0, totalSpots - (isCanceledSection ? 0 : reserved)) : 0;
+
+  // Upcoming = blue, completed = green (same as before), canceled = red
+  const barReserved = isCanceledSection ? reserved : reserved;
+  const pctNum = totalSpots > 0 ? (barReserved / totalSpots) * 100 : 0;
+  const pct = pctNum.toFixed(2);
+  const barColor = isCanceledSection
+    ? "#dc3545"
+    : isCompletedSection
+      ? "#28a745"
+      : "#007DB5";
+  const estimated = Number(estimatedEarnings) || 0;
+  let title = eventTitle(ev);
+  const username = ownerName || "";
+  const when = formatEventWhen(ev);
+  if (!title) title = when;
+  if (!title) return "";
+  const venue = String(ev?.venue_name || "").trim();
 
   return `
     <div class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white">
       <div class="font-bold text-[16px]">
-        <i class="fa-solid fa-calendar"></i> ${escapeHtml(title)}
+        <i class="fa-solid fa-calendar fa-fw"></i> ${escapeHtml(title)}
       </div>
-      <div class="text-[12px] text-gray-500 mt-1">${escapeHtml(formatEventWhen(ev))}</div>
       ${
-        ev?.venue_name
-          ? `<div class="text-[12px] text-gray-400 mt-1">${escapeHtml(ev.venue_name)}</div>`
+        username
+          ? `<div class="text-[12px] text-gray-500 mt-1">Host: ${escapeHtml(username)}</div>`
           : ""
       }
-      <div class="mt-4 text-[13px]">Reserved: ${reserved}/${totalSpots || "—"} spots</div>
-      <div class="w-full h-[6px] bg-gray-200 rounded-full overflow-hidden mt-3">
-        <div class="h-full bg-[#007DB5]" style="width:${pct}%"></div>
+      ${
+        when
+          ? `<div class="text-[12px] text-gray-500 mt-1">${escapeHtml(when)}</div>`
+          : ""
+      }
+      ${
+        venue
+          ? `<div class="text-[12px] text-gray-400 mt-1">${escapeHtml(venue)}</div>`
+          : ""
+      }
+      <div class="mt-4 flex justify-between gap-3 text-[13px]">
+        <span>${isCanceledSection ? "Canceled" : "Reserved"}: ${reserved}/${totalSpots || "—"} spots</span>
+        <span>Active: ${activeSpots}</span>
+      </div>
+      <div style="display:flex;width:100%;height:6px;background:#e5e7eb;border-radius:9999px;overflow:hidden;margin-top:12px;">
+        <div style="height:100%;flex:0 0 ${pct}%;max-width:100%;background:${barColor};border-radius:9999px;"></div>
       </div>
       <div class="border-t border-black/10 mt-4 pt-4 flex justify-between text-[13px]">
-        <span class="text-gray-500">Estimated Earnings</span>
+        <span class="text-gray-500">${escapeHtml(earningsLabel)}</span>
         <span class="font-bold">${formatMoney(estimated)}</span>
       </div>
     </div>`;
@@ -873,97 +2587,428 @@ function showMsg(el, text, isError) {
   )}</p></div>`;
 }
 
-async function loadListingPage() {
-  const listingsEl = document.getElementById("listingsList");
-  const eventsEl = document.getElementById("upcomingEventsList");
-  const { token, headers } = getAuthHeaders();
+/*=============================================================================
+ * LISTING_ACTIVE_TOGGLE
+ * ============================================================================
+ * FIND THIS: search the file for  LISTING_ACTIVE_TOGGLE
+ *
+ * What it controls:
+ *   The green/gray Active switch on each "Your Listings" card
+ *   (the toggle DarriusH / other hosts see next to Active / Inactive).
+ *
+ * Behavior:
+ *   - Toggle ON  → activates listing immediately (no popup)
+ *   - Toggle OFF → opens #listingActiveConfirmModal
+ *       * User must check the checkbox
+ *       * Then click "Mark Inactive"
+ *       * Only then the switch turns off and API is updated
+ *
+ * API:
+ *   PATCH/PUT  /api/home-garages/{garage_id}/
+ *   Sends: is_active + general_availability (active | inactive)
+ * ============================================================================
+ *=============================================================================*/
+let listingGaragesCache = [];
+let listingActivePending = null; // { garageId, button }
 
-  // Not logged in → keep the static HTML preview as-is
-  if (!token) return;
+function paintListingActiveToggle(button, active) {
+  if (!button) return;
+  const on = !!active;
+  button.dataset.active = on ? "1" : "0";
+  button.setAttribute("aria-pressed", on ? "true" : "false");
+  button.setAttribute(
+    "aria-label",
+    on ? "Deactivate listing" : "Activate listing"
+  );
+  button.title = on ? "Click to mark Inactive" : "Click to mark Active";
+  button.style.background = on ? "#28a745" : "#9ca3af";
+  const knob = button.querySelector("span");
+  if (knob) {
+    knob.style.left = on ? "auto" : "4px";
+    knob.style.right = on ? "4px" : "auto";
+  }
+  const card = button.closest("[data-garage-card]");
+  const label = card?.querySelector(".js-listing-active-label");
+  if (label) label.textContent = on ? "Active" : "Inactive";
+  const activeValue = card?.querySelector(".js-listing-active-value");
+  if (activeValue) activeValue.textContent = on ? "Yes" : "No";
+}
 
-  // hostId is optional for garages (API returns the logged-in owner's garages)
-  let hostId = getHomeOwnerId(token);
+function openListingActiveConfirm(garageId, button) {
+  listingActivePending = { garageId: String(garageId), button };
+  const modal = document.getElementById("listingActiveConfirmModal");
+  const check = document.getElementById("listingActiveConfirmCheck");
+  const confirmBtn = document.getElementById("listingActiveConfirmBtn");
+  const err = document.getElementById("listingActiveConfirmError");
+  if (check) check.checked = false;
+  if (confirmBtn) {
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "Mark Inactive";
+  }
+  if (err) {
+    err.textContent = "";
+    err.classList.add("hidden");
+  }
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+  } else {
+    console.error("LISTING_ACTIVE_TOGGLE: modal #listingActiveConfirmModal missing");
+    alert("Confirm popup is missing. Re-upload the latest listing.html.");
+  }
+}
 
+function closeListingActiveConfirm() {
+  listingActivePending = null;
+  const modal = document.getElementById("listingActiveConfirmModal");
+  const check = document.getElementById("listingActiveConfirmCheck");
+  const confirmBtn = document.getElementById("listingActiveConfirmBtn");
+  const err = document.getElementById("listingActiveConfirmError");
+  if (check) check.checked = false;
+  if (confirmBtn) {
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "Mark Inactive";
+  }
+  if (err) {
+    err.textContent = "";
+    err.classList.add("hidden");
+  }
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+  }
+}
+
+/** LISTING_ACTIVE_TOGGLE — never send image URL strings (API expects files). */
+function garageActiveUpdatePayload(garage, makeActive) {
+  const active = !!makeActive;
+  const skipKeys = new Set([
+    "home_image",
+    "interior_garage_spot_image_1",
+    "interior_garage_spot_image_2",
+    "interior_garage_spot_image_3",
+    "outside_parking_spot_image_1",
+    "outside_parking_spot_image_2",
+    "outside_parking_spot_image_3",
+    "verification_image",
+    "profile_image",
+    "image",
+    "images",
+    "photo",
+    "photos",
+  ]);
+
+  // Prefer tiny PATCH body — only listing status. Do not overwrite
+  // general_availability (weekday | weekend | both).
+  const minimal = {
+    is_active: active,
+  };
+
+  // Safe PUT fallback: copy scalars only, drop file/image fields
+  const safeFull = {};
+  if (garage && typeof garage === "object") {
+    for (const [key, value] of Object.entries(garage)) {
+      const lower = key.toLowerCase();
+      if (skipKeys.has(key) || skipKeys.has(lower)) continue;
+      if (lower.includes("image") || lower.includes("photo") || lower.includes("file")) {
+        continue;
+      }
+      if (value != null && typeof value === "object") continue;
+      safeFull[key] = value;
+    }
+  }
+  Object.assign(safeFull, minimal);
+  return { minimal, safeFull };
+}
+
+async function updateGarageActiveOnApi(garage, makeActive) {
+  const id = garageIdOf(garage);
+  if (id == null) throw new Error("Missing garage id");
+
+  const { headers } = getAuthHeaders();
+  const authHeaders = {
+    ...headers,
+    "Content-Type": "application/json",
+  };
+  const { minimal, safeFull } = garageActiveUpdatePayload(garage, makeActive);
+
+  // 1) PATCH only is_active / availability (no images)
+  let res = await fetchWithTimeout(`${GARAGES_API}${id}/`, {
+    method: "PATCH",
+    headers: authHeaders,
+    body: JSON.stringify(minimal),
+  });
+
+  // 2) If PATCH not allowed, PUT with image fields stripped
+  if (!res.ok && (res.status === 405 || res.status === 400 || res.status === 415)) {
+    res = await fetchWithTimeout(`${GARAGES_API}${id}/`, {
+      method: "PUT",
+      headers: authHeaders,
+      body: JSON.stringify(safeFull),
+    });
+  }
+
+  // 3) Last try: PATCH with only is_active boolean
+  if (!res.ok) {
+    res = await fetchWithTimeout(`${GARAGES_API}${id}/`, {
+      method: "PATCH",
+      headers: authHeaders,
+      body: JSON.stringify({ is_active: !!makeActive }),
+    });
+  }
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(
+      `Could not update listing (${res.status})${body ? ": " + body.slice(0, 160) : ""}`
+    );
+  }
+
+  let json = null;
   try {
-    // 1) Home Garage API — Your Listings (auth-scoped)
-    const garagesRaw = await fetchHostGarages(headers);
+    json = await res.json();
+  } catch {
+    json = null;
+  }
+  return json?.data && typeof json.data === "object" ? json.data : json || minimal;
+}
 
-    // Prefer host id from garage rows if localStorage/JWT didn't have it
-    if (!hostId && garagesRaw[0]?.host_id != null) {
-      hostId = String(garagesRaw[0].host_id);
-      localStorage.setItem("pmr_home_owner_id", hostId);
+function syncGarageCacheActive(garageId, makeActive, apiGarage) {
+  listingGaragesCache = (listingGaragesCache || []).map((g) => {
+    if (String(garageIdOf(g)) !== String(garageId)) return g;
+    return {
+      ...g,
+      ...(apiGarage && typeof apiGarage === "object" ? apiGarage : {}),
+      is_active: !!makeActive,
+    };
+  });
+}
+
+async function applyListingActiveChange(garageId, makeActive, button) {
+  const garage = (listingGaragesCache || []).find(
+    (g) => String(garageIdOf(g)) === String(garageId)
+  );
+  if (!garage) throw new Error("Garage not found");
+
+  if (button) button.disabled = true;
+  try {
+    const updated = await updateGarageActiveOnApi(garage, makeActive);
+    syncGarageCacheActive(garageId, makeActive, updated);
+    paintListingActiveToggle(button, makeActive);
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
+function bindListingActiveToggles() {
+  const list = document.getElementById("listingsList");
+  if (!list) {
+    console.warn("LISTING_ACTIVE_TOGGLE: #listingsList not found");
+    return;
+  }
+
+  const toggles = list.querySelectorAll(".js-listing-active-toggle");
+  console.log("LISTING_ACTIVE_TOGGLE: toggle count =", toggles.length);
+
+  if (list.dataset.activeToggleBound === "1") return;
+  list.dataset.activeToggleBound = "1";
+
+  list.addEventListener("click", async (e) => {
+    const btn = e.target.closest(".js-listing-active-toggle");
+    if (!btn || !list.contains(btn)) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const garageId = String(btn.getAttribute("data-garage-id") || "").trim();
+    if (!garageId) {
+      console.error("LISTING_ACTIVE_TOGGLE: missing data-garage-id", btn);
+      alert("This listing has no garage id, so Active cannot be changed.");
+      return;
     }
 
-    const hostGarages = hostId
-      ? garagesRaw.filter(
-          (g) => g.host_id == null || String(g.host_id) === String(hostId)
-        )
-      : garagesRaw;
+    const currentlyActive = btn.dataset.active === "1";
 
-    // 2) Reservation API — Total Earnings to date
-    const reservations = hostId
-      ? await fetchHostReservations(headers, hostId)
-      : [];
-    const totalEarnings = totalEarningsFromReservations(reservations);
+    // Turning OFF → confirm popup (checkbox + Mark Inactive)
+    if (currentlyActive) {
+      openListingActiveConfirm(garageId, btn);
+      return;
+    }
 
-    // Owner name from Home Owner API (+ header)
-    const ownerName = await fetchOwnerName(headers, hostId);
-    setHeaderUserName(ownerName);
+    // Turning ON → immediate
+    try {
+      await applyListingActiveChange(garageId, true, btn);
+    } catch (err) {
+      console.error("Activate listing failed:", err);
+      alert(err?.message || "Could not activate listing.");
+    }
+  });
+}
+
+function initListingActiveConfirmModal() {
+  const modal = document.getElementById("listingActiveConfirmModal");
+  if (!modal || modal.dataset.bound === "1") return;
+  modal.dataset.bound = "1";
+
+  const check = document.getElementById("listingActiveConfirmCheck");
+  const confirmBtn = document.getElementById("listingActiveConfirmBtn");
+  const cancelBtn = document.getElementById("listingActiveConfirmCancel");
+  const err = document.getElementById("listingActiveConfirmError");
+
+  const syncConfirmEnabled = () => {
+    if (confirmBtn) confirmBtn.disabled = !(check && check.checked);
+  };
+
+  check?.addEventListener("change", syncConfirmEnabled);
+  cancelBtn?.addEventListener("click", () => closeListingActiveConfirm());
+  modal.querySelectorAll("[data-listing-active-dismiss]").forEach((el) => {
+    el.addEventListener("click", () => closeListingActiveConfirm());
+  });
+
+  confirmBtn?.addEventListener("click", async () => {
+    if (!check?.checked || !listingActivePending) return;
+    const { garageId, button } = listingActivePending;
+    if (err) {
+      err.textContent = "";
+      err.classList.add("hidden");
+    }
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "Saving...";
+    try {
+      await applyListingActiveChange(garageId, false, button);
+      closeListingActiveConfirm();
+    } catch (e) {
+      console.error("Deactivate listing failed:", e);
+      if (err) {
+        err.textContent = e?.message || "Could not deactivate listing.";
+        err.classList.remove("hidden");
+      }
+      confirmBtn.disabled = !(check && check.checked);
+      confirmBtn.textContent = "Mark Inactive";
+    }
+  });
+}
+
+async function loadListingPage() {
+  const listingsEl = document.getElementById("listingsList");
+  const upcomingEl = document.getElementById("upcomingEventsList");
+  const completedEl = document.getElementById("completedEventsList");
+  const canceledEl = document.getElementById("canceledEventsList");
+  const { token, headers } = getAuthHeaders();
+
+  // Not logged in — keep the static HTML preview as-is
+  if (!token) return;
+
+  try {
+    const { hostId, owner } = await resolveLoggedInOwner(headers, token);
+    if (!hostId) {
+      showMsg(listingsEl, "No garage listings found for this account yet.");
+      showMsg(upcomingEl, "No upcoming events for your listing right now.");
+      showMsg(completedEl, "No completed events yet.");
+      showMsg(canceledEl, "No canceled events.");
+      return;
+    }
+
+    const hostGarages = await fetchHostGarages(headers, hostId);
+    const garageIds = new Set(hostGarages.map(garageIdOf).filter(Boolean));
+    const reservations = await hydrateReservationsWithEventDetails(
+      await fetchHostReservations(headers, hostId, garageIds),
+      headers
+    );
+    const ownerName =
+      (typeof EGP !== "undefined" && EGP.toDisplayUsername
+        ? EGP.toDisplayUsername(owner?.username, owner?.Username)
+        : String(owner?.username || owner?.Username || "").trim()) ||
+      (await fetchOwnerName(headers, hostId));
+    if (ownerName) setHeaderUserName(ownerName);
 
     if (!hostGarages.length) {
       showMsg(
         listingsEl,
         "No garage listings found for this account yet."
       );
-    } else {
-      listingsEl.innerHTML = hostGarages
-        .map((g) => listingCardHtml(g, totalEarnings, ownerName))
-        .join("");
-    }
-
-    // 3) Event API — Upcoming Events for this homeowner
-    if (!hostGarages.length) {
-      showMsg(eventsEl, "No upcoming events for your listing right now.");
+      showMsg(upcomingEl, "No upcoming events for your listing right now.");
+      showMsg(completedEl, "No completed events yet.");
+      showMsg(canceledEl, "No canceled events.");
       return;
     }
 
-    const matchedEvents = await fetchEventsForHost(hostGarages, reservations);
-    const now = Date.now();
-    const upcoming = matchedEvents
-      .filter((ev) => {
-        if (ev?.is_active === false) return false;
-        const d = eventStartDate(ev);
-        return !d || d.getTime() >= now - 6 * 60 * 60 * 1000;
-      })
-      .sort((a, b) => {
-        const da = eventStartDate(a)?.getTime() ?? Number.MAX_SAFE_INTEGER;
-        const db = eventStartDate(b)?.getTime() ?? Number.MAX_SAFE_INTEGER;
-        return da - db;
-      });
+    const matchedEvents = dedupeEventsById(
+      await fetchEventsForHost(hostGarages, reservations, headers)
+    );
+    const grouped = groupEventsByReservationStatus(matchedEvents, reservations);
 
-    if (!upcoming.length) {
-      showMsg(eventsEl, "No upcoming events for your listing right now.");
-      return;
+    const reservedEventIds = new Set();
+    for (const r of reservations || []) {
+      const eid = reservationEventKey(r);
+      if (eid != null && String(eid).trim() !== "") {
+        reservedEventIds.add(String(eid));
+      }
     }
 
-    const reservedByEvent = {};
-    for (const r of reservations) {
-      const eid = r?.event_id;
-      if (eid == null || !countsTowardEarnings(r)) continue;
-      reservedByEvent[eid] = (reservedByEvent[eid] || 0) + 1;
-    }
+    const upcoming = grouped.upcoming.filter((ev) =>
+      reservedEventIds.has(String(ev.event_id))
+    );
 
-    eventsEl.innerHTML = upcoming
-      .slice(0, 10)
-      .map((ev) => {
-        const garage = pickHostGarage(hostGarages, ev);
-        return eventCardHtml(ev, garage, reservedByEvent[ev.event_id] || 0);
-      })
+    const completed = grouped.completed.filter((ev) =>
+      reservedEventIds.has(String(ev.event_id))
+    );
+    const canceled = grouped.canceled.filter((ev) =>
+      reservedEventIds.has(String(ev.event_id))
+    );
+
+    const reservedByEvent = countReservedByEvent(reservations);
+    const canceledByEvent = countCanceledByEvent(reservations);
+
+    const totalEarnings = totalEarningsFromCompletedEvents(
+      reservations,
+      completed,
+      hostGarages,
+      reservedByEvent
+    );
+
+    listingsEl.innerHTML = hostGarages
+      .map((g) => listingCardHtml(g, totalEarnings, ownerName, reservations))
       .join("");
+
+    listingGaragesCache = hostGarages;
+    bindListingActiveToggles();
+
+    renderEventSection(
+      upcomingEl,
+      upcoming,
+      hostGarages,
+      reservedByEvent,
+      ownerName,
+      "No upcoming events for your listing right now.",
+      reservations
+    );
+    renderEventSection(
+      completedEl,
+      completed,
+      hostGarages,
+      reservedByEvent,
+      ownerName,
+      "No completed events yet.",
+      reservations,
+      { useCompletedTotal: true }
+    );
+    renderEventSection(
+      canceledEl,
+      canceled,
+      hostGarages,
+      canceledByEvent,
+      ownerName,
+      "No canceled events.",
+      reservations,
+      { includeCanceled: true }
+    );
   } catch (err) {
     console.error("Listing page load error:", err);
     showMsg(listingsEl, "Could not load listing data.", true);
-    showMsg(eventsEl, "Could not load upcoming events.", true);
+    showMsg(upcomingEl, "Could not load upcoming events.", true);
+    showMsg(completedEl, "Could not load completed events.", true);
+    showMsg(canceledEl, "Could not load canceled events.", true);
   }
 }
 </script>

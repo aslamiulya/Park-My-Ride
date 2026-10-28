@@ -37,7 +37,8 @@
   html.egp-dark .bg-\[#f1f1f1\] { background-color: #334155 !important; }
   html.egp-dark .hover\:bg-\[#f9f9f9\]:hover,
   html.egp-dark .hover\:bg-gray-50:hover { background-color: #334155 !important; }
-  html.egp-dark .egp-booking-row { border-color: #334155 !important; }
+  html.egp-dark .egp-booking-row,
+  html.egp-dark .egp-booking-right { border-color: #334155 !important; }
   html.egp-dark .egp-booking-name { color: #f3f4f6 !important; }
   html.egp-dark .egp-booking-event { color: #e5e7eb !important; }
   html.egp-dark .egp-booking-vehicle-line { color: #e5e7eb !important; }
@@ -46,14 +47,13 @@
 <style>
   .egp-booking-row {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 64px minmax(0, 1fr);
     grid-template-areas:
-      "main"
-      "avatar"
-      "right";
-    gap: 14px 20px;
+      "avatar main"
+      "right right";
+    gap: 10px 12px;
     align-items: center;
-    padding: 18px 16px;
+    padding: 16px;
     border-bottom: 1px solid #eee;
   }
   .egp-booking-row:last-child { border-bottom: none; }
@@ -61,21 +61,24 @@
   .egp-booking-avatar {
     grid-area: avatar;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
   }
   .egp-booking-right {
     grid-area: right;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 10px;
     min-width: 0;
+    padding-top: 4px;
+    border-top: 1px solid #f0f0f0;
   }
   .egp-avatar-circle {
     position: relative;
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
@@ -111,26 +114,49 @@
   .egp-booking-vehicle { min-width: 0; flex: 1; }
   .egp-booking-vehicle-label { margin-top: 0; margin-bottom: 2px; font-size: 11px; color: #9a9a9a; }
   .egp-booking-vehicle-line { font-size: 12px; color: #333; line-height: 1.4; word-break: break-word; }
-  .egp-booking-price { text-align: right; flex-shrink: 0; }
+  .egp-booking-price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    text-align: left;
+    flex-shrink: 0;
+  }
+  .egp-booking-price .inline-block { margin-top: 0; }
   .egp-booking-price-amt { font-size: 15px; font-weight: 700; color: #111; }
   @media (min-width: 640px) {
     .egp-booking-row {
-      grid-template-columns: minmax(0, 1.2fr) auto minmax(0, 1fr);
+      grid-template-columns: minmax(160px, 240px) auto minmax(0, 1fr);
       grid-template-areas: "main avatar right";
       padding: 20px;
+      justify-content: start;
     }
-    .egp-booking-right { justify-content: flex-end; }
-    .egp-booking-vehicle { max-width: 220px; text-align: left; }
+    .egp-booking-avatar { justify-content: flex-start; }
+    .egp-avatar-circle { width: 72px; height: 72px; }
+    .egp-booking-right {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 0;
+      border-top: none;
+    }
+    .egp-booking-price {
+      display: block;
+      margin-left: auto;
+      text-align: right;
+    }
+    .egp-booking-price .inline-block { margin-top: 0.5rem; }
+    .egp-booking-vehicle { max-width: 280px; text-align: left; }
   }
   @media (min-width: 1024px) {
     .egp-booking-row {
-      grid-template-columns: minmax(0, 1.4fr) auto minmax(180px, 1fr) auto;
+      grid-template-columns: minmax(160px, 240px) auto auto 1fr;
       grid-template-areas: "main avatar vehicle price";
-      gap: 16px 24px;
+      gap: 16px 16px;
     }
     .egp-booking-right { display: contents; }
-    .egp-booking-vehicle { grid-area: vehicle; max-width: none; }
-    .egp-booking-price { grid-area: price; }
+    .egp-booking-vehicle { grid-area: vehicle; max-width: 280px; }
+    .egp-booking-price { grid-area: price; margin-left: 0; justify-self: end; }
     .egp-avatar-circle { width: 80px; height: 80px; }
   }
 </style>
@@ -335,8 +361,10 @@
     class="fixed md:static top-0 left-0 w-[260px] sm:w-[280px] md:w-[240px] h-screen bg-[#f8f9ff] border-r border-[#e6e6e6] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 p-5 md:p-[20px_12px] overflow-y-auto">
             
             <div class="flex items-center justify-end mb-8 md:hidden">
-                <button id="closeSidebar" class="text-[34px] leading-none text-[#333]" aria-label="Close menu">
-                    <i class="fa-solid fa-xmark"></i>
+                <button id="closeSidebar" class="w-10 h-10 flex items-center justify-center text-[#333]" aria-label="Close menu">
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                        <path d="M6 6l12 12M18 6L6 18"></path>
+                    </svg>
                 </button>
             </div>
 
@@ -404,17 +432,24 @@
       <main class="flex-1 p-3 sm:p-4 md:p-6 lg:p-7 min-w-0 mb-10">
 
     
-    <div class="flex items-center justify-between mb-4 gap-3">
+    <div class="flex flex-col gap-3 mb-4 sm:flex-row sm:items-center sm:justify-between">
 
+        <div class="flex items-center justify-between gap-3">
         <div class="text-[20px] sm:text-[22px] font-bold text-[#007DB5]">
             Bookings
         </div>
+            <button id="openSidebar"
+                class="flex md:hidden shrink-0 w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] items-center justify-center shadow-md"
+                aria-label="Open menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
 
         <div class="flex items-center gap-3">
-            <div class="relative">
+            <div class="relative w-full sm:w-auto">
               <label for="bookingFilterSelect" class="sr-only">Filter bookings</label>
               <select id="bookingFilterSelect"
-                      class="appearance-none border border-[#ddd] rounded-[10px] pl-4 pr-9 py-[10px] w-[180px] sm:w-[200px] bg-white text-[13px] text-[#666] cursor-pointer">
+                      class="appearance-none border border-[#ddd] rounded-[10px] pl-4 pr-9 py-[10px] w-full sm:w-[200px] bg-white text-[13px] text-[#666] cursor-pointer">
                 <option value="14d">Last 14 Days</option>
                 <option value="30d" selected>Last 30 Days</option>
                 <option value="6m">Last 6 Months</option>
@@ -425,12 +460,6 @@
                 <i class="fa-solid fa-chevron-down"></i>
               </span>
             </div>
-
-            <button id="openSidebar"
-                class="flex md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] items-center justify-center shadow-md"
-                aria-label="Open menu">
-                <i class="fa-solid fa-bars"></i>
-            </button>
         </div>
 
     </div>
@@ -659,7 +688,7 @@
 
        <div class="flex gap-4 text-base justify-center lg:justify-start mt-3">
             <a href="https://x.com/ParkMyRide_" target="_blank" rel="noopener noreferrer">
-                <i class="fa-brands fa-x-twitter"></i>
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
             </a>
 
             <a href="https://www.facebook.com/EventGarageParking" target="_blank" rel="noopener noreferrer">

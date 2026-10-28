@@ -1,0 +1,13 @@
+{
+  "name": "event-garage-parking",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n api,web -c cyan,magenta \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm --prefix apps/api run dev",
+    "dev:web": "npm --prefix apps/web run dev",
+    "dev:mobile": "npm --prefix apps/mobile start"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}

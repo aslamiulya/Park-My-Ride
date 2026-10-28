@@ -130,50 +130,45 @@
   </aside>
 
   <main class="flex-1 min-h-screen min-w-0 overflow-x-hidden p-4 sm:p-5 md:p-6 lg:p-8">
-    <div class="flex items-center justify-between mb-5">
-      <div class="text-[22px] font-bold text-[#007DB5]">Training Center</div>
-      <button id="openSidebar" class="md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] flex items-center justify-center shadow-md" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    <div class="relative mb-5 flex items-center justify-center md:justify-start">
+      <div class="text-[22px] font-bold text-[#007DB5] text-center">Training Center</div>
+      <button id="openSidebar" class="absolute right-0 md:static md:hidden w-[42px] h-[42px] rounded-full bg-[#007DB5] text-white text-[22px] flex items-center justify-center shadow-md" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
     </div>
 
-    <p class="text-[13px] text-gray-600 mb-6 max-w-2xl">
+    <p class="text-[13px] text-gray-600 mb-6 max-w-2xl mx-auto text-center md:mx-0 md:text-left">
       Learn how to use each part of your Homeowner Portal. Pick a module below to open its guide and video tutorial.
     </p>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <a href="https://eventgarageparking.net/egp-listing-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <a href="https://eventgarageparking.net/egp-listing-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group flex flex-col items-center text-center md:items-start md:text-left">
         <div class="w-11 h-11 rounded-[10px] bg-[rgba(0,125,181,0.1)] text-[#007DB5] flex items-center justify-center text-[18px] mb-3 group-hover:bg-[#007DB5] group-hover:text-white transition"><i class="fa-solid fa-house"></i></div>
         <div class="text-[16px] font-bold text-[#222]">Listing</div>
         <div class="text-[12px] text-gray-500 mt-1">Manage your garage listing</div>
       </a>
-      <a href="https://eventgarageparking.net/egp-availability-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group">
+      <a href="https://eventgarageparking.net/egp-availability-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group flex flex-col items-center text-center md:items-start md:text-left">
         <div class="w-11 h-11 rounded-[10px] bg-[rgba(0,125,181,0.1)] text-[#007DB5] flex items-center justify-center text-[18px] mb-3 group-hover:bg-[#007DB5] group-hover:text-white transition"><i class="fa-solid fa-calendar"></i></div>
         <div class="text-[16px] font-bold text-[#222]">Availability</div>
         <div class="text-[12px] text-gray-500 mt-1">Set when fans can park</div>
       </a>
-      <a href="https://eventgarageparking.net/egp-booking-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group">
+      <a href="https://eventgarageparking.net/egp-booking-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group flex flex-col items-center text-center md:items-start md:text-left">
         <div class="w-11 h-11 rounded-[10px] bg-[rgba(0,125,181,0.1)] text-[#007DB5] flex items-center justify-center text-[18px] mb-3 group-hover:bg-[#007DB5] group-hover:text-white transition"><i class="fa-solid fa-car"></i></div>
         <div class="text-[16px] font-bold text-[#222]">Booking</div>
         <div class="text-[12px] text-gray-500 mt-1">Review guest bookings</div>
       </a>
-      <a href="https://eventgarageparking.net/egp-earning-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group">
+      <a href="https://eventgarageparking.net/egp-earning-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group flex flex-col items-center text-center md:items-start md:text-left">
         <div class="w-11 h-11 rounded-[10px] bg-[rgba(0,125,181,0.1)] text-[#007DB5] flex items-center justify-center text-[18px] mb-3 group-hover:bg-[#007DB5] group-hover:text-white transition"><i class="fa-solid fa-piggy-bank"></i></div>
         <div class="text-[16px] font-bold text-[#222]">Earning</div>
         <div class="text-[12px] text-gray-500 mt-1">Track your earnings</div>
       </a>
-      <a href="https://eventgarageparking.net/egp-profile-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group">
+      <a href="https://eventgarageparking.net/egp-profile-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group flex flex-col items-center text-center md:items-start md:text-left">
         <div class="w-11 h-11 rounded-[10px] bg-[rgba(0,125,181,0.1)] text-[#007DB5] flex items-center justify-center text-[18px] mb-3 group-hover:bg-[#007DB5] group-hover:text-white transition"><i class="fa-solid fa-user"></i></div>
         <div class="text-[16px] font-bold text-[#222]">Profile</div>
         <div class="text-[12px] text-gray-500 mt-1">Update your host profile</div>
       </a>
-      <a href="https://eventgarageparking.net/egp-payment-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group">
+      <a href="https://eventgarageparking.net/egp-payment-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group flex flex-col items-center text-center md:items-start md:text-left">
         <div class="w-11 h-11 rounded-[10px] bg-[rgba(0,125,181,0.1)] text-[#007DB5] flex items-center justify-center text-[18px] mb-3 group-hover:bg-[#007DB5] group-hover:text-white transition"><i class="fa-solid fa-dollar-sign"></i></div>
         <div class="text-[16px] font-bold text-[#222]">Payment</div>
         <div class="text-[12px] text-gray-500 mt-1">Set up payout methods</div>
-      </a>
-      <a href="https://eventgarageparking.net/egp-setting-training/" class="border border-[#e6e6e6] rounded-[12px] p-5 bg-white shadow-sm hover:border-[#007DB5] hover:shadow-md transition group">
-        <div class="w-11 h-11 rounded-[10px] bg-[rgba(0,125,181,0.1)] text-[#007DB5] flex items-center justify-center text-[18px] mb-3 group-hover:bg-[#007DB5] group-hover:text-white transition"><i class="fa-solid fa-gear"></i></div>
-        <div class="text-[16px] font-bold text-[#222]">Settings</div>
-        <div class="text-[12px] text-gray-500 mt-1">Manage account settings</div>
       </a>
     </div>
   </main>
